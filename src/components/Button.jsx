@@ -6,7 +6,7 @@ const Button = ({children, onClick, type = 'button', className = '', ...props}) 
         type={type}
         onClick={onClick}
         className={`bg-accent text-sm text-primary px-7 py-3 rounded-lg w-fit hover:bg-hover-green
-                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 ${className}`}
+                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors duration-300 ${className}`}
         {...props}
     >
         {children}

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import DetailKavling from './DetailKavling';
 import DataDiri from './DataDiri';
 import DataDiriPJ from './DataDiriPJ';
-import {  Footer } from '../../components/index'
+import { Navbar, Footer } from '../../components/index'
 
 const Reservasi = () => {
   const [step, setStep] = useState(1);  
@@ -29,6 +29,7 @@ const Reservasi = () => {
 
   return (
     <div>
+        <Navbar />
         {step === 1 && <DetailKavling onNext={handleNext} />}
         {step === 2 && <DataDiri onPrev={handlePrev} onSubmit={handleSubmit} />}
         {step === 3 && <DataDiriPJ onPrev={handlePrev} onSubmit={handleSubmit} />}

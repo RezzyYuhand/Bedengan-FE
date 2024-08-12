@@ -34,6 +34,7 @@ const DetailKavling = ({ onNext }) => {
                     onChange={handleChange}
                     value={formData.visitorType}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    required
                 >
                     <option>Pilih</option>
                     <option value="Individu">Individu</option>
@@ -49,6 +50,7 @@ const DetailKavling = ({ onNext }) => {
                     onChange={handleChange}
                     value={formData.numberOfVisitor}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    required
                 />
             </div>
 
@@ -59,6 +61,7 @@ const DetailKavling = ({ onNext }) => {
                     onChange={handleChange}
                     value={formData.tentType}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    required
                 >
                     <option>Pilih</option>
                     <option value="Dome - 2 Orang">Dome - 2 Orang</option>
@@ -75,6 +78,7 @@ const DetailKavling = ({ onNext }) => {
                     onChange={handleChange}
                     value={formData.arrivalDate}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    required
                 />
             </div>
 
@@ -86,6 +90,7 @@ const DetailKavling = ({ onNext }) => {
                     onChange={handleChange}
                     value={formData.departureDate}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    required
                 />
             </div>
 
