@@ -7,7 +7,7 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const Footer = ({ className }) => {
   return (
-    <div className={`flex flex-col items-center gap-2 px-28 pt-9 pb-16 ${className}`}>
+    <div className={`flex flex-col items-center gap-2 px-28 pt-9 pb-5 ${className}`}>
         <div className='flex flex-row justify-evenly gap-20'>
             <div className='flex flex-col gap-4'>
               <h3 className='font-semibold text-xl'>Bumi Perkemahan Bedengan</h3>

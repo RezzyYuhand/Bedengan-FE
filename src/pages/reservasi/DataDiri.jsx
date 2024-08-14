@@ -45,7 +45,7 @@ const DataDiri = ({ onPrev, onSubmit }) => {
                     className="hidden"
                     required
                 />
-                <div className='flex flex-row gap-5 px-3 py-2 border rounded-md border-solid border-1 border-secondary-gray'>
+                <div className='flex flex-row gap-5 px-3 py-2 border-[1.5px] rounded-md border-solid border-inactive-gray'>
                     {formData.ktpPhoto && (
                         <img
                             src={URL.createObjectURL(formData.ktpPhoto)}
