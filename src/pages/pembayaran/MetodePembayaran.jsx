@@ -9,6 +9,14 @@ const MetodePembayaran = () => {
     { id:'bca_va', name: 'BCA Virtual Account', icon: '/images/BCALogo.webp' },
   ];
 
+  const handleSelect = (methodId) => {
+    setSelectedMethod(methodId);
+  };
+
+  const handleNextButton = () => {
+    console.log("Selected Payment Method:", selectedMethod);
+  };
+
   return (
     <div className='flex flex-col items-center gap-3 px-28'>
         <div className='flex flex-col items-center'>
@@ -22,18 +30,20 @@ const MetodePembayaran = () => {
                     <div
                         key={method.id}
                         onClick={() => handleSelect(method.id)}
-                        className={`flex flex-col items-center justify-center p-4 w-32 h-32 cursor-pointer border rounded-md ${
-                            selectedMethod === method.id ? 'bg-green-500' : 'bg-white'
+                        className={`flex flex-col items-center justify-center p-4 w-44 h-44 transition-colors duration-300 cursor-pointer border-[1.5px] border-solid border-inactive-gray  rounded-md ${
+                            selectedMethod === method.id ? 'bg-accent border-accent' : 'bg-white'
                         }`}
                     >
-                        <img src={method.icon} alt={method.name} className='w-12 h-12 mb-2' />
-                        <span className='font-semibold'>{method.name}</span>
+                        <div className='flex items-center justify-center w-32 h-32 mb-2'>
+                            <img src={method.icon} alt={method.name} className='max-w-full max-h-full object-contain' />
+                        </div>
+                        <span className='text-sm font-semibold text-center'>{method.name}</span>
                     </div>
                 ))}
             </div>
       
             <div className='flex w-full justify-end mt-4'>
-                <Button>Selanjutnya</Button>
+                <Button onClick={handleNextButton}>Selanjutnya</Button>
             </div>
         </div>
 

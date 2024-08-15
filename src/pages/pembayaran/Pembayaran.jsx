@@ -25,7 +25,7 @@ const Pembayaran = () => {
         {step === 1 && (
             <MetodePembayaran onMethodSelect={handleMethodSelect} onNext={handleNext} />
         )}
-        <Footer />
+        <Footer className='mt-20' />
     </div>
   )
 }
