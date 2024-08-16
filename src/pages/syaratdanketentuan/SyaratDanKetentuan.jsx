@@ -31,7 +31,7 @@ const SyaratDanKetentuan = () => {
                         </li>
                     ))}
                 </ol>
-                <div className='px-8 py-3 h-fit w-[60rem] rounded-md border-solid border-[1.5px] border-inactive-gray'>
+                <div className='px-8 py-3 h-fit w-[60rem] rounded-md border-[1.5px] border-inactive-gray'>
                     <ol className='flex flex-col gap-1 list-decimal'>
                         {Syarat[selectedItem].map((point, index) => (
                             <li key={index} className='text-sm'>{point}</li>
