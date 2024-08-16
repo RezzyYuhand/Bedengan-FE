@@ -34,7 +34,7 @@ const Navbar = () => {
             <div className='flex flex-row justify-evenly gap-20'>
                 <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/">Beranda</Link>
                 <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/reservasi">Reservasi</Link>
-                <Link className='font-semibold transition-colors hover:text-accent duration-300'>Syarat & Ketentuan</Link>
+                <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
             </div>
             <div>
                 <Link className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'>Masuk</Link>
