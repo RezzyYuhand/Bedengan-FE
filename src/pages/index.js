@@ -3,6 +3,8 @@ import Reservasi from "./reservasi/Reservasi";
 import Pembayaran from "./pembayaran/Pembayaran";
 import SyaratDanKetentuan from "./syaratdanketentuan/SyaratDanKetentuan";
 import Profil from "./profile/Profil";
+import Masuk from "./profile/Masuk";
+import Daftar from "./profile/Daftar";
 
 export { 
     LandingPage,
@@ -10,4 +12,6 @@ export {
     Pembayaran,
     SyaratDanKetentuan,
     Profil,
+    Masuk,
+    Daftar,
 }

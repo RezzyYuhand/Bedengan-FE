@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Navbar, Footer } from '../../components/index'
 
 const Daftar = () => {
   return (
-    <div>Daftar</div>
+    <div>
+      <Navbar />
+      <Footer />
+    </div>
   )
 }
 

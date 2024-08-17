@@ -1,6 +1,6 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
-import { LandingPage, Reservasi, Pembayaran, SyaratDanKetentuan, Profil } from './pages'
+import { LandingPage, Reservasi, Pembayaran, SyaratDanKetentuan, Profil, Masuk, Daftar } from './pages'
 import { ScrollToTop } from './components'
 
 function App() {
@@ -14,6 +14,8 @@ function App() {
         <Route path="/pembayaran" element={<Pembayaran />} />
         <Route path="/syarat-dan-ketentuan" element={<SyaratDanKetentuan />} />
         <Route path="/profil" element={<Profil/>} />
+        <Route path="/masuk" element={<Masuk />} />
+        <Route path="/daftar" element={<Daftar />} />
       </Routes>
     </div>
   )

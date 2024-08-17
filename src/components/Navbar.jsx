@@ -37,7 +37,7 @@ const Navbar = () => {
                 <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
             </div>
             <div>
-                <Link className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'>Masuk</Link>
+                <Link className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300' to='/masuk'>Masuk</Link>
             </div>
         </div>
     </div>
