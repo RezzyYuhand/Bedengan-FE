@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Navbar, Footer, Button } from '../../components/index'
 
 const Masuk = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const Masuk = () => {
       alert('email atau password salah');
     } else {
       
-      alert('Login Berhasil');
+      alert('Pendaftaran Berhasil');
     }
   }
   
@@ -42,7 +42,7 @@ const Masuk = () => {
               />
             </div>
             <div className='flex flex-col gap-1'>
-              <label className='font-semibold'>Email</label>
+              <label className='font-semibold'>Kata Sandi</label>
               <input 
                 type="password"
                 placeholder='Password'
