@@ -33,7 +33,7 @@ const DetailKavling = ({ onNext }) => {
                     name="visitorType"
                     onChange={handleChange}
                     value={formData.visitorType}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 >
                     <option>Pilih</option>
@@ -49,7 +49,7 @@ const DetailKavling = ({ onNext }) => {
                     name="numberOfVisitor"
                     onChange={handleChange}
                     value={formData.numberOfVisitor}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 />
             </div>
@@ -60,7 +60,7 @@ const DetailKavling = ({ onNext }) => {
                     name="tentType"
                     onChange={handleChange}
                     value={formData.tentType}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 >
                     <option>Pilih</option>
@@ -77,7 +77,7 @@ const DetailKavling = ({ onNext }) => {
                     name="arrivalDate"
                     onChange={handleChange}
                     value={formData.arrivalDate}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gra-2y sm:text-sm"
                     required
                 />
             </div>
@@ -89,7 +89,7 @@ const DetailKavling = ({ onNext }) => {
                     name="departureDate"
                     onChange={handleChange}
                     value={formData.departureDate}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 />
             </div>

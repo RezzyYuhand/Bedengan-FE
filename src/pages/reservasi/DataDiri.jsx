@@ -45,7 +45,7 @@ const DataDiri = ({ onPrev, onSubmit }) => {
                     className="hidden"
                     required
                 />
-                <div className='flex flex-row gap-5 px-3 py-2 border-[1.5px] rounded-md border-solid border-inactive-gray'>
+                <div className='flex flex-row gap-5 px-3 py-2 border-[1.5px] rounded-md border-solid border-inactive-gray-2'>
                     {formData.ktpPhoto && (
                         <img
                             src={URL.createObjectURL(formData.ktpPhoto)}
@@ -72,7 +72,7 @@ const DataDiri = ({ onPrev, onSubmit }) => {
                     placeholder='Nama sesuai KTP'
                     onChange={handleChange}
                     value={formData.representativeName}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 />
             </div>
@@ -85,7 +85,7 @@ const DataDiri = ({ onPrev, onSubmit }) => {
                     placeholder='Nomor yang bisa dihubungi'
                     onChange={handleChange}
                     value={formData.phoneNumber}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 />
             </div>

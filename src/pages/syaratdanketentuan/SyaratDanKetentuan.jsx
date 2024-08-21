@@ -24,14 +24,14 @@ const SyaratDanKetentuan = () => {
                             className={`cursor-pointer py-2 px-4 transition-colors duration-300${
                                 selectedItem === itemId
                                     ? 'border border-r-4 border-accent font-bold'
-                                    : 'border-inactive-gray border-r-2'
+                                    : 'border-inactive-gray-2 border-r-2'
                             }`}
                         >
                             {SyaratJudul[itemId]}
                         </li>
                     ))}
                 </ol>
-                <div className='px-8 py-3 h-fit w-[60rem] rounded-md border-[1.5px] border-inactive-gray'>
+                <div className='px-8 py-3 h-fit w-[60rem] rounded-md border-[1.5px] border-inactive-gray-2'>
                     <ol className='flex flex-col gap-1 list-decimal'>
                         {Syarat[selectedItem].map((point, index) => (
                             <li key={index} className='text-sm'>{point}</li>

@@ -14,6 +14,7 @@ export default {
         'accent': '#2EB143',
         'secondary-gray': '#636363',
         'inactive-gray': '#A7ABB6',
+        'inactive-gray-2': '#DFDFDF',
         'hover-green': '#1E762C',
       },
     },

@@ -31,7 +31,7 @@ const MetodePembayaran = () => {
                         key={method.id}
                         onClick={() => handleSelect(method.id)}
                         className={`flex flex-col items-center justify-center p-4 w-44 h-44 transition-colors duration-300 cursor-pointer border-[1.5px] border-solid rounded-md ${
-                            selectedMethod === method.id ? 'bg-accent border-accent' : 'bg-white border-inactive-gray'
+                            selectedMethod === method.id ? 'bg-accent border-accent' : 'bg-white border-inactive-gray-2'
                         }`}
                     >
                         <div className='flex items-center justify-center w-32 h-32 mb-2'>
