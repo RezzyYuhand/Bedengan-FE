@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <div className={`w-full z-50 transition-colors duration-300 ${navbarBg}`}>
         <div className='flex flex-row px-28 py-4 justify-between text-primary items-center'>
-            <h2 className='font-bold'>Logo.</h2>
+        <img src="/LogoPesonaBedengan.svg" alt="logo" className='w-20'/>
             <div className='flex flex-row justify-evenly gap-20'>
                 <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/">Beranda</Link>
                 <Link className='font-semibold transition-colors hover:text-accent duration-300' to="/reservasi">Reservasi</Link>

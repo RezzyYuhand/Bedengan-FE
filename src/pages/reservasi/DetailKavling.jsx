@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { IoIosArrowDown } from "react-icons/io";
 import { Button } from '../../components/index'
 
 const DetailKavling = ({ onNext }) => {
@@ -29,17 +30,22 @@ const DetailKavling = ({ onNext }) => {
         <div className='flex flex-col w-fit gap-4 max-w-[32rem]'>
             <div className='flex flex-col gap-2'>
                 <label className="font-semibold">Jenis Pengunjung</label>
-                <select
-                    name="visitorType"
-                    onChange={handleChange}
-                    value={formData.visitorType}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                    required
-                >
-                    <option>Pilih</option>
-                    <option value="Individu">Individu</option>
-                    <option value="Organisasi">Organisasi</option>
-                </select>
+                <div className='relative'>
+                    <select
+                        name="visitorType"
+                        onChange={handleChange}
+                        value={formData.visitorType}
+                        className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
+                        required
+                    >
+                        <option>Pilih</option>
+                        <option value="Individu">Individu</option>
+                        <option value="Organisasi">Organisasi</option>
+                    </select>
+                    <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                        <IoIosArrowDown />
+                    </span>
+                </div>
             </div>
 
             <div className='flex flex-col gap-2'>
@@ -56,18 +62,23 @@ const DetailKavling = ({ onNext }) => {
 
             <div className='flex flex-col gap-2'>
                 <label className="font-semibold">Jenis Tenda</label>
-                <select
-                    name="tentType"
-                    onChange={handleChange}
-                    value={formData.tentType}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                    required
-                >
-                    <option>Pilih</option>
-                    <option value="Dome - 2 Orang">Dome - 2 Orang</option>
-                    <option value="Dome - 4 Orang">Dome - 4 Orang</option>
-                    <option value="Dome - 8 Orang">Dome - 8 Orang</option>
-                </select>
+                <div className='relative'>
+                    <select
+                        name="tentType"
+                        onChange={handleChange}
+                        value={formData.tentType}
+                        className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
+                        required
+                    >
+                        <option>Pilih</option>
+                        <option value="Dome - 2 Orang">Dome - 2 Orang</option>
+                        <option value="Dome - 4 Orang">Dome - 4 Orang</option>
+                        <option value="Dome - 8 Orang">Dome - 8 Orang</option>
+                    </select>
+                    <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                        <IoIosArrowDown />
+                    </span>
+                </div>
             </div>
 
             <div className='flex flex-col gap-2'>
@@ -77,7 +88,7 @@ const DetailKavling = ({ onNext }) => {
                     name="arrivalDate"
                     onChange={handleChange}
                     value={formData.arrivalDate}
-                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gra-2y sm:text-sm"
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     required
                 />
             </div>
