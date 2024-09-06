@@ -25,8 +25,9 @@ const Masuk = () => {
       <div className='flex flex-row gap-7 items-center justify-center w-full'>
         <div className='flex flex-col w-fit gap-4'>
           <div className='flex flex-col items-center'>
+            <img src="/LogoPesonaBedengan.png" alt="" className='lg:hidden mb-5'/>
             <h2 className='font-semibold'>Masuk</h2>
-            <p className='text-sm font-semibold text-center'>Selamat datang kembali di Bumi Perkemahan Bedengan </p>
+            <p className='text-sm font-semibold text-center w-72 lg:w-fit'>Selamat datang kembali di Bumi Perkemahan Bedengan </p>
           </div>
 
           <form onSubmit={handleLogin} className='flex flex-col gap-5'>
@@ -62,7 +63,7 @@ const Masuk = () => {
             </div>
           </div>
         </div>
-        <img src="/images/background.JPG" alt="" className='rounded-md w-[33rem] h-[40rem]'/>
+        <img src="/images/background.JPG" alt="" className='hidden lg:block rounded-md w-[33rem] h-[40rem] object-cover'/>
       </div>
       <Footer className='mt-20'/>
     </div>

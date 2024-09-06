@@ -26,11 +26,13 @@ const Daftar = () => {
       <div className='flex flex-row gap-7 items-center justify-center w-full'>
         <div className='flex flex-col w-fit gap-4'>
           <div className='flex flex-col items-center'>
-            <h2 className='font-semibold'>Daftar atau Buat Akun</h2>
+            <img src="/LogoPesonaBedengan.png" alt="" className='lg:hidden mb-5'/>
+            <h2 className='lg:hidden font-semibold'>Daftar</h2>
+            <h2 className='hidden lg:block font-semibold'>Daftar atau Buat Akun</h2>
             <p className='text-sm font-semibold text-center'>Selamat datang di Bumi Perkemahan Bedengan </p>
           </div>
 
-          <form onSubmit={handleRegister} className='flex flex-col gap-5'>
+          <form onSubmit={handleRegister} className='flex flex-col gap-5 px-4 lg:px-0'>
             <div className='flex flex-col gap-1'>
               <label className='font-semibold'>Nama</label>
               <input 
@@ -85,7 +87,7 @@ const Daftar = () => {
             </div>
           </div>
         </div>
-        <img src="/images/background.JPG" alt="" className='rounded-md w-[33rem] h-[40rem]'/>
+        <img src="/images/background.JPG" alt="" className='hidden lg:block rounded-md w-[33rem] h-[40rem] object-cover'/>
       </div>
       <Footer className='mt-20'/>
     </div>

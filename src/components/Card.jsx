@@ -8,7 +8,7 @@ import { MdOutlinePeopleAlt } from "react-icons/md";
 const Card = ( {onCLick, Amount, Capacity, Price, ...props} ) => {
   return (
     <div className='flex flex-col gap-5 items-center'>
-      <img src="/images/background.JPG" alt="" className='h-56 w-auto' />
+      <img src="/images/background.JPG" alt="" className='h-56 w-auto object-cover' />
       <h3 className='font-semibold text-xl text-secondary'>{Amount}</h3>
       <div className='flex flex-col gap-3'>
         <div className='flex flex-row items-center gap-4'>

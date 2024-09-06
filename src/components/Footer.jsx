@@ -8,13 +8,13 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const Footer = ({ className }) => {
   return (
-    <div className={`flex flex-col items-center gap-5 lg:gap-2 px-28 pt-9 pb-5 ${className}`}>
+    <div className={`flex flex-col items-center gap-5 lg:gap-2 px-10 md:px-28 lg:px-28 pt-9 pb-5 ${className}`}>
       <div className='flex flex-col justify-start gap-5 lg:gap-3'>
-        <div className='flex flex-col lg:flex-row justify-evenly gap-5 lg:gap-20'>
+        <div className='flex flex-col md:flex-row lg:flex-row justify-evenly gap-5 md:gap-14 lg:gap-20'>
             <div className='flex flex-col gap-2 lg:gap-4'>
               <h3 className='font-semibold text-xl'>Bumi Perkemahan Bedengan</h3>
               <div className='flex flex-col gap-8'>
-                <p className='text-inactive-gray'>Bumi Perkemahan Bedengan<br/>merupakan sebuah destinasi yang<br/>menawarkan camping ground<br/>dengan keindahan hutan pinus.</p>
+                <p className='text-inactive-gray w-72'>Bumi Perkemahan Bedengan merupakan sebuah destinasi yang menawarkan camping ground dengan keindahan hutan pinus.</p>
               </div>
             </div>
             <div className='flex flex-col gap-2 lg:gap-4 text-inactive-gray'>
@@ -23,7 +23,7 @@ const Footer = ({ className }) => {
               <Link className='transition-colors hover:text-secondary duration-300' to="/reservasi">Reservasi</Link>
               <Link className='transition-colors hover:text-secondary duration-300' to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
             </div>
-            <div className='flex flex-col gap-2 lg:gap-4 text-inactive-gray'>
+            <div className='flex flex-col gap-4 lg:gap-4 text-inactive-gray'>
               <p className='text-secondary font-bold'>Contact</p>
               <div className='flex flex-row gap-2 items-center'>
                 <PiPhoneFill className='text-secondary text-xl'/>
@@ -49,7 +49,7 @@ const Footer = ({ className }) => {
           </div>
         </div>
       </div>
-      <p className='text-inactive-gray'>&copy;2024 Bumi Perkemahan Bedengan All rights reserved.</p>
+      <p className='text-inactive-gray text-center'>&copy;2024 Bumi Perkemahan Bedengan All rights reserved.</p>
     </div>
   )
 }

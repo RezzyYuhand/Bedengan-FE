@@ -32,7 +32,7 @@ const DataDiriPJ = ({ onPrev, onSubmit }) => {
     };
 
     return (
-        <div className='flex flex-col gap-3 items-center px-28'>
+        <div className='flex flex-col gap-3 items-center px-10 lg:px-28'>
         <div className='flex flex-col items-center'>
             <h2 className='font-semibold'>Reservasi</h2>
             <p className='text-secondary-gray'>Data Diri Penanggung Jawab</p>
@@ -52,17 +52,17 @@ const DataDiriPJ = ({ onPrev, onSubmit }) => {
                     className="hidden"
                     required
                 />
-                <div className='flex flex-row gap-5 px-3 py-2 border-[1.5px] rounded-md border-solid border-inactive-gray-2'>
+                <div className='flex flex-col lg:flex-row items-center gap-5 px-3 py-2 border-[1.5px] rounded-md border-solid border-inactive-gray-2'>
                     {formData.ktpPhoto && (
                         <img
                             src={URL.createObjectURL(formData.ktpPhoto)}
                             alt="Preview"
-                            className="mt-2 h-32 w-40 object-cover"
+                            className="mt-2 h-40 lg:h-32 w-52 lg:w-40 object-cover"
                         />
                     )}
                     <div className='flex flex-col gap-1'>
                         <label>Ketentuan Foto KTP</label>
-                        <ul className='list-disc list-outside text-sm pl-6'>
+                        <ul className='list-disc list-outside text-xs lg:text-sm pl-3 lg:pl-6'>
                             <li>Pastikan seluruh bagian KTP kamu berada di dalam bingkai foto</li>
                             <li>Foto KTP Asli bukan fotocopy</li>
                             <li>Foto KTP harus sesuai dengan data perwakilan yang didaftarkan</li>
@@ -114,8 +114,8 @@ const DataDiriPJ = ({ onPrev, onSubmit }) => {
                 </div>
             </div>
 
-            <div className='flex w-full justify-end'>
-                <Button onClick={handleSubmit}>Selanjutnya</Button>
+            <div className='flex w-full justify-center lg:justify-end'>
+                <Button onClick={handleSubmit} className='w-full lg:w-fit'>Selanjutnya</Button>
             </div>
             
         </div>
