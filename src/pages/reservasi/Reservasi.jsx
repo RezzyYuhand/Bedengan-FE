@@ -12,8 +12,10 @@ const Reservasi = () => {
     setFormData((prevData) => ({...prevData, ...data}));
     if (data.visitorType === 'Individu') {
       setStep(2);
-    } else {
+    } else if (data.visitorType === 'Organisasi') {
       setStep(3);
+    } else {
+      alert('Jenis Pengunjung harus dipilih.');
     }
   }
 

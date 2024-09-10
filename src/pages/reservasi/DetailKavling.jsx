@@ -15,19 +15,46 @@ const DetailKavling = ({ onNext }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
+  const validate = () => {
+    const errors = [];
+
+    if (!formData.visitorType) {
+      errors.push('Jenis Pengunjung harus dipilih.');
+    }
+    if (!formData.numberOfVisitor) {
+      errors.push('Jumlah pengunjung harus diisi.');
+    }
+    if (!formData.tentType) {
+      errors.push('Jenis Tenda harus dipilih.');
+    }
+    if (!formData.arrivalDate) {
+      errors.push('Tanggal Kedatangan harus diisi.');
+    }
+    if (!formData.departureDate) {
+      errors.push('Tanggal Kepulangan harus diisi.');
+    }
+
+    return errors;
+  }
+
   const handleNext = () => {
-    console.log(formData);
-    onNext(formData);
+    const validationErrors = validate();
+    if (validationErrors.length > 0) {
+        alert(validationErrors.join('\n\n'));
+    } else {
+        console.log(formData);
+        onNext(formData);
+    }
   }
     
   return (
-    <div className='flex flex-col gap-3 items-center px-28'>
+    <div className='flex flex-col gap-3 items-center px-10 lg:px-28'>
         <div className='flex flex-col items-center'>
             <h2 className='font-semibold text-2xl lg:text-4xl'>Reservasi</h2>
             <p className='text-secondary-gray'>Detail Kavling</p>
         </div>
 
-        <div className='flex flex-col w-fit lg:w-[30rem] gap-4 max-w-[32rem]'>
+        <div className='flex flex-col w-72 lg:w-[30rem] gap-4 lg:max-w-[32rem]'>
             <div className='flex flex-col gap-2'>
                 <label className="font-semibold">Jenis Pengunjung</label>
                 <div className='relative'>
