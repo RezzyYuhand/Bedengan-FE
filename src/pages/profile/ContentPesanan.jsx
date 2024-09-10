@@ -8,9 +8,9 @@ const ContentPesanan = () => {
   ]
   
   return (
-    <div className='flex flex-col gap-5 w-full'>
+    <div className='flex flex-col gap-5 w-full items-center lg:items-start'>
         <h2 className='font-semibold'>Pesanan</h2>
-        <div className='flex flex-col gap-5 w-full'>
+        <div className='flex flex-col gap-7 lg:gap-5 w-full'>
           {orders.map((order, index) => (
             <PesananCard
               key={index}

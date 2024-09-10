@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Card, Footer, Navbar } from '../../components/index'
+import { useInView } from 'react-intersection-observer';
 import { MdOutlineMosque, MdOutlineShoppingBag } from "react-icons/md";
 import { IoMdMan, IoMdWoman } from "react-icons/io";
 import { LuClock4 } from "react-icons/lu";
@@ -20,13 +21,21 @@ const cardData = [
 ];
 
 const LandingPage = () => {
+  const { ref: sec1Ref, inView: sec1InView } = useInView({ triggerOnce: true });
+  const { ref: sec2Ref, inView: sec2InView } = useInView({ triggerOnce: true });
+  const { ref: sec3Ref, inView: sec3InView } = useInView({ triggerOnce: true });
+  const { ref: sec4Ref, inView: sec4InView } = useInView({ triggerOnce: true });
+  const { ref: sec5Ref, inView: sec5InView } = useInView({ triggerOnce: true });
+  const { ref: sec6Ref, inView: sec6InView } = useInView({ triggerOnce: true });
+  const { ref: sec7Ref, inView: sec7InView } = useInView({ triggerOnce: true });
+  
   return (
     <div>
         <Navbar/>
         <div className='flex flex-col gap-16'>
             <div className="relative flex flex-col bg-[url('/images/background.JPG')] bg-cover bg-center h-screen px-10 lg:pl-28 pr-[25rem]">
                 <div className="absolute inset-0 bg-black opacity-60"></div>
-                <div className='relative flex flex-col items-center lg:items-start justify-center lg: gap-5 w-72 lg:w-fit text-white h-full z-10'>
+                <div ref={sec1Ref} className={`relative flex flex-col items-center lg:items-start justify-center lg: gap-5 w-72 lg:w-fit text-white h-full z-10 transition-opacity duration-1000 ${sec1InView ? 'opacity-100' : 'opacity-0'}`}>
                     <h1 className='text-primary font-semibold text-3xl lg:text-4xl'>
                         Selamat Datang di<br/>Bumi Perkemahan Bedengan
                     </h1>
@@ -37,7 +46,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className='flex flex-col gap-24'>
-                <div className='flex flex-col gap-8 items-center'>
+                <div ref={sec2Ref} className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec2InView ? 'opacity-100' : 'opacity-0'}`}>
                     <div className='flex flex-col gap-2 items-center text-center'>
                         <p className='text-lg text-secondary-gray'>Temukan kehangatan di Bedengan</p>
                         <h2 className='font-semibold'>Bumi Pekemahan Bedengan</h2>
@@ -51,7 +60,7 @@ const LandingPage = () => {
                     </div>
                 </div>
                 
-                <div className='flex flex-col gap-8 items-center'>
+                <div ref={sec3Ref} className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec3InView ? 'opacity-100' : 'opacity-0'}`}>
                     <div className='flex flex-col gap-2 items-center text-center'>
                         <p className='text-lg text-secondary-gray'>Jangan khawatir kekurangan apapun</p>
                         <h2 className='font-semibold'>Fasilitas</h2>
@@ -96,7 +105,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-col gap-8 items-center'>
+                <div ref={sec4Ref} className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec4InView ? 'opacity-100' : 'opacity-0'}`}>
                     <div className='flex flex-col gap-2 items-center text-center'>
                         <p className='text-lg text-secondary-gray'>Tentukan pilihanmu sesuai dengan kebutuhanmu</p>
                         <h2 className='font-semibold'>Paket Tenda</h2>
@@ -110,13 +119,13 @@ const LandingPage = () => {
 
                 <div className="relative flex bg-[url('/images/background.JPG')] bg-cover bg-center min-h-[50vh] place-content-center items-center">
                     <div className='absolute inset-0 bg-black opacity-60'></div>
-                    <div className='relative flex flex-col lg:flex-row lg:justify-between gap-7 lg:gap-0 lg:items-center w-full px-14 lg:px-28'>
+                    <div ref={sec5Ref} className={`relative flex flex-col lg:flex-row lg:justify-between gap-7 lg:gap-0 lg:items-center w-full px-14 lg:px-28 transition-opacity duration-1000 ${sec5InView ? 'opacity-100' : 'opacity-0'}`}>
                         <h1 className='text-2xl lg:text-3xl text-white font-semibold w-80 lg:w-[35rem]'>Sudah siap menikmati keindahan hutan pinus?</h1>
                         <Button onClick={handleButtonClick}>Reservasi Sekarang</Button>
                     </div>
                 </div>
 
-                <div className='flex flex-col gap-8 items-center'>
+                <div  ref={sec6Ref} className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec6InView ? 'opacity-100' : 'opacity-0'}`}>
                     <div className='flex flex-col gap-2 items-center text-center'>
                         <p className='text-lg text-secondary-gray'>Temukan kehangatan di Bedengan</p>
                         <h2 className='font-semibold'>Lokasi dan Jam Operasional</h2>
@@ -144,7 +153,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-col gap-8 items-center'>
+                <div ref={sec7Ref} className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec7InView ? 'opacity-100' : 'opacity-0'}`}>
                     <div className='flex flex-col gap-2 items-center text-center'>
                         <p className='text-lg text-secondary-gray'>Apa kata mereka?</p>
                         <h2 className='font-semibold'>Testimoni</h2>

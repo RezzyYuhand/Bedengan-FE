@@ -34,7 +34,7 @@ const DataDiriPJ = ({ onPrev, onSubmit }) => {
     return (
         <div className='flex flex-col gap-3 items-center px-10 lg:px-28'>
         <div className='flex flex-col items-center'>
-            <h2 className='font-semibold'>Reservasi</h2>
+            <h2 className='font-semibold text-2xl lg:text-4xl'>Reservasi</h2>
             <p className='text-secondary-gray'>Data Diri Penanggung Jawab</p>
         </div>
 

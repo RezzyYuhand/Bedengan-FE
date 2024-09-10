@@ -35,15 +35,16 @@ const PesananCard = ({ kodePesanan, nomorKavling, tanggalKedatangan, status }) =
 
   return (
     <div className='flex flex-col gap-3 px-4 py-4 w-full rounded-md border-[1.5px] border-inactive-gray-2'>
+      <p className={`lg:hidden w-fit px-3 py-1 rounded-full ${getStatusColor(status)} text-xs text-primary`}>{status}</p>
       <p className='text-sm'>Kode Pesanan: {kodePesanan}</p>
       <div className='flex flex-col gap-2'>
-        <p className='font-semibold'>Nomor Kavling: {nomorKavling}</p>
-        <p className='font-semibold'>Tanggal Kedatangan: {tanggalKedatangan}</p>
-        <div className='flex flex-row justify-between items-center'>
-          <p className={`px-3 py-1 rounded-full ${getStatusColor(status)} text-xs text-primary`}>{status}</p>
+        <p className='font-semibold text-sm lg:'>Nomor Kavling: {nomorKavling}</p>
+        <p className='font-semibold text-sm'>Tanggal Kedatangan: {tanggalKedatangan}</p>
+        <div className='flex lg:flex-row justify-between items-center'>
+          <p className={`hidden lg:block px-3 py-1 rounded-full ${getStatusColor(status)} text-xs text-primary`}>{status}</p>
           {buttonText ? (
             <button
-              className='bg-accent text-sm text-primary px-7 py-3 rounded-lg w-fit hover:bg-hover-green shadow-md
+              className='bg-accent text-sm text-primary px-7 py-3 rounded-lg w-full lg:w-fit hover:bg-hover-green shadow-md
               focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors duration-300'>
               {buttonText}
             </button>
