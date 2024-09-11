@@ -5,6 +5,7 @@ import SyaratDanKetentuan from "./syaratdanketentuan/SyaratDanKetentuan";
 import Profil from "./profile/Profil";
 import Masuk from "./profile/Masuk";
 import Daftar from "./profile/Daftar";
+import ComingSoon from "./main/ComingSoon";
 
 export { 
     LandingPage,
@@ -14,4 +15,5 @@ export {
     Profil,
     Masuk,
     Daftar,
+    ComingSoon,
 }

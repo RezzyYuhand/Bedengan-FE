@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import DetailKavling from './DetailKavling';
 import DataDiri from './DataDiri';
 import DataDiriPJ from './DataDiriPJ';
+import ItemTambahan from './ItemTambahan';
 import { Navbar, Footer } from '../../components/index'
 
 const Reservasi = () => {
@@ -10,12 +11,16 @@ const Reservasi = () => {
 
   const handleNext = (data) => {
     setFormData((prevData) => ({...prevData, ...data}));
-    if (data.visitorType === 'Individu') {
+    if (step === 1 & data.visitorType === 'Individu') {
       setStep(2);
-    } else if (data.visitorType === 'Organisasi') {
+    } else if (step === 1 & data.visitorType === 'Organisasi') {
       setStep(3);
+    } else if (step === 2) {
+      setStep(4);
+    } else if (step === 3) {
+      setStep(4);
     } else {
-      alert('Jenis Pengunjung harus dipilih.');
+      setStep(1);
     }
   }
 
@@ -33,8 +38,9 @@ const Reservasi = () => {
     <div>
         <Navbar />
         {step === 1 && <DetailKavling onNext={handleNext} />}
-        {step === 2 && <DataDiri onPrev={handlePrev} onSubmit={handleSubmit} />}
-        {step === 3 && <DataDiriPJ onPrev={handlePrev} onSubmit={handleSubmit} />}
+        {step === 2 && <DataDiri onPrev={handlePrev} onSubmit={handleNext} />}
+        {step === 3 && <DataDiriPJ onPrev={handlePrev} onSubmit={handleNext} />}
+        {step === 4 && <ItemTambahan/>}
         <Footer className='mt-20' />
     </div>
   )

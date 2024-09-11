@@ -33,7 +33,7 @@ const LandingPage = () => {
     <div>
         <Navbar/>
         <div className='flex flex-col gap-16'>
-            <div className="relative flex flex-col bg-[url('/images/background.JPG')] bg-cover bg-center h-screen px-10 lg:pl-28 pr-[25rem]">
+            <div className="relative flex flex-col bg-[url('/images/background.JPG')] bg-cover bg-center h-screen w-full px-10 lg:pl-28 lg:pr-[25rem]">
                 <div className="absolute inset-0 bg-black opacity-60"></div>
                 <div ref={sec1Ref} className={`relative flex flex-col items-center lg:items-start justify-center lg: gap-5 w-72 lg:w-fit text-white h-full z-10 transition-opacity duration-1000 ${sec1InView ? 'opacity-100' : 'opacity-0'}`}>
                     <h1 className='text-primary font-semibold text-3xl lg:text-4xl'>

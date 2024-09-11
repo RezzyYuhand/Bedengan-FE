@@ -4,6 +4,7 @@ import Card from './Card';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import PesananCard from './PesananCard';
+import ItemCard from './ItemCard';
 
 export { 
     ScrollToTop,
@@ -12,4 +13,5 @@ export {
     Footer,
     Navbar,
     PesananCard,
+    ItemCard,
  };
