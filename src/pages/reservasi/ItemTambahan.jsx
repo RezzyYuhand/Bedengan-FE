@@ -6,9 +6,9 @@ const ItemTambahan = ({ onPrev, onSubmit }) => {
   const [filteredItems, setFilteredItems] = useState([]);
   
   const items = [
-    { name: 'Item 1', description: 'Description for Item 1' },
-    { name: 'Item 2', description: 'Description for Item 2' },
-    { name: 'Item 3', description: 'Description for Item 3' },
+    { name: 'Tenda Isi 2', price: '35.000' },
+    { name: 'Tenda Isi 3', price: '35.000' },
+    { name: 'Tenda Isi 4', price: '35.000' },
   ];
   
   const handleSearchChange = (e) => {
@@ -33,12 +33,12 @@ const ItemTambahan = ({ onPrev, onSubmit }) => {
             <p className='text-secondary-gray'>Item Tambahan</p>
         </div>
 
-        <div className='flex flex-col w-72 lg:w-[30rem] gap-4 lg:max-w-[32rem]'>
-            <div className='flex flex-row gap-5'>
+        <div className='flex flex-col w-72 lg:w-[35rem] gap-4 lg:max-w-[35rem] items-center'>
+            <div className='flex flex-row gap-5 text-sm'>
               <input
                 type='text'
                 placeholder='Cari Item'
-                className='px-3 py-2 w-full rounded-full ring-1 ring-inactive-gray-2'
+                className='px-3 py-2 w-72 rounded-full ring-1 ring-inactive-gray-2'
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
@@ -50,11 +50,16 @@ const ItemTambahan = ({ onPrev, onSubmit }) => {
               </button>
             </div>
 
-            <div className='flex flex-wrap'>
-
+            <div className='flex flex-wrap w-full gap-5 justify-between'>
+              <ItemCard item={items[0]} />
+              <ItemCard item={items[1]} />
+              <ItemCard item={items[2]} />
+              <ItemCard item={items[1]} />
             </div>
             
-            <Button></Button>
+            <div className='flex w-full justify-end'>
+              <Button>Selanjutnya</Button>
+            </div>
         </div>
     </div>
   )

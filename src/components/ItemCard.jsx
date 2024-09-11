@@ -14,26 +14,29 @@ const ItemCard = ({ item }) => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-between border p-4 rounded-md shadow-md w-40 m-2'>
-      <h3 className='text-lg font-semibold'>{item.name}</h3>
-      <p className='text-sm text-gray-600'>{item.description}</p>
-      <p className='text-base font-bold text-accent'>Rp {item.price}</p>
+    <div className='flex flex-col px-5 py-4 gap-7 justify-end border rounded-md w-64'>
+      <div className='flex flex-row justify-between items-center text-sm'>
+        <p className='font-semibold'>{item.name}</p>
+        <p className='font-semibold'>Rp {item.price}</p>
+      </div>
       
-      <div className='flex items-center gap-2 mt-2'>
-        <button
-          className='px-2 py-1 bg-red-500 text-white rounded'
-          onClick={handleDecrement}
-          disabled={quantity === 0}
-        >
-          -
-        </button>
-        <span className='text-lg'>{quantity}</span>
-        <button
-          className='px-2 py-1 bg-green-500 text-white rounded'
-          onClick={handleIncrement}
-        >
-          +
-        </button>
+      <div className='flex w-full justify-end'>
+        <div className='flex w-fit items-center gap-2 rounded-lg border-[1.5px] border-inactive-gray-2 text-sm'>
+          <button
+            className='px-2 py-1 text-secondary rounded'
+            onClick={handleDecrement}
+            disabled={quantity === 0}
+          >
+            -
+          </button>
+          <span className=''>{quantity}</span>
+          <button
+            className='px-2 py-1 text-secondary rounded'
+            onClick={handleIncrement}
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
   )
