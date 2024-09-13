@@ -1,5 +1,6 @@
 import LandingPage from "./main/LandingPage";
 import Reservasi from "./reservasi/Reservasi";
+import Kavling from "./reservasi/Kavling";
 import Pembayaran from "./pembayaran/Pembayaran";
 import SyaratDanKetentuan from "./syaratdanketentuan/SyaratDanKetentuan";
 import Profil from "./profile/Profil";
@@ -16,4 +17,5 @@ export {
     Masuk,
     Daftar,
     ComingSoon,
+    Kavling
 }

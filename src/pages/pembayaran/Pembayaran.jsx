@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Navbar, Footer } from '../../components/index'
 import MetodePembayaran from './MetodePembayaran'
+import RincianPembayaran from './RincianPembayaran'
+import InformasiPembayaran from './InformasiPembayaran'
+import UnggahBuktiPembayaran from './UnggahBuktiPembayaran'
 
 const Pembayaran = () => {
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -22,9 +25,7 @@ const Pembayaran = () => {
   return (
     <div>
         <Navbar />
-        {step === 1 && (
-            <MetodePembayaran onMethodSelect={handleMethodSelect} onNext={handleNext} />
-        )}
+        <UnggahBuktiPembayaran/>
         <Footer className='mt-20' />
     </div>
   )

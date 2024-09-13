@@ -12,6 +12,7 @@ export default {
         'primary': '#FFFFFF',
         'secondary': '#080808',
         'accent': '#2EB143',
+        'accent-2': '#DCF2DF',
         'secondary-gray': '#636363',
         'inactive-gray': '#A7ABB6',
         'inactive-gray-2': '#DFDFDF',
