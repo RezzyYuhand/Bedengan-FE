@@ -1,8 +1,8 @@
 import {apiClient} from "./apiClient.js";
 
-export const getAllGround = async (token) => {
+export const getAllPerlengkapan = async (token) => {
     try {
-        const response = await apiClient.get('/ground', {
+        const response = await apiClient.get('/perlengkapan', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -13,10 +13,10 @@ export const getAllGround = async (token) => {
     }
 };
 
-export const createGround = async (token, request) => {
+export const createPerlengkapan = async (token, request) => {
     try {
         const response = await apiClient.post(
-            '/ground',
+            '/perlengkapan',
             request,
             {
                 headers: {
@@ -30,9 +30,9 @@ export const createGround = async (token, request) => {
     }
 };
 
-export const getGroundById = async (token, id) => {
+export const getPerlengkapanById = async (token, id) => {
     try {
-        const response = await apiClient.get(`/ground/${id}`, {
+        const response = await apiClient.get(`/perlengkapan/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -43,10 +43,10 @@ export const getGroundById = async (token, id) => {
     }
 };
 
-export const updateGroundById = async (token, id, request) => {
+export const updatePerlengkapanById = async (token, id, request) => {
     try {
         const response = await apiClient.put(
-            `/ground/${id}`,
+            `/perlengkapan/${id}`,
             request,
             {
                 headers: {
@@ -60,9 +60,9 @@ export const updateGroundById = async (token, id, request) => {
     }
 };
 
-export const deleteGroundById = async (token, id) => {
+export const deletePerlengkapanById = async (token, id) => {
     try {
-        const response = await apiClient.delete(`/ground/${id}`, {
+        const response = await apiClient.delete(`/perlengkapan/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
