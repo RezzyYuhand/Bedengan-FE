@@ -1,21 +1,29 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Navbar, Footer, Button } from '../../components/index'
+import { loginUser } from '../../services/userService'
 
 const Masuk = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
 
   const handleLogin = (e) => {
     e.preventDefault();
     
     if (email === '' || password === '') {
       alert('email atau password tidak boleh kosong');
-    } else if (email !== 'test@example.com' || password !== 'password123') {
-      alert('email atau password salah');
     } else {
-      
-      alert('Pendaftaran Berhasil');
+      // try {
+      //   const response = await loginUser(email,password);
+      //   localStorage.setItem('token', JSON.stringify(response));
+      //   navigate('/');
+      // } catch (error) {
+      //   setError(error.message || 'Login Failed, please try again');
+      // }
+      console.log(email, password)
     }
   }
   

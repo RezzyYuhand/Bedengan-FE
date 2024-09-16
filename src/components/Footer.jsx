@@ -20,8 +20,7 @@ const Footer = ({ className }) => {
             <div className='flex flex-col gap-2 lg:gap-4 text-inactive-gray'>
               <p className='text-secondary font-bold'>Link</p>
               <Link className='transition-colors hover:text-secondary duration-300' to="/">Beranda</Link>
-              {/* <Link className='transition-colors hover:text-secondary duration-300' to="/reservasi">Reservasi</Link> */}
-              <Link className='transition-colors hover:text-secondary duration-300' to="/comingsoon">Reservasi</Link>
+              <Link className='transition-colors hover:text-secondary duration-300' to="/reservasi">Reservasi</Link>
               <Link className='transition-colors hover:text-secondary duration-300' to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
             </div>
             <div className='flex flex-col gap-4 lg:gap-4 text-inactive-gray'>

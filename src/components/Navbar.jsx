@@ -87,8 +87,7 @@ const Navbar = () => {
             <div className={`flex-col w-72 lg:w-fit lg:flex lg:flex-row lg:items-center lg:static absolute top-[3.8rem] right-0 bg-secondary lg:bg-transparent transition-all duration-500 ease-in-out ${isMenuOpen ? 'flex h-screen z-40' : 'hidden'} lg:flex`}>
                 <div className='flex flex-col gap-4 px-8 py-5 lg:flex-row lg:justify-evenly lg:gap-24'>
                     <Link className='lg:font-semibold transition-colors hover:text-accent duration-300' to="/">Beranda</Link>
-                    {/* <Link className='lg:font-semibold transition-colors hover:text-accent duration-300' to="/reservasi">Reservasi</Link> */}
-                    <Link className='lg:font-semibold transition-colors hover:text-accent duration-300' to="/comingsoon">Reservasi</Link>
+                    <Link className='lg:font-semibold transition-colors hover:text-accent duration-300' to="/reservasi">Reservasi</Link>
                     <Link className='lg:font-semibold transition-colors hover:text-accent duration-300' to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
                     <div className='flex flex-row gap-4 lg:hidden'>
                         <Link className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300' to='/masuk'>Masuk</Link>

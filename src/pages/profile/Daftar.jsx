@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Navbar, Footer, Button } from '../../components/index'
 
 const Daftar = () => {
@@ -7,6 +7,8 @@ const Daftar = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -16,7 +18,8 @@ const Daftar = () => {
     } else if (password !== confirmPassword) {
       alert('Password dan konfirmasi password tidak cocok');
     } else {
-      alert('Login Berhasil');
+      localStorage.setItem('registrationData', JSON.stringify({ name, email, password }));
+      navigate('/daftar-data-diri');
     }
   }
   
