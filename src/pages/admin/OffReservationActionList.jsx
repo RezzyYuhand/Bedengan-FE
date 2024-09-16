@@ -10,12 +10,18 @@ const OffReservationActionList = ({ reservations }) => {
 
   const openDeleteModal = (reservation) => {
     setSelectedReservation(reservation);
-    setIsModalOpen(true);
+    setIsDeleteModalOpen(true);
   };
 
-  const closeModal = () => {
+  const openDetailModal = (reservation) => {
+    setSelectedReservation(reservation);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeModals = () => {
     setSelectedReservation(null);
-    setIsModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setIsDetailModalOpen(false);
   };
 
   const handleEdit = (id) => {
@@ -44,12 +50,25 @@ const OffReservationActionList = ({ reservations }) => {
           </span>
 
           {/* Jenis Reservasi */}
-          <span className='w-32 max-w-32 text-center'>
-            {reservation.jenis}
+          <span className='flex items-center justify-center w-32 max-w-32'>
+            <span className={`w-fit px-2 py-1 rounded-full ${reservation.jenisPembayaran === 'Cash' ? 'bg-selesai' : 'bg-berlangsung'}`}>
+              {reservation.jenisPembayaran}
+            </span>
           </span>
 
           {/* Status */}
-          <span className='w-32 max-w-32 text-center'>
+          <span className='flex flex-row items-center justify-center gap-4 w-32 max-w-32'>
+            <div
+              className={`w-2 h-2 rounded-full ${
+                reservation.status === 'Ditolak'
+                  ? 'bg-ditolak'
+                  : reservation.status === 'Berlangsung'
+                  ? 'bg-berlangsung'
+                  : reservation.status === 'Selesai'
+                  ? 'bg-selesai'
+                  : 'bg-menunggu'
+              }`}
+            />
             {reservation.status}
           </span>
 
@@ -62,7 +81,7 @@ const OffReservationActionList = ({ reservations }) => {
               <MdOutlineRemoveRedEye />
             </button>
             <button
-              className='flex items-center justify-center w-6 h-6 bg-accent-2 text-white rounded'
+              className='flex items-center justify-center w-6 h-6 bg-selesai text-white rounded'
               onClick={() => handleEdit(reservation.id)}
             >
               <FaPen />
@@ -77,21 +96,23 @@ const OffReservationActionList = ({ reservations }) => {
         </div>
       ))}
 
-      {/* Image Modal */}
-      <DetailModal
-        isOpen={isModalOpen}
-        imageUrl={selectedImage}
-        title={modalTitle}
-        onClose={closeModal}
-      />
+      {/* Detail Modal */}
+      {isDetailModalOpen && (
+        <DetailModal
+          isOpen={isDetailModalOpen}
+          imageUrl={selectedReservation?.buktiImage}
+          title={`Total Pembayaran: ${selectedReservation?.totalPrice}`}
+          onClose={closeModals}
+        />
+      )}
 
       {/* Delete Confirmation Modal */}
-      {isModalOpen && (
+      {isDeleteModalOpen && (
         <ConfirmationModal
           title="Delete Reservation"
           message={`Are you sure you want to delete reservation ${selectedReservation?.kode}?`}
           onConfirm={() => handleDelete(selectedReservation.id)}
-          onClose={closeModal}
+          onClose={closeModals}
         />
       )}
     </div>

@@ -55,10 +55,10 @@ const SidePanel = () => {
             {isPerlengkapanOpen && (
               <div className='flex flex-col items-center gap-1'>
                 <div className='w-full bg-primary h-[1px] mt-2'/>
-                <Link to='/admin/reservasi' className='hover:text-accent transition-colors duration-300'>Semua</Link>
-                <Link to='/admin/reservasi/kavling' className='hover:text-accent transition-colors duration-300'>Kavling</Link>
-                <Link to='/admin/reservasi/paket' className='hover:text-accent transition-colors duration-300'>Paket</Link>
-                <Link to='/admin/reservasi/item' className='hover:text-accent transition-colors duration-300'>Item</Link>
+                <Link to='/admin/perlengkapan' className='hover:text-accent transition-colors duration-300'>Semua</Link>
+                <Link to='/admin/perlengkapan/kavling' className='hover:text-accent transition-colors duration-300'>Kavling</Link>
+                <Link to='/admin/perlengkapan/paket' className='hover:text-accent transition-colors duration-300'>Paket</Link>
+                <Link to='/admin/perlengkapan/item' className='hover:text-accent transition-colors duration-300'>Item</Link>
               </div>
             )}
           </div>

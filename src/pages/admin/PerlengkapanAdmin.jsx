@@ -1,23 +1,27 @@
 import React from 'react'
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
-import OffReservationActionList from './OffReservationActionList'
+import PerlengkapanList from './PerlengkapanList'
 
-const ReservasiOffline = () => {
-  const reservations = [
+const PerlengkapanAdmin = () => {
+  const perlengkapan = [
     {
-        id: 1,
-        kode: 'RES123',
-        nama: 'John Doe',
-        tglMasuk: '2024-09-15',
-        tglKeluar: '2024-09-16',
-        ktpImage: '/path-to-ktp-image.jpg',
-        buktiImage: '/path-to-bukti-image.jpg',
-        totalPrice: 'Rp 500.000',
-        jenisPembayaran: 'Cash',
-        kavling: 'B5',
-        status: 'Berlangsung'
-      },
+      id: 1,
+      kode: 'BRG001',
+      nama: 'Tenda Camping',
+      harga: 'Rp 250.000',
+      stok: 10,
+      jenis: 'Paket',
+    },
+    {
+      id: 2,
+      kode: 'BRG002',
+      nama: 'Lampu Senter',
+      harga: 'Rp 50.000',
+      stok: 50,
+      jenis: 'Tipe',
+    },
+    // Add more items as needed
   ];
 
   return (
@@ -31,26 +35,24 @@ const ReservasiOffline = () => {
 
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
-                <span className='font-semibold'>Reservasi Offline</span>
+                <span className='font-semibold'>Semua Perlengkapan</span>
                 <button className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
-                    Tambah Reservasi
+                    Tambah Perlengkapan
                 </button>
               </div>
               <div className='w-full bg-secondary h-[1px] mt-2'/>
               <div className='flex flex-col px-2 text-xs gap-1'>
                 <div className='flex flex-row font-semibold'>
                   <span className='w-12 max-w-12'>No</span>
-                  <span className='w-28 max-w-28'>Kode Reservasi</span>
+                  <span className='w-28 max-w-28'>Kode Barang</span>
                   <span className='w-44 max-w-44'>Nama</span>
-                  <span className='w-28 max-w-28'>Tgl Masuk</span>
-                  <span className='w-28 max-w-28'>Tgl Keluar</span>
-                  <span className='w-14 max-w-14 text-center'>Kavling</span>
-                  <span className='w-32 max-w-32 text-center'>Jenis Pembayaran</span>
-                  <span className='w-32 max-w-32 text-center'>Status</span>
+                  <span className='w-28 max-w-28'>Harga</span>
+                  <span className='w-28 max-w-28'>Stok</span>
+                  <span className='w-28 max-w-28 text-center'>Jenis</span>
                   <span className='w-28 max-w-28 text-center'>Aksi</span>
                 </div>
                 <div>
-                  <OffReservationActionList reservations={reservations} />
+                  <PerlengkapanList perlengkapan={perlengkapan} />
                 </div>
               </div>
             </div>
@@ -61,4 +63,4 @@ const ReservasiOffline = () => {
   )
 }
 
-export default ReservasiOffline
+export default PerlengkapanAdmin

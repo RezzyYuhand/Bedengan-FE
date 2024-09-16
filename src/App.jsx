@@ -14,7 +14,8 @@ import {
   Dashboard,
   ReservasiSemua,
   ReservasiOnline,
-  ReservasiOffline
+  ReservasiOffline,
+  PerlengkapanAdmin
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
 
@@ -58,6 +59,7 @@ function App() {
         <Route path="/admin/reservasi" element={<ReservasiSemua />} />
         <Route path="/admin/reservasi/online" element={<ReservasiOnline />} />
         <Route path="/admin/reservasi/offline" element={<ReservasiOffline />} />
+        <Route path="/admin/perlengkapan" element={<PerlengkapanAdmin />} />
         
         <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>

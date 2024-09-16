@@ -13,6 +13,7 @@ import Dashboard from "./admin/Dashboard";
 import ReservasiSemua from "./admin/ReservasiSemua";
 import ReservasiOnline from "./admin/ReservasiOnline";
 import ReservasiOffline from "./admin/ReservasiOffline";
+import PerlengkapanAdmin from "./admin/PerlengkapanAdmin";
 import SidePanel from "./admin/SidePanel";
 
 export { 
@@ -31,5 +32,6 @@ export {
     ReservasiSemua,
     ReservasiOnline,
     ReservasiOffline,
+    PerlengkapanAdmin,
     SidePanel,
 }
