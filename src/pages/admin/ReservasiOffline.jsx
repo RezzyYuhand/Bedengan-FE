@@ -1,7 +1,7 @@
 import React from 'react'
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
-import ReservasionActionList from './ReservasionActionList'
+import OffReservationActionList from './OffReservationActionList'
 
 const ReservasiOffline = () => {
   const reservations = [
@@ -42,14 +42,13 @@ const ReservasiOffline = () => {
                   <span className='w-44 max-w-44'>Nama</span>
                   <span className='w-28 max-w-28'>Tgl Masuk</span>
                   <span className='w-28 max-w-28'>Tgl Keluar</span>
-                  <span className='w-10 max-w-10 text-center'>KTP</span>
-                  <span className='w-28 max-w-28 text-center'>Total</span>
-                  <span className='w-10 max-w-10 text-center'>Bukti</span>
+                  <span className='w-14 max-w-14 text-center'>Kavling</span>
+                  <span className='w-32 max-w-32 text-center'>Jenis Reservasi</span>
                   <span className='w-32 max-w-32 text-center'>Status</span>
                   <span className='w-28 max-w-28 text-center'>Aksi</span>
                 </div>
                 <div>
-                  <ReservasionActionList reservations={reservations} />
+                  <OffReservationActionList reservations={reservations} />
                 </div>
               </div>
             </div>

@@ -8,6 +8,7 @@ import PesananCard from './PesananCard';
 import ItemCard from './ItemCard';
 import KavlingItem from './KavlingItem'
 import DetailModal from './DetailModal';
+import ConfirmationModal from './ConfirmationModal';
 
 export { 
     ScrollToTop,
@@ -19,5 +20,6 @@ export {
     PesananCard,
     ItemCard,
     KavlingItem,
-    DetailModal
+    DetailModal,
+    ConfirmationModal
  };
