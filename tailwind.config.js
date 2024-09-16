@@ -14,6 +14,7 @@ export default {
         'accent': '#2EB143',
         'accent-2': '#DCF2DF',
         'accent-3': '#D5E9FE',
+        'accent-4': '#0F3B16',
         'accent-error': '#FADADA',
         'accent-wait': '#FFF3E6',
         'secondary-gray': '#636363',

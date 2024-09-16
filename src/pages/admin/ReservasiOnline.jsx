@@ -9,10 +9,29 @@ const ReservasiOnline = () => {
         id: 1,
         kode: 'RES123',
         nama: 'John Doe',
+        jenisPengunjung: 'Individu',
+        telepon: '081234567890',
+        jumlah: 2,
         tglMasuk: '2024-09-15',
         tglKeluar: '2024-09-16',
-        ktpImage: '/path-to-ktp-image.jpg',
-        buktiImage: '/path-to-bukti-image.jpg',
+        ktpImage: '/images/background.JPG',
+        buktiImage: '/images/background.JPG',
+        totalPrice: 'Rp 500.000',
+        status: 'Menunggu'
+      },
+
+      {
+        id: 2,
+        kode: 'ABC345',
+        nama: 'wasd wasd',
+        jenisPengunjung: 'Kelompok',
+        telepon: '08888888888',
+        jumlah: 4,
+        tglMasuk: '2024-09-15',
+        tglKeluar: '2024-09-16',
+        ktpImage: '/images/background.JPG',
+        buktiImage: '/images/background.JPG',
+
         totalPrice: 'Rp 500.000',
         status: 'Menunggu'
       },

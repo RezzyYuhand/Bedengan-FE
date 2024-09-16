@@ -21,7 +21,7 @@ const SidePanel = () => {
             <IoHomeOutline />
             <span>Beranda</span>
           </Link>
-          <div className={`flex flex-col p-3 ${isReservasiOpen ? 'bg-hover-green text-primary rounded-lg' : 'text-hover-green'}`}>
+          <div className={`flex flex-col p-3 ${isReservasiOpen ? 'bg-accent-4 text-primary rounded-lg' : 'text-hover-green'}`}>
             <div 
               className='cursor-pointer flex justify-between items-center hover:text-accent' 
               onClick={toggleReservasi}
@@ -41,7 +41,7 @@ const SidePanel = () => {
               </div>
             )}
           </div>
-          <div className={`flex flex-col p-3 ${isPerlengkapanOpen ? 'bg-hover-green text-primary rounded-lg' : 'text-hover-green'}`}>
+          <div className={`flex flex-col p-3 ${isPerlengkapanOpen ? 'bg-accent-4 text-primary rounded-lg' : 'text-hover-green'}`}>
             <div 
               className='cursor-pointer flex justify-between items-center hover:text-accent' 
               onClick={togglePerlengkapan}
@@ -57,7 +57,8 @@ const SidePanel = () => {
                 <div className='w-full bg-primary h-[1px] mt-2'/>
                 <Link to='/admin/perlengkapan' className='hover:text-accent transition-colors duration-300'>Semua</Link>
                 <Link to='/admin/perlengkapan/kavling' className='hover:text-accent transition-colors duration-300'>Kavling</Link>
-                <Link to='/admin/perlengkapan/paket' className='hover:text-accent transition-colors duration-300'>Paket</Link>
+                <Link to='/admin/perlengkapan/tenda-paket' className='hover:text-accent transition-colors duration-300'>Tenda Paket</Link>
+                <Link to='/admin/perlengkapan/tenda-non-paket' className='hover:text-accent transition-colors duration-300'>Tenda Non Paket</Link>
                 <Link to='/admin/perlengkapan/item' className='hover:text-accent transition-colors duration-300'>Item</Link>
               </div>
             )}

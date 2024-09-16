@@ -110,7 +110,7 @@ const OffReservationActionList = ({ reservations }) => {
       {isDeleteModalOpen && (
         <ConfirmationModal
           title="Delete Reservation"
-          message={`Are you sure you want to delete reservation ${selectedReservation?.kode}?`}
+          message={`Apakah anda yakin untuk menghapus reservasi dengan kode ${selectedReservation?.kode}?`}
           onConfirm={() => handleDelete(selectedReservation.id)}
           onClose={closeModals}
         />

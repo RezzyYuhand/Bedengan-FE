@@ -14,7 +14,13 @@ import ReservasiSemua from "./admin/ReservasiSemua";
 import ReservasiOnline from "./admin/ReservasiOnline";
 import ReservasiOffline from "./admin/ReservasiOffline";
 import PerlengkapanAdmin from "./admin/PerlengkapanAdmin";
+import TendaPaket from "./admin/TendaPaket";
+import TendaNonPaket from "./admin/TendaNonPaket";
+import Item from "./admin/Item";
+import KavlingAdmin from "./admin/KavlingAdmin";
 import SidePanel from "./admin/SidePanel";
+import OnlineDetail from "./admin/OnlineDetail";
+import OnlineDetailKelompok from "./admin/OnlineDetailKelompok";
 
 export { 
     LandingPage,
@@ -33,5 +39,11 @@ export {
     ReservasiOnline,
     ReservasiOffline,
     PerlengkapanAdmin,
+    TendaPaket,
+    TendaNonPaket,
     SidePanel,
+    Item,
+    KavlingAdmin,
+    OnlineDetail,
+    OnlineDetailKelompok
 }
