@@ -24,7 +24,7 @@ const Masuk = () => {
             toast.error('email atau password tidak boleh kosong');
         } else {
             loginUser(email, password).then((response) => {
-                localStorage.setItem('token', JSON.stringify(response));
+                localStorage.setItem('token', response.data);
                 toast.success("login berhasil")
                 navigate('/');
             }).catch((error) => {

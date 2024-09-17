@@ -1,6 +1,6 @@
 import {apiClient} from "./apiClient.js";
 
-export const getUserById = async (token) => {
+export const getMyUserInfo = async (token) => {
     try {
         const response = await apiClient.get('/user', {
           headers: {
