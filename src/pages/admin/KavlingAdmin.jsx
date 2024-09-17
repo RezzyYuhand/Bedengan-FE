@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
 import KavlingList from './KavlingList'
@@ -10,6 +11,13 @@ const KavlingAdmin = () => {
     { id: 2, ground: 'Ground 2', nomorGround: '002', nomorKavling: 'K002', isAvailable: false },
     // Add more kavlings as needed
   ];
+
+  const navigate = useNavigate();
+
+  const handleAddKavling = () => {
+    // Logic to navigate to the add kavling form
+    navigate('/admin/perlengkapan/kavling/tambah');
+  }
   
 
   return (
@@ -24,7 +32,7 @@ const KavlingAdmin = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Kavling</span>
-                <button className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
+                <button onClick={handleAddKavling} className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
                     Tambah Kavling
                 </button>
               </div>

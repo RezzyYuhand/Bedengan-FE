@@ -50,7 +50,7 @@ const UpdatePerlengkapan = () => {
       <div className='flex flex-row gap-10 h-full'>
         <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
-          <HeaderBar title='Reservasi' searchTerm='' onSearchChange={() => {}} username='Admin' />
+          <HeaderBar title='Perlengkapan' searchTerm='' onSearchChange={() => {}} username='Admin' />
           
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-3'>

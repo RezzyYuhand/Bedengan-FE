@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const KavlingItem = ({ rows, onItemClick }) => {
+const KavlingItem = ({ rows, onItemClick, className = '' }) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleClick = (item) => {
@@ -9,7 +9,7 @@ const KavlingItem = ({ rows, onItemClick }) => {
   };
 
   return (
-    <div className='flex flex-col gap-3 items-center w-fit rounded-md border-[1.5px] px-10 py-7 border-inactive-gray-2'>
+    <div className={`flex flex-col gap-3 items-center w-fit ${className} rounded-md border-[1.5px] px-10 py-7 border-inactive-gray-2`}>
       {rows.map((row, rowIndex) => (
         <ol key={rowIndex} className='flex flex-row gap-4 text-secondary cursor-pointer'>
           {row.map((item, itemIndex) => (

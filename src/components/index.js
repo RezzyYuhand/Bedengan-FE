@@ -10,6 +10,10 @@ import KavlingItem from './KavlingItem'
 import DetailModal from './DetailModal';
 import ConfirmationModal from './ConfirmationModal';
 import PaymentRow from './PaymentRow';
+import KavlingLayout from './KavlingLayout';
+import GroundModal from './GroundModal';
+import NumberModal from './NumberModal';
+import KavlingModal from './KavlingModal';
 
 export { 
     ScrollToTop,
@@ -23,5 +27,9 @@ export {
     KavlingItem,
     DetailModal,
     ConfirmationModal,
-    PaymentRow
+    PaymentRow,
+    KavlingLayout,
+    GroundModal,
+    NumberModal,
+    KavlingModal
  };

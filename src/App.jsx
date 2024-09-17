@@ -24,7 +24,8 @@ import {
   OnlineDetailKelompok,
   AddReservasiOffline,
   AddPerlengkapan,
-  UpdatePerlengkapan
+  UpdatePerlengkapan,
+  AddKavling
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
 
@@ -81,9 +82,10 @@ function App() {
         <Route path="/admin/perlengkapan/update" element={<UpdatePerlengkapan />} />
 
         <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
+        <Route path="/admin/perlengkapan/kavling/tambah" element={<AddKavling />} />
 
         {/* test page */}
-        <Route path="/tes" element={<AddPerlengkapan />} />
+        <Route path="/tes" element={<AddKavling />} />
         <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>
     </div>

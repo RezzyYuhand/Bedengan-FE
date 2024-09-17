@@ -24,6 +24,7 @@ import OnlineDetailKelompok from "./admin/OnlineDetailKelompok";
 import AddReservasiOffline from "./admin/AddReservasiOffline";
 import AddPerlengkapan from "./admin/AddPerlengkapan";
 import UpdatePerlengkapan from "./admin/UpdatePerlengkapan";
+import AddKavling from "./admin/AddKavling";
 
 export { 
     LandingPage,
@@ -51,5 +52,6 @@ export {
     OnlineDetailKelompok,
     AddReservasiOffline,
     AddPerlengkapan,
-    UpdatePerlengkapan
+    UpdatePerlengkapan,
+    AddKavling,
 }
