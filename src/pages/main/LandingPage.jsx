@@ -5,9 +5,10 @@ import {MdOutlineMosque, MdOutlineShoppingBag} from "react-icons/md";
 import {IoMdMan, IoMdWoman} from "react-icons/io";
 import {LuClock4} from "react-icons/lu";
 import {HiOutlineLocationMarker} from "react-icons/hi";
+import {toast} from "react-toastify";
 
 const handleButtonClick = () => {
-    alert('Pemesanan dengan metode "Paket" belum tersedia untuk sekarang. Anda dapat melakukan reservasi dengan metode normal');
+    toast('Pemesanan dengan metode "Paket" belum tersedia. Silahkan reservasi dengan metode normal');
 };
 
 const handleNavigateToLink = (link) => {

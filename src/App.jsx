@@ -18,6 +18,7 @@ import {
   PerlengkapanAdmin
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
+import {ToastContainer} from "react-toastify";
 
 function App() {
   
@@ -63,6 +64,7 @@ function App() {
         
         <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>
+      <ToastContainer/>
     </div>
   )
 }
