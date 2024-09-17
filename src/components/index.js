@@ -9,6 +9,7 @@ import ItemCard from './ItemCard';
 import KavlingItem from './KavlingItem'
 import DetailModal from './DetailModal';
 import ConfirmationModal from './ConfirmationModal';
+import PaymentRow from './PaymentRow';
 
 export { 
     ScrollToTop,
@@ -21,5 +22,6 @@ export {
     ItemCard,
     KavlingItem,
     DetailModal,
-    ConfirmationModal
+    ConfirmationModal,
+    PaymentRow
  };

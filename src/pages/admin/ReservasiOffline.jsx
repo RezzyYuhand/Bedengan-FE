@@ -1,9 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
 import OffReservationActionList from './OffReservationActionList'
 
 const ReservasiOffline = () => {
+  const navigate = useNavigate();
+
   const reservations = [
     {
         id: 1,
@@ -20,6 +23,10 @@ const ReservasiOffline = () => {
       },
   ];
 
+  const handleAddReservation = () => {
+    navigate('/admin/reservasi/offline/tambah');
+  };
+
   return (
     <div className='w-screen h-screen p-10'>
       <div className='flex flex-row gap-10 h-full'>
@@ -32,7 +39,10 @@ const ReservasiOffline = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Reservasi Offline</span>
-                <button className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
+                <button 
+                  onClick={handleAddReservation}
+                  className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'
+                >
                     Tambah Reservasi
                 </button>
               </div>

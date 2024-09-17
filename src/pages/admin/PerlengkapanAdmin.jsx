@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
 import PerlengkapanList from './PerlengkapanList'
@@ -7,22 +8,28 @@ const PerlengkapanAdmin = () => {
   const perlengkapan = [
     {
       id: 1,
-      kode: 'BRG001',
+      kodeItem: 'BRG001',
       nama: 'Tenda Camping',
-      harga: 'Rp 250.000',
+      harga: '250000',
       stok: 10,
       jenis: 'Paket',
     },
     {
       id: 2,
-      kode: 'BRG002',
+      kodeItem: 'BRG002',
       nama: 'Lampu Senter',
-      harga: 'Rp 50.000',
+      harga: '50000',
       stok: 50,
       jenis: 'Tipe',
     },
     // Add more items as needed
   ];
+
+  const navigate = useNavigate();
+
+  const handleAddItem = () => {
+    navigate('/admin/perlengkapan/tambah');
+  };
 
   return (
     <div className='w-screen h-screen p-10'>
@@ -36,7 +43,7 @@ const PerlengkapanAdmin = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Semua Perlengkapan</span>
-                <button className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
+                <button onClick={handleAddItem} className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
                     Tambah Perlengkapan
                 </button>
               </div>

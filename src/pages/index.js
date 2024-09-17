@@ -21,6 +21,9 @@ import KavlingAdmin from "./admin/KavlingAdmin";
 import SidePanel from "./admin/SidePanel";
 import OnlineDetail from "./admin/OnlineDetail";
 import OnlineDetailKelompok from "./admin/OnlineDetailKelompok";
+import AddReservasiOffline from "./admin/AddReservasiOffline";
+import AddPerlengkapan from "./admin/AddPerlengkapan";
+import UpdatePerlengkapan from "./admin/UpdatePerlengkapan";
 
 export { 
     LandingPage,
@@ -45,5 +48,8 @@ export {
     Item,
     KavlingAdmin,
     OnlineDetail,
-    OnlineDetailKelompok
+    OnlineDetailKelompok,
+    AddReservasiOffline,
+    AddPerlengkapan,
+    UpdatePerlengkapan
 }

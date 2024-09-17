@@ -21,7 +21,10 @@ import {
   Item,
   KavlingAdmin,
   OnlineDetail,
-  OnlineDetailKelompok
+  OnlineDetailKelompok,
+  AddReservasiOffline,
+  AddPerlengkapan,
+  UpdatePerlengkapan
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
 
@@ -66,15 +69,21 @@ function App() {
         <Route path="/admin/reservasi/online" element={<ReservasiOnline />} />
         <Route path="/admin/reservasi/online/detail" element={<OnlineDetail />} />
         <Route path="/admin/reservasi/online/detail-kelompok" element={<OnlineDetailKelompok />} />
+
         <Route path="/admin/reservasi/offline" element={<ReservasiOffline />} />
+        <Route path="/admin/reservasi/offline/tambah" element={<AddReservasiOffline />} />
+
         <Route path="/admin/perlengkapan" element={<PerlengkapanAdmin />} />
-        <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
         <Route path="/admin/perlengkapan/tenda-paket" element={<TendaPaket />} />
         <Route path="/admin/perlengkapan/tenda-non-paket" element={<TendaNonPaket />} />
         <Route path="/admin/perlengkapan/item" element={<Item />} />
+        <Route path="/admin/perlengkapan/tambah" element={<AddPerlengkapan />} />
+        <Route path="/admin/perlengkapan/update" element={<UpdatePerlengkapan />} />
+
+        <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
 
         {/* test page */}
-        <Route path="/tes" element={<OnlineDetailKelompok />} />
+        <Route path="/tes" element={<AddPerlengkapan />} />
         <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>
     </div>

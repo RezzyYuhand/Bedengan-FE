@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { ConfirmationModal } from '../../components';
@@ -6,6 +7,7 @@ import { ConfirmationModal } from '../../components';
 const ItemPerlengkapanList = ({ items }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
 
   const openDeleteModal = (item) => {
     setSelectedItem(item);
@@ -17,9 +19,9 @@ const ItemPerlengkapanList = ({ items }) => {
     setIsModalOpen(false);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (item) => {
     // Logic to navigate to the edit form for the item
-    console.log(`Edit item with ID: ${id}`);
+    navigate('/admin/perlengkapan/update', { state: { item } });
   };
 
   const handleDelete = (id) => {
@@ -33,7 +35,7 @@ const ItemPerlengkapanList = ({ items }) => {
       {items.map((item, index) => (
         <div className='flex flex-row text-xs items-center' key={item.id}>
           <span className='w-12 max-w-12'>{index + 1}</span>
-          <span className='w-28 max-w-28'>{item.kodeReservasi}</span>
+          <span className='w-28 max-w-28'>{item.kodeItem}</span>
           <span className='w-64 max-w-64'>{item.nama}</span>
           <span className='w-28 max-w-28'>{item.harga}</span>
           <span className='w-28 max-w-28'>{item.stok}</span>
@@ -48,7 +50,7 @@ const ItemPerlengkapanList = ({ items }) => {
             </button>
             <button
               className='flex items-center justify-center w-6 h-6 bg-selesai text-white rounded'
-              onClick={() => handleEdit(item.id)}
+              onClick={() => handleEdit(item)}
             >
               <FaPen />
             </button>
@@ -66,7 +68,7 @@ const ItemPerlengkapanList = ({ items }) => {
       {isModalOpen && (
         <ConfirmationModal
           title="Delete Item"
-          message={`Are you sure you want to delete item ${selectedItem?.nama}?`}
+          message={`Apakah anda yakin untuk menghapus ${selectedItem?.nama}?`}
           onConfirm={() => handleDelete(selectedItem.id)}
           onClose={closeModal}
         />

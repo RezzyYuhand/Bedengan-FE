@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
 import ItemPerlengkapanList from './ItemPerlengkapanList'
@@ -6,10 +7,16 @@ import ItemPerlengkapanList from './ItemPerlengkapanList'
 const Item = () => {
   const items = [
     // Sample data
-    { id: 1, kodeReservasi: 'RSV001', nama: 'Matras', harga: '500,000', stok: 10 },
-    { id: 2, kodeReservasi: 'RSV002', nama: 'Kursi', harga: '300,000', stok: 5 },
+    { id: 1, kodeItem: 'RSV001', jenisBarang:'Item', nama: 'Matras', harga: '500000', stok: 10 },
+    { id: 2, kodeItem: 'RSV002', jenisBarang:'Item', nama: 'Kursi', harga: '300000', stok: 5 },
     // Add more items as needed
   ];
+
+  const navigate = useNavigate();
+
+  const handleAddItem = () => {
+    navigate('/admin/perlengkapan/tambah');
+  }
 
   return (
     <div className='w-screen h-screen p-10'>
@@ -23,8 +30,8 @@ const Item = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Item</span>
-                <button className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
-                    Tambah Reservasi
+                <button onClick={handleAddItem} className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
+                    Tambah Perlengkapan
                 </button>
               </div>
               <div className='w-full bg-secondary h-[1px] mt-2'/>
