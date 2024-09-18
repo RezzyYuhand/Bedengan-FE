@@ -5,7 +5,7 @@ const PrivateRoute = ({
     requireDaftar = false,
     requireAuth = false,
 }) => {
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem('token');
     const registrationData = JSON.parse(localStorage.getItem('registrationData'));
 
     if (requireAuth && !authToken) {
