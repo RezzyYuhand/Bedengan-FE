@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
-import { Button } from '../../components';
+import { Button, ConfirmationModal } from '../../components'; // Assuming ConfirmationModal is part of your components
 
 const UpdateKavling = () => {
     const { state } = useLocation();
@@ -10,6 +10,9 @@ const UpdateKavling = () => {
     const [price, setPrice] = useState(kavling?.harga || '');
     const [customKavlingNumber, setCustomKavlingNumber] = useState(kavling?.nomorKavling || '');
     const [isAvailable, setIsAvailable] = useState(kavling?.isAvailable || true);
+    
+    // Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -17,6 +20,15 @@ const UpdateKavling = () => {
         navigate('/admin/perlengkapan/kavling');
     };
   
+    const openModal = () => {
+        // Show the confirmation modal
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const handleSave = () => {
       if (price && customKavlingNumber.trim()) {
         // Save logic here, send updated data to the backend or update state
@@ -26,6 +38,8 @@ const UpdateKavling = () => {
           nomorKavling: customKavlingNumber,
           status: isAvailable ? 'Available' : 'Unavailable',
         });
+        closeModal(); // Close the modal after saving
+        navigate('/admin/perlengkapan/kavling'); // Navigate back after saving
       } else {
         alert('Harga kavling dan nomor kavling tidak boleh kosong.');
       }
@@ -98,13 +112,23 @@ const UpdateKavling = () => {
                   </div>
                   <div className='flex justify-end gap-3 mt-4'>
                     <Button onClick={handleCancel} className='border-[1.5px] border-red-600 bg-primary text-red-600 hover:bg-red-600 hover:text-primary'>Batal</Button>
-                    <Button onClick={handleSave} className='bg-accent text-primary hover:bg-hover-green'>Simpan Perubahan</Button>
+                    <Button onClick={openModal} className='bg-accent text-primary hover:bg-hover-green'>Simpan Perubahan</Button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Confirmation Modal */}
+        {isModalOpen && (
+          <ConfirmationModal
+            message="Apakah anda yakin ingin menyimpan perubahan ini?"
+            onConfirm={handleSave} // Execute save logic when user confirms
+            onClose={closeModal}
+            type='simpan'
+          />
+        )}
       </div>
     );
   };

@@ -78,7 +78,18 @@ const ReservasionActionList = ({ reservations }) => {
           </span>
 
           {/* Status */}
-          <span className='w-32 max-w-32 text-center'>
+          <span className='flex flex-row items-center justify-center gap-4 w-32 max-w-32'>
+            <div
+              className={`w-2 h-2 rounded-full ${
+                reservation.status === 'Ditolak'
+                  ? 'bg-ditolak'
+                  : reservation.status === 'Berlangsung'
+                  ? 'bg-berlangsung'
+                  : reservation.status === 'Selesai'
+                  ? 'bg-selesai'
+                  : 'bg-menunggu'
+              }`}
+            />
             {reservation.status}
           </span>
 

@@ -54,7 +54,7 @@ const Masuk = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
-                                required
+                                
                             />
                         </div>
                         <div className='flex flex-col gap-1'>
@@ -65,7 +65,7 @@ const Masuk = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray sm:text-sm"
-                                required
+                                
                             />
                         </div>
                         <Button type='submit' className='w-full'>Masuk</Button>

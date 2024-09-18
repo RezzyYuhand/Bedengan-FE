@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Button } from '../../components';
 
 const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
@@ -13,10 +13,10 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
         <select
           name="visitorType"
           onChange={handleChange}
-          value={formData.visitorType || ''}
+          value={formData.visitorType}
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
-          <option>Pilih</option>
+          <option value="">Pilih</option>
           <option value="Individu">Individu</option>
           <option value="Kelompok">Kelompok</option>
         </select>
@@ -24,25 +24,25 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
 
       <div className='flex flex-row gap-5'>
         <div className='flex flex-col gap-2 w-full'>
-            <label className="font-semibold">Nama</label>
-            <input
+          <label className="font-semibold">Nama</label>
+          <input
             type="text"
             name="name"
             onChange={handleChange}
-            value={formData.name || ''}
+            value={formData.name}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-            />
+          />
         </div>
 
         <div className='flex flex-col gap-2 w-full'>
-            <label className="font-semibold">Nomor Telepon</label>
-            <input
+          <label className="font-semibold">Nomor Telepon</label>
+          <input
             type="tel"
             name="phoneNumber"
             onChange={handleChange}
-            value={formData.phoneNumber || ''}
+            value={formData.phoneNumber}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-            />
+          />
         </div>
       </div>
 
@@ -51,10 +51,10 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
         <select
           name="tentType"
           onChange={handleChange}
-          value={formData.tentType || ''}
+          value={formData.tentType}
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
-          <option>Pilih</option>
+          <option value="">Pilih</option>
           <option value="Dome - 2 Orang">Dome - 2 Orang</option>
           <option value="Dome - 4 Orang">Dome - 4 Orang</option>
           <option value="Dome - 8 Orang">Dome - 8 Orang</option>
@@ -67,7 +67,7 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
           type="number"
           name="quantity"
           onChange={handleChange}
-          value={formData.quantity || ''}
+          value={formData.quantity}
           className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         />
       </div>
@@ -77,10 +77,10 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
         <select
           name="kavling"
           onChange={handleChange}
-          value={formData.kavling || ''}
+          value={formData.kavling}
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
-          <option>Pilih</option>
+          <option value="">Pilih</option>
           <option value="Kavling A1">Kavling A1</option>
           <option value="Kavling A2">Kavling A2</option>
         </select>
@@ -93,7 +93,7 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
             type="date"
             name="arrivalDate"
             onChange={handleChange}
-            value={formData.arrivalDate || ''}
+            value={formData.arrivalDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>
@@ -103,7 +103,7 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
             type="date"
             name="departureDate"
             onChange={handleChange}
-            value={formData.departureDate || ''}
+            value={formData.departureDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>
@@ -114,7 +114,7 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
         <Button onClick={goToNextStep}>Selanjutnya</Button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default OfflineFormStep
+export default OfflineFormStep;

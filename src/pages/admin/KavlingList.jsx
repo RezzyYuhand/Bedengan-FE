@@ -81,6 +81,7 @@ const KavlingList = ({ kavlings, onEdit }) => {
           message={`Apakah anda yakin untuk menghapus item ${selectedKavling?.nomorKavling}?`}
           onConfirm={() => handleDelete(selectedKavling.id)}
           onClose={closeModal}
+          type='hapus'
         />
       )}
     </div>

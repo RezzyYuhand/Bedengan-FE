@@ -26,7 +26,8 @@ import {
   AddPerlengkapan,
   UpdatePerlengkapan,
   AddKavling,
-  UpdateKavling
+  UpdateKavling,
+  UpdateOfflineReservation
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
 import {ToastContainer} from "react-toastify";
@@ -63,6 +64,8 @@ function App() {
 
         <Route path="/admin/reservasi/offline" element={<ReservasiOffline />} />
         <Route path="/admin/reservasi/offline/tambah" element={<AddReservasiOffline />} />
+        <Route path="/admin/reservasi/offline/update" element={<UpdateOfflineReservation />} />
+
 
         <Route path="/admin/perlengkapan" element={<PerlengkapanAdmin />} />
         <Route path="/admin/perlengkapan/tenda-paket" element={<TendaPaket />} />

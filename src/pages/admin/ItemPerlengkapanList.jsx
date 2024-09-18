@@ -65,6 +65,7 @@ const ItemPerlengkapanList = ({ items }) => {
           message={`Apakah anda yakin untuk menghapus ${selectedItem?.nama}?`}
           onConfirm={() => handleDelete(selectedItem.id)}
           onClose={closeModal}
+          type='hapus'
         />
       )}
     </div>

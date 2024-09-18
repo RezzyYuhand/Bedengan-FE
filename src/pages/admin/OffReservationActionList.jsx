@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { FaPen, FaTrash } from "react-icons/fa6";
+import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { FaPen, FaTrash } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 import { ConfirmationModal } from '../../components';
 
 const OffReservationActionList = ({ reservations }) => {
@@ -8,14 +9,11 @@ const OffReservationActionList = ({ reservations }) => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
+  const navigate = useNavigate();
+
   const openDeleteModal = (reservation) => {
     setSelectedReservation(reservation);
     setIsDeleteModalOpen(true);
-  };
-
-  const openDetailModal = (reservation) => {
-    setSelectedReservation(reservation);
-    setIsDetailModalOpen(true);
   };
 
   const closeModals = () => {
@@ -24,13 +22,12 @@ const OffReservationActionList = ({ reservations }) => {
     setIsDetailModalOpen(false);
   };
 
-  const handleEdit = (id) => {
-    // Logic to navigate to the edit form for the reservation
-    console.log(`Edit reservation with ID: ${id}`);
+  const handleEdit = (reservation) => {
+    // Navigate to the update page with reservation data
+    navigate('/admin/reservasi/offline/update', { state: { reservation } });
   };
 
   const handleDelete = (id) => {
-    // Logic to delete reservation
     console.log(`Delete reservation with ID: ${id}`);
   };
 
@@ -43,46 +40,28 @@ const OffReservationActionList = ({ reservations }) => {
           <span className='w-44 max-w-44'>{reservation.nama}</span>
           <span className='w-28 max-w-28'>{reservation.tglMasuk}</span>
           <span className='w-28 max-w-28'>{reservation.tglKeluar}</span>
-
-          {/* Kavling */}
-          <span className='w-14 max-w-14 text-center'>
-            {reservation.kavling}
-          </span>
-
-          {/* Jenis Reservasi */}
+          <span className='w-14 max-w-14 text-center'>{reservation.kavling}</span>
           <span className='flex items-center justify-center w-32 max-w-32'>
             <span className={`w-fit px-2 py-1 rounded-full ${reservation.jenisPembayaran === 'Cash' ? 'bg-selesai' : 'bg-berlangsung'}`}>
               {reservation.jenisPembayaran}
             </span>
           </span>
-
-          {/* Status */}
           <span className='flex flex-row items-center justify-center gap-4 w-32 max-w-32'>
-            <div
-              className={`w-2 h-2 rounded-full ${
-                reservation.status === 'Ditolak'
-                  ? 'bg-ditolak'
-                  : reservation.status === 'Berlangsung'
-                  ? 'bg-berlangsung'
-                  : reservation.status === 'Selesai'
-                  ? 'bg-selesai'
-                  : 'bg-menunggu'
-              }`}
-            />
+            <div className={`w-2 h-2 rounded-full ${
+              reservation.status === 'Ditolak'
+                ? 'bg-ditolak'
+                : reservation.status === 'Berlangsung'
+                ? 'bg-berlangsung'
+                : reservation.status === 'Selesai'
+                ? 'bg-selesai'
+                : 'bg-menunggu'
+            }`} />
             {reservation.status}
           </span>
-
-          {/* Action Buttons */}
           <span className='w-28 max-w-28 text-center flex items-center justify-center gap-1'>
             <button
-              className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => console.log(`Preview total pembayaran for reservation with ID: ${reservation.id}`)}
-            >
-              <MdOutlineRemoveRedEye />
-            </button>
-            <button
               className='flex items-center justify-center w-6 h-6 bg-selesai text-white rounded'
-              onClick={() => handleEdit(reservation.id)}
+              onClick={() => handleEdit(reservation)}
             >
               <FaPen />
             </button>
@@ -96,27 +75,17 @@ const OffReservationActionList = ({ reservations }) => {
         </div>
       ))}
 
-      {/* Detail Modal */}
-      {isDetailModalOpen && (
-        <DetailModal
-          isOpen={isDetailModalOpen}
-          imageUrl={selectedReservation?.buktiImage}
-          title={`Total Pembayaran: ${selectedReservation?.totalPrice}`}
-          onClose={closeModals}
-        />
-      )}
-
-      {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <ConfirmationModal
           title="Delete Reservation"
           message={`Apakah anda yakin untuk menghapus reservasi dengan kode ${selectedReservation?.kode}?`}
           onConfirm={() => handleDelete(selectedReservation.id)}
           onClose={closeModals}
+          type='hapus'
         />
       )}
     </div>
-  )
-}
+  );
+};
 
 export default OffReservationActionList;
