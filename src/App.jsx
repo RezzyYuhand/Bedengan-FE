@@ -25,7 +25,8 @@ import {
   AddReservasiOffline,
   AddPerlengkapan,
   UpdatePerlengkapan,
-  AddKavling
+  AddKavling,
+  UpdateKavling
 } from './pages'
 import { ScrollToTop, PrivateRoute } from './components'
 
@@ -40,29 +41,17 @@ function App() {
         
         <Route path="/masuk" element={<Masuk />} />
         <Route path="/daftar" element={<Daftar />} />
-        <Route path="/daftar-data-diri" element={
-          <PrivateRoute requireDaftar={true}>
-            <DaftarDataDiri />
-          </PrivateRoute>
-          } 
-        />
+        <Route element={<PrivateRoute requireDaftar={true} />}>
+          <Route path="/daftar-data-diri" element={<DaftarDataDiri />} />
+        </Route>
         
-        <Route path="/reservasi" element={
-          <PrivateRoute requireAuth={true}>
-            <Reservasi/>
-          </PrivateRoute>
-          } 
-        />
-        <Route path="/kavling" element={<Kavling />} />
-        <Route path="/pembayaran" element={<Pembayaran />} />
-        <Route path="/invoice" element={<Invoice />} />
-        
-        <Route path="/profil" element={
-          <PrivateRoute requireAuth={true}>
-            <Profil/>
-          </PrivateRoute>
-          } 
-        />
+        <Route element={<PrivateRoute requireAuth={true} />}>
+          <Route path="/reservasi" element={<Reservasi />} />
+          <Route path="/kavling" element={<Kavling />} />
+          <Route path="/pembayaran" element={<Pembayaran />} />
+          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/profil" element={<Profil />} />
+        </Route>
 
         {/* Admin */}
         <Route path="/dashboard" element={<Dashboard />} />
@@ -83,9 +72,10 @@ function App() {
 
         <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
         <Route path="/admin/perlengkapan/kavling/tambah" element={<AddKavling />} />
+        <Route path="/admin/perlengkapan/kavling/ubah/:id" element={<UpdateKavling />} />
 
         {/* test page */}
-        <Route path="/tes" element={<AddKavling />} />
+        <Route path="/tes" element={<UpdateKavling />} />
         <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>
     </div>

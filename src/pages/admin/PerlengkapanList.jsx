@@ -47,12 +47,6 @@ const PerlengkapanList = ({ perlengkapan }) => {
           {/* Action Buttons */}
           <span className='w-28 max-w-28 text-center flex items-center justify-center gap-1'>
             <button
-              className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => console.log(`Preview details for item with ID: ${item.id}`)}
-            >
-              <MdOutlineRemoveRedEye />
-            </button>
-            <button
               className='flex items-center justify-center w-6 h-6 bg-selesai text-white rounded'
               onClick={() => handleEdit(item)}
             >

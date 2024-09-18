@@ -35,7 +35,7 @@ const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) 
             <span>Nomor Kavling</span>
             <input
               type="text"
-              placeholder="Nomor Kavling"
+              placeholder="Nomor Kavling: 1, 2, 3, ..."
               onChange={(e) => setCustomKavlingNumber(e.target.value)}
               className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
             />

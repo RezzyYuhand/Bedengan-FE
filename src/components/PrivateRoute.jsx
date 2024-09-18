@@ -1,11 +1,9 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 const PrivateRoute = ({ 
-    children,
     requireDaftar = false,
     requireAuth = false,
-
 }) => {
     const authToken = localStorage.getItem('authToken');
     const registrationData = JSON.parse(localStorage.getItem('registrationData'));
@@ -18,7 +16,7 @@ const PrivateRoute = ({
         return <Navigate to='/daftar' />
     }
 
-    return children;
+    return <Outlet />;
 }
 
 export default PrivateRoute

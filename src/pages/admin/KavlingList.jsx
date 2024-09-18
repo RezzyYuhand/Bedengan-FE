@@ -3,7 +3,7 @@ import { FaPen, FaTrash } from "react-icons/fa6";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { ConfirmationModal } from '../../components';
 
-const KavlingList = ({ kavlings }) => {
+const KavlingList = ({ kavlings, onEdit }) => {
   const [kavlingList, setKavlingList] = useState(kavlings);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKavling, setSelectedKavling] = useState(null);
@@ -18,28 +18,20 @@ const KavlingList = ({ kavlings }) => {
     setIsModalOpen(false);
   };
 
-  const handleEdit = (id) => {
-    // Logic to navigate to the edit form for the kavling
-    console.log(`Edit kavling with ID: ${id}`);
-  };
-
   const handleDelete = (id) => {
-    // Logic to delete the kavling
-    console.log(`Delete kavling with ID: ${id}`);
+    setKavlingList(kavlingList.filter(kavling => kavling.id !== id));
     closeModal();
   };
 
-  const toggleStatus = (id) => {
-    // Find the kavling by id and toggle its isAvailable status
-    const updatedKavlings = kavlingList.map(kavling =>
-      kavling.id === id
-        ? { ...kavling, isAvailable: !kavling.isAvailable } // Toggle isAvailable
-        : kavling
+  const toggleStatus = (kavlingId) => {
+    // Find the kavling directly by ID in the flat array
+    const updatedList = kavlingList.map(kavling => 
+      kavling.id === kavlingId ? { ...kavling, isAvailable: !kavling.isAvailable } : kavling
     );
-    console.log('Updated kavlingList:', updatedKavlings);
-    setKavlingList(updatedKavlings);
-  };
 
+    setKavlingList(updatedList); // Update the state with the new kavling list
+    console.log('Updated kavlingList:', updatedList); // Log the updated kavling list
+  };
 
   return (
     <div className='flex flex-col gap-1'>
@@ -51,7 +43,7 @@ const KavlingList = ({ kavlings }) => {
           <span className='w-28 max-w-28'>{kavling.nomorKavling}</span>
 
           {/* Toggle Switch for Status */}
-          <span className='w-24 max-w-24'>
+          <span className='w-28 max-w-28'>
             <label className='relative inline-flex items-center cursor-pointer'>
               <input 
                 type='checkbox' 
@@ -66,16 +58,10 @@ const KavlingList = ({ kavlings }) => {
           </span>
 
           {/* Action Buttons */}
-          <span className='w-28 max-w-28 text-center flex items-center justify-center gap-1'>
-            <button
-              className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => console.log(`Preview details for item with ID: ${item.id}`)}
-            >
-              <MdOutlineRemoveRedEye />
-            </button>
+          <span className='w-28 max-w-28 text-center flex items-center gap-1'>
             <button
               className='flex items-center justify-center w-6 h-6 bg-selesai text-white rounded'
-              onClick={() => handleEdit(kavling.id)}
+              onClick={() => onEdit(kavling)}
             >
               <FaPen />
             </button>

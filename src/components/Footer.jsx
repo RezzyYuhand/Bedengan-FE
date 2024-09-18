@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaInstagram, FaWhatsapp, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { PiPhoneFill } from "react-icons/pi";
@@ -7,6 +7,7 @@ import { BiSolidEnvelope } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
 
 const Footer = ({ className }) => {
+
   return (
     <div className={`flex flex-col items-center gap-5 lg:gap-2 px-10 md:px-28 lg:px-28 pt-9 pb-5 ${className}`}>
       <div className='flex flex-col justify-start gap-5 lg:gap-3'>
@@ -27,7 +28,7 @@ const Footer = ({ className }) => {
               <p className='text-secondary font-bold'>Contact</p>
               <div className='flex flex-row gap-2 items-center'>
                 <PiPhoneFill className='text-secondary text-xl'/>
-                <p>(406) 555-0120</p>
+                <p>+62 851-6119-1942</p>
               </div>
               <div className='flex flex-row gap-2 items-center'>
                 <BiSolidEnvelope className='text-secondary text-xl'/>
@@ -41,11 +42,9 @@ const Footer = ({ className }) => {
         </div>
         <div className='w-full'>
           <div className='flex flex-row gap-3 lg:gap-4'>
-            <FaInstagram className='text-secondary text-xl'/>
-            <FaWhatsapp className='text-secondary text-xl'/>
-            <AiOutlineYoutube className='text-secondary text-xl'/>
-            <FaLinkedinIn className='text-secondary text-xl'/>
-            <FaTwitter className='text-secondary text-xl'/>
+            <a href="https://www.instagram.com/buper_bedengan/">
+              <FaInstagram className='text-secondary text-xl'/>
+            </a>
           </div>
         </div>
       </div>

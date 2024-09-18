@@ -58,6 +58,7 @@ const DaftarDataDiri = () => {
         alert('Registrasi Berhasil')
     } catch {
         console.log("Error")
+        alert('Registrasi Gagal')
     }
   };
 
