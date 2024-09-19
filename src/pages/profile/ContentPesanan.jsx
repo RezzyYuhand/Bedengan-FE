@@ -6,7 +6,7 @@ const ContentPesanan = () => {
     { kodePesanan: '1234', nomorKavling: 'A-13', tanggalKedatangan: '10 Agustus 2024', status: 'BERHASIL' },
     { kodePesanan: '1235', nomorKavling: 'A-15', tanggalKedatangan: '11 Agustus 2024', status: 'MENUNGGU PEMBAYARAN' },
   ]
-  
+
   return (
     <div className='flex flex-col gap-5 w-full items-center lg:items-start'>
         <h2 className='font-semibold'>Pesanan</h2>
