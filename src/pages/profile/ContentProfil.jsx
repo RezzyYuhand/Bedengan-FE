@@ -52,8 +52,13 @@ const ContentProfil = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const updatedData = {
+      name: userInfo.name,
+      phone: userInfo.phone
+    };
+
     try {
-      await updateUser(userInfo, token);
+      await updateUser(updatedData, token); // Only send `name` and `phone`
       alert('Profil berhasil diperbarui');
     } catch (err) {
       console.error('Error updating profile:', err.response ? err.response.data : err);
@@ -103,7 +108,7 @@ const ContentProfil = () => {
               onChange={handleChange}
               placeholder='Email aktif'
               className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 text-sm"
-              required
+              readOnly
             />
           </div>
           <div className='flex flex-col gap-3'>

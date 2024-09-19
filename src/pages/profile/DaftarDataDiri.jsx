@@ -52,8 +52,8 @@ const DaftarDataDiri = () => {
     dataToSend.append('phone', formData.phoneNumber);
     dataToSend.append('file_ktp', formData.ktpPhoto);
     try {
-        console.log(dataToSend)
         await registerUser(dataToSend)
+        localStorage.removeItem('registrationData');
         navigate('/masuk')
         alert('Registrasi Berhasil')
     } catch {
