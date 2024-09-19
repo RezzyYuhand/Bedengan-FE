@@ -88,6 +88,10 @@ const Navbar = () => {
                 </div>
                 <div
                     className={`flex-col w-72 lg:w-fit lg:flex lg:flex-row lg:items-center lg:static absolute top-[3.8rem] right-0 bg-secondary lg:bg-transparent transition-all duration-500 ease-in-out ${isMenuOpen ? 'flex h-screen z-40' : 'hidden'} lg:flex`}>
+                    <div className="lg:hidden px-8 py-5">
+                        <NavbarUserInfo />
+                    </div>
+                    <div className='lg:hidden block h-[1px] w-full bg-primary rounded-full opacity-65'/>
                     <div className='flex flex-col gap-4 px-8 py-5 lg:flex-row lg:justify-evenly lg:gap-24'>
                         <Link className='lg:font-semibold transition-colors hover:text-accent duration-300'
                               to="/">Beranda</Link>
@@ -96,28 +100,40 @@ const Navbar = () => {
                         <Link className='lg:font-semibold transition-colors hover:text-accent duration-300'
                               to="/syarat-dan-ketentuan">Syarat & Ketentuan</Link>
                         <div className='flex flex-row gap-4 lg:hidden'>
-                            <Link
-                                className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'
-                                to='/masuk'>Masuk</Link>
-                            <Link
-                                className='px-5 py-1 text-sm text-accent font-semibold rounded-md border-[1.5px] border-accent transition-colors hover:bg-accent hover:text-primary duration-300'
-                                to='/daftar'>Daftar</Link>
+                            {localStorage.getItem('token') == null ? (
+                                <>
+                                    <Link
+                                        className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'
+                                        to='/masuk'>Masuk</Link>
+                                    <Link
+                                        className='px-5 py-1 text-sm text-accent font-semibold rounded-md border-[1.5px] border-accent transition-colors hover:bg-accent hover:text-primary duration-300'
+                                        to='/daftar'>Daftar</Link>
+                                </>
+                            ) : null }
                         </div>
                     </div>
                 </div>
-                {(localStorage.getItem('token') ==null)
-                    ? (<Link
-                        className='hidden lg:lg:block px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'
+                <div className='hidden lg:block'>
+                {/* Only display on large screens */}
+                    {localStorage.getItem('token') == null ? (
+                        <Link
+                        className='px-5 py-1 text-sm font-semibold bg-accent rounded-md transition-colors hover:bg-hover-green duration-300'
                         to='/masuk'
-                    >Masuk</Link>)
-                    : (<NavbarUserInfo/>)}
+                        >
+                        Masuk
+                        </Link>
+                    ) : (
+                        <NavbarUserInfo />
+                    )}
+                </div>
             </div>
         </div>
     )
 }
 
 const NavbarUserInfo = () => {
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({});
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     useEffect(() => {
         if (localStorage.getItem('token') != null) {
@@ -131,11 +147,57 @@ const NavbarUserInfo = () => {
         }
     }, [])
 
-    return <div className="flex items-center p-4 w-fit">
-        <div className="w-12 h-12 bg-gray-300 rounded-full"/>
-        <div className="ml-4 text-white">
-            <h2 className="text-xl font-semibold">{user.name}</h2>
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    return (
+      <div className="relative">
+      {/* Username and dropdown toggle */}
+        <div>
+            <Link className='hidden lg:flex text-base font-semibold' to={'/profil'}>{user.name}</Link>
         </div>
+        <div
+            onClick={toggleDropdown}
+            className="flex flex-row justify-between lg:hidden items-center cursor-pointer"
+        >
+            <span className="font-semibold text-base">{user.name}</span>
+            <svg
+            className={`w-4 h-4 ml-2 transition-transform ${
+                isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+            />
+            </svg>
+        </div>
+
+        {/* Dropdown menu */}
+        {isDropdownOpen && (
+          <div className="mt-1 w-full">
+            <ul className="flex flex-col gap-4 py-2 w-full">
+              <li className="flex items-center gap-2 cursor-pointer hover:text-accent transition-colors">
+                <Link to="/profil">Profil</Link>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-accent transition-colors">
+                <Link to="/profil/pesanan">Pesanan</Link>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-accent transition-colors">
+                <Link to="/profil/riwayat">Riwayat Pesanan</Link>
+              </li>
+            </ul>
+          </div>
+        )}
     </div>
+        
+    )
 }
 export default Navbar

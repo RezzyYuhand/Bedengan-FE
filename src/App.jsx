@@ -52,7 +52,7 @@ function App() {
           <Route path="/kavling" element={<Kavling />} />
           <Route path="/pembayaran" element={<Pembayaran />} />
           <Route path="/invoice" element={<Invoice />} />
-          <Route path="/profil" element={<Profil />} />
+          <Route path="/profil/*" element={<Profil />} />
         </Route>
 
         {/* Admin */}
