@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import { Button } from '../../components';
+import { updatePerlengkapanById } from '../../services/perlengkapanService';
+import imageCompression from 'browser-image-compression'; // Import for image compression
 
 const UpdatePerlengkapan = () => {
   const location = useLocation();
@@ -15,16 +17,21 @@ const UpdatePerlengkapan = () => {
     namaBarang: '',
     harga: '',
     stok: '',
+    image: null, // New field for image
   });
+
+  const [imagePreview, setImagePreview] = useState(null); // For showing image preview
 
   useEffect(() => {
     if (item) {
+      const deskripsi = JSON.parse(item.deskripsi || '{}'); // Parse deskripsi as JSON
       setFormData({
-        kodeBarang: item.kodeItem,
-        jenisBarang: item.jenisBarang,
+        kodeBarang: deskripsi.kode || '',
+        jenisBarang: deskripsi.jenis || '',
         namaBarang: item.nama,
         harga: item.harga,
         stok: item.stok,
+        image: null, // Reset image to null
       });
     }
   }, [item]);
@@ -33,12 +40,60 @@ const UpdatePerlengkapan = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Compress the image to 1MB
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
+      };
+      try {
+        const compressedImage = await imageCompression(file, options);
+        setFormData({ ...formData, image: compressedImage });
+
+        // Preview the image
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(compressedImage);
+      } catch (error) {
+        console.error('Error compressing image:', error);
+        alert('Terjadi kesalahan saat mengunggah gambar');
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Updated Form Data:', formData);
-    // Add logic to save updated data, e.g., sending to API
-    alert('Perlengkapan berhasil diupdate!');
-    navigate('/admin/perlengkapan');
+
+    const updatedData = new FormData(); // Use FormData to send the image and other fields
+    updatedData.append('nama', formData.namaBarang);
+    updatedData.append(
+      'deskripsi',
+      JSON.stringify({
+        jenis: formData.jenisBarang,
+        kode: formData.kodeBarang,
+      })
+    );
+    updatedData.append('harga', parseInt(formData.harga, 10));
+    updatedData.append('stok', parseInt(formData.stok, 10));
+
+    if (formData.image) {
+      updatedData.append('image', formData.image); // Append the image file if it's updated
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      await updatePerlengkapanById(token, item.id, updatedData);
+      alert('Perlengkapan berhasil diupdate!');
+      navigate('/admin/perlengkapan');
+    } catch (error) {
+      console.error('Error updating perlengkapan:', error);
+      alert('Terjadi kesalahan saat mengupdate perlengkapan');
+    }
   };
 
   const handleCancel = () => {
@@ -51,14 +106,14 @@ const UpdatePerlengkapan = () => {
         <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
           <HeaderBar title='Perlengkapan' searchTerm='' onSearchChange={() => {}} username='Admin' />
-          
+
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Update Perlengkapan</span>
               </div>
-              <div className='w-full bg-secondary h-[1px] mt-2'/>
-              
+              <div className='w-full bg-secondary h-[1px] mt-2' />
+
               <form className='flex flex-col gap-4 text-xs' onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-2'>
                   <label className="font-semibold">Kode Barang</label>
@@ -68,7 +123,7 @@ const UpdatePerlengkapan = () => {
                     value={formData.kodeBarang}
                     onChange={handleChange}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                    required
+                    readOnly
                   />
                 </div>
 
@@ -123,6 +178,19 @@ const UpdatePerlengkapan = () => {
                       required
                     />
                   </div>
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                  <label className="font-semibold">Unggah Gambar</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                  />
+                  {imagePreview && (
+                    <img src={imagePreview} alt="Preview" className="mt-2 w-32 h-32 object-cover" />
+                  )}
                 </div>
 
                 <div className='flex flex-row gap-3 w-full justify-end'>

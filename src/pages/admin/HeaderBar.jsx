@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
-const HeaderBar = ({ title, searchTerm, onSearchChange, username }) => {
+const HeaderBar = ({ title, searchTerm, onSearchChange }) => {
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    // Fetch the username from localStorage (assuming user data is stored in localStorage as 'userData')
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    
+    if (userData && userData.name) {
+      setUsername(userData.name);
+    }
+  }, []); // Only run this effect once on mount
+
   return (
     <div className='flex flex-row w-full items-center justify-between'>
       <div className='flex flex-row gap-10'>
@@ -15,7 +26,7 @@ const HeaderBar = ({ title, searchTerm, onSearchChange, username }) => {
       </div>
       <span className='pr-10'>{username}</span>
     </div>
-  )
-}
+  );
+};
 
-export default HeaderBar
+export default HeaderBar;

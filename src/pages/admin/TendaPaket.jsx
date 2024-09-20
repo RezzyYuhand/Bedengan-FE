@@ -1,40 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SidePanel from './SidePanel'
-import HeaderBar from './HeaderBar'
-import ItemPerlengkapanList from './ItemPerlengkapanList'
+import SidePanel from './SidePanel';
+import HeaderBar from './HeaderBar';
+import ItemPerlengkapanList from './ItemPerlengkapanList';
+import { getAllPerlengkapan } from '../../services/perlengkapanService';
 
 const TendaPaket = () => {
-  const items = [
-    // Sample data
-    { id: 1, kodeItem: 'RSV001', jenisBarang:'Paket', nama: 'Paket Dome + Matras - 2 Orang', harga: '500000', stok: 10 },
-    { id: 2, kodeItem: 'RSV002', jenisBarang:'Paket', nama: 'Paket Dome + Matras - 2 Orang', harga: '300000', stok: 5 },
-    // Add more items as needed
-  ];
-
+  const [items, setItems] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await getAllPerlengkapan(token);
+        
+        // Filter the items where deskripsi.jenis is 'Paket'
+        const paketItems = response.data.filter(item => {
+          try {
+            const deskripsi = JSON.parse(item.deskripsi || '{}');
+            return deskripsi.jenis === 'Paket';
+          } catch (error) {
+            console.error('Error parsing deskripsi:', error);
+            return false;
+          }
+        });
+
+        setItems(paketItems);
+      } catch (error) {
+        console.error('Error fetching perlengkapan:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddItem = () => {
     navigate('/admin/perlengkapan/tambah');
-  }
+  };
 
   return (
     <div className='w-screen h-screen p-10'>
       <div className='flex flex-row gap-10 h-full'>
-        <SidePanel/>
+        <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
-          <HeaderBar title='Perlengkapan' searchTerm='' onSearchChange={() => {}} username='Admin'/>
+          <HeaderBar title='Perlengkapan' searchTerm='' onSearchChange={() => {}} username='Admin' />
           
           <div className='flex flex-col gap-10'>
-
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Tenda Paket</span>
                 <button onClick={handleAddItem} className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
-                    Tambah Perlengkapan
+                  Tambah Perlengkapan
                 </button>
               </div>
-              <div className='w-full bg-secondary h-[1px] mt-2'/>
+              <div className='w-full bg-secondary h-[1px] mt-2' />
               <div className='flex flex-col px-2 text-xs gap-1'>
                 <div className='flex flex-row font-semibold'>
                   <span className='w-12 max-w-12'>No</span>
@@ -45,7 +65,11 @@ const TendaPaket = () => {
                   <span className='w-28 max-w-28'>Aksi</span>
                 </div>
                 <div>
-                  <ItemPerlengkapanList items={items} />
+                  {items.length > 0 ? (
+                    <ItemPerlengkapanList items={items} />
+                  ) : (
+                    <p>Tidak ada data untuk jenis paket.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -53,7 +77,7 @@ const TendaPaket = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TendaPaket
+export default TendaPaket;
