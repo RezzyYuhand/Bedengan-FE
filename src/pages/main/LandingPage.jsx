@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, Card, Footer, Navbar} from '../../components/index'
 import {useInView} from 'react-intersection-observer';
 import {MdOutlineMosque, MdOutlineShoppingBag} from "react-icons/md";
@@ -6,6 +6,7 @@ import {IoMdMan, IoMdWoman} from "react-icons/io";
 import {LuClock4} from "react-icons/lu";
 import {HiOutlineLocationMarker} from "react-icons/hi";
 import {toast} from "react-toastify";
+import {getAllPerlengkapan} from "../../services/perlengkapanService.js";
 
 const handleButtonClick = () => {
     toast('Pemesanan dengan metode "Paket" belum tersedia. Silahkan reservasi dengan metode normal');
@@ -33,6 +34,15 @@ const LandingPage = () => {
     const {ref: sec5Ref, inView: sec5InView} = useInView({triggerOnce: true});
     const {ref: sec6Ref, inView: sec6InView} = useInView({triggerOnce: true});
     const {ref: sec7Ref, inView: sec7InView} = useInView({triggerOnce: true});
+
+    const [perlengkapans, setPerlengkapans] = useState([])
+
+    useEffect(() => {
+        getAllPerlengkapan(localStorage.getItem("token"))
+            .then((response) => {
+                console.log(response)
+            })
+    }, [])
 
     return (
         <div>
