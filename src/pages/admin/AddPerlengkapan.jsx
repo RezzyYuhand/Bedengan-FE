@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
+import imageCompression from 'browser-image-compression'; // Import image compression library
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
-import { Button } from '../../components'; // Assuming you have a Button component in your components folder
+import { Button } from '../../components';
+import { createPerlengkapan } from '../../services/perlengkapanService';
 
 const AddPerlengkapan = () => {
   const [formData, setFormData] = useState({
@@ -11,30 +14,76 @@ const AddPerlengkapan = () => {
     namaBarang: '',
     harga: '',
     stok: '',
+    image: null, // For handling image input
   });
 
+  const [compressedImage, setCompressedImage] = useState(null); // State to hold compressed image
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const generatedKodeBarang = `P${nanoid(3).toUpperCase()}`; // Generates something like 'PXYZ'
+    setFormData((prevData) => ({ ...prevData, kodeBarang: generatedKodeBarang }));
+  }, []);
+
+  const handleChange = async (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === 'image' && files.length > 0) {
+      const imageFile = files[0];
+      
+      // Compress the image
+      const options = {
+        maxSizeMB: 1, // Maximum file size of 1MB
+        useWebWorker: true,
+      };
+
+      try {
+        const compressedFile = await imageCompression(imageFile, options);
+        setCompressedImage(compressedFile); // Set compressed image file
+      } catch (error) {
+        console.error('Error compressing image:', error);
+        alert('Terjadi kesalahan saat mengompresi gambar.');
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    // Add logic to save form data, e.g., sending to API
-    alert('Perlengkapan berhasil ditambahkan!');
-    navigate('/admin/perlengkapan');
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('nama', formData.namaBarang);
+    formDataToSend.append('deskripsi', JSON.stringify({ jenis: formData.jenisBarang, kode: formData.kodeBarang }));
+    formDataToSend.append('harga', parseInt(formData.harga, 10));
+    formDataToSend.append('stok', parseInt(formData.stok, 10));
+
+    if (compressedImage) {
+      formDataToSend.append('image', compressedImage); // Append compressed image
+    }
+
+    const token = localStorage.getItem('token');
+
+    try {
+      await createPerlengkapan(token, formDataToSend);
+      alert('Perlengkapan berhasil ditambahkan!');
+      navigate('/admin/perlengkapan');
+    } catch (error) {
+      console.error('Error creating perlengkapan:', error);
+      alert('Terjadi kesalahan saat menambahkan perlengkapan');
+    }
   };
 
   const handleCancel = () => {
     setFormData({
-        kodeBarang: '',
-        jenisBarang: '',
-        namaBarang: '',
-        harga: '',
-        stok: '',
-      });
+      kodeBarang: `P${nanoid(3).toUpperCase()}`, // Reset kodeBarang on cancel
+      jenisBarang: '',
+      namaBarang: '',
+      harga: '',
+      stok: '',
+      image: null,
+    });
+    setCompressedImage(null); // Reset compressed image
     navigate('/admin/perlengkapan');
   };
 
@@ -44,15 +93,15 @@ const AddPerlengkapan = () => {
         <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
           <HeaderBar title='Perlengkapan' searchTerm='' onSearchChange={() => {}} username='Admin' />
-          
+
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
                 <span className='font-semibold'>Tambah Perlengkapan</span>
               </div>
-              <div className='w-full bg-secondary h-[1px] mt-2'/>
-              
-              <form className='flex flex-col gap-4 text-xs' onSubmit={handleSubmit}>
+              <div className='w-full bg-secondary h-[1px] mt-2' />
+
+              <form className='flex flex-col gap-4 text-xs' onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className='flex flex-col gap-2'>
                   <label className="font-semibold">Kode Barang</label>
                   <input
@@ -61,7 +110,7 @@ const AddPerlengkapan = () => {
                     value={formData.kodeBarang}
                     onChange={handleChange}
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                    required
+                    readOnly
                   />
                 </div>
 
@@ -93,29 +142,46 @@ const AddPerlengkapan = () => {
                 </div>
 
                 <div className='flex flex-row w-full gap-4'>
-                    <div className='flex flex-col gap-2 w-full'>
+                  <div className='flex flex-col gap-2 w-full'>
                     <label className="font-semibold">Harga</label>
                     <input
-                        type="number"
-                        name="harga"
-                        value={formData.harga}
-                        onChange={handleChange}
-                        className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                        required
+                      type="number"
+                      name="harga"
+                      value={formData.harga}
+                      onChange={handleChange}
+                      className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
+                      required
                     />
-                    </div>
+                  </div>
 
-                    <div className='flex flex-col gap-2 w-full'>
+                  <div className='flex flex-col gap-2 w-full'>
                     <label className="font-semibold">Stok</label>
                     <input
-                        type="number"
-                        name="stok"
-                        value={formData.stok}
-                        onChange={handleChange}
-                        className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                        required
+                      type="number"
+                      name="stok"
+                      value={formData.stok}
+                      onChange={handleChange}
+                      className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
+                      required
                     />
-                    </div>
+                  </div>
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                  <label className="font-semibold">Foto Barang</label>
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleChange}
+                    className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
+                    accept="image/*"
+                    required
+                  />
+                  {compressedImage && (
+                    <p className="text-xs text-green-500 mt-1">
+                      Gambar terkompresi berhasil dipilih ({(compressedImage.size / 1024).toFixed(2)} KB)
+                    </p>
+                  )}
                 </div>
 
                 <div className='flex flex-row gap-3 w-full justify-end'>

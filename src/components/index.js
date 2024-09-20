@@ -14,6 +14,7 @@ import KavlingLayout from './KavlingLayout';
 import GroundModal from './GroundModal';
 import NumberModal from './NumberModal';
 import KavlingModal from './KavlingModal';
+import AdminRoute from './AdminRoute';
 
 export { 
     ScrollToTop,
@@ -31,5 +32,6 @@ export {
     KavlingLayout,
     GroundModal,
     NumberModal,
-    KavlingModal
+    KavlingModal,
+    AdminRoute
  };

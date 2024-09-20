@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import {Navbar, Footer, Button} from '../../components/index'
-import {loginUser} from '../../services/userService'
+import {loginUser, getMyUserInfo } from '../../services/userService'
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,21 +17,41 @@ const Masuk = () => {
         }
     }, [error])
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (email === '' || password === '') {
-            toast.error('email atau password tidak boleh kosong');
-        } else {
-            loginUser(email, password).then((response) => {
-                localStorage.setItem('token', response.data);
-                toast.success("login berhasil")
-                navigate('/');
-            }).catch((error) => {
-                setError(error.message || 'Login Failed, please try again')
-            })
+            toast.error('Email atau password tidak boleh kosong');
+            return;
         }
-    }
+    
+        try {
+            const loginResponse = await loginUser(email, password);
+            const token = loginResponse?.data?.token || loginResponse.data;
+    
+            localStorage.setItem('token', token);
+    
+            const userResponse = await getMyUserInfo(token);
+            const userData = userResponse?.data?.data || userResponse?.data;
+    
+            localStorage.setItem('userData', JSON.stringify({
+                name: userData.name,
+                role: userData.role,
+            }));
+    
+            if (userData.role === 'admin') {
+                navigate('/dashboard');
+                toast.success("Login berhasil sebagai admin");
+            } else {
+                navigate('/');
+                toast.success("Login berhasil");
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Login gagal, silakan coba lagi';
+            setError(errorMessage);
+            toast.error(errorMessage);
+        }
+    };
 
     return (
         <div>

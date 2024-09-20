@@ -26,7 +26,7 @@ const ReservasiSemua = () => {
       status: 'Menunggu'
     },
     {
-      id: 2,
+      id: 3,
       kode: 'RSV-003',
       nama: 'Jane Smith',
       tglMasuk: '2024-09-13',
@@ -36,7 +36,7 @@ const ReservasiSemua = () => {
       status: 'Ditolak'
     },
     {
-      id: 2,
+      id: 4,
       kode: 'RSV-004',
       nama: 'Jane Smith',
       tglMasuk: '2024-09-13',

@@ -29,7 +29,7 @@ import {
   UpdateKavling,
   UpdateOfflineReservation
 } from './pages'
-import { ScrollToTop, PrivateRoute } from './components'
+import { ScrollToTop, PrivateRoute, AdminRoute } from './components'
 import {ToastContainer} from "react-toastify";
 
 function App() {
@@ -56,27 +56,29 @@ function App() {
         </Route>
 
         {/* Admin */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin/reservasi" element={<ReservasiSemua />} />
-        <Route path="/admin/reservasi/online" element={<ReservasiOnline />} />
-        <Route path="/admin/reservasi/online/detail" element={<OnlineDetail />} />
-        <Route path="/admin/reservasi/online/detail-kelompok" element={<OnlineDetailKelompok />} />
+        <Route element={<AdminRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/reservasi" element={<ReservasiSemua />} />
+          <Route path="/admin/reservasi/online" element={<ReservasiOnline />} />
+          <Route path="/admin/reservasi/online/detail" element={<OnlineDetail />} />
+          <Route path="/admin/reservasi/online/detail-kelompok" element={<OnlineDetailKelompok />} />
 
-        <Route path="/admin/reservasi/offline" element={<ReservasiOffline />} />
-        <Route path="/admin/reservasi/offline/tambah" element={<AddReservasiOffline />} />
-        <Route path="/admin/reservasi/offline/update" element={<UpdateOfflineReservation />} />
+          <Route path="/admin/reservasi/offline" element={<ReservasiOffline />} />
+          <Route path="/admin/reservasi/offline/tambah" element={<AddReservasiOffline />} />
+          <Route path="/admin/reservasi/offline/update" element={<UpdateOfflineReservation />} />
 
 
-        <Route path="/admin/perlengkapan" element={<PerlengkapanAdmin />} />
-        <Route path="/admin/perlengkapan/tenda-paket" element={<TendaPaket />} />
-        <Route path="/admin/perlengkapan/tenda-non-paket" element={<TendaNonPaket />} />
-        <Route path="/admin/perlengkapan/item" element={<Item />} />
-        <Route path="/admin/perlengkapan/tambah" element={<AddPerlengkapan />} />
-        <Route path="/admin/perlengkapan/update" element={<UpdatePerlengkapan />} />
+          <Route path="/admin/perlengkapan" element={<PerlengkapanAdmin />} />
+          <Route path="/admin/perlengkapan/tenda-paket" element={<TendaPaket />} />
+          <Route path="/admin/perlengkapan/tenda-non-paket" element={<TendaNonPaket />} />
+          <Route path="/admin/perlengkapan/item" element={<Item />} />
+          <Route path="/admin/perlengkapan/tambah" element={<AddPerlengkapan />} />
+          <Route path="/admin/perlengkapan/update" element={<UpdatePerlengkapan />} />
 
-        <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
-        <Route path="/admin/perlengkapan/kavling/tambah" element={<AddKavling />} />
-        <Route path="/admin/perlengkapan/kavling/ubah/:id" element={<UpdateKavling />} />
+          <Route path="/admin/perlengkapan/kavling" element={<KavlingAdmin />} />
+          <Route path="/admin/perlengkapan/kavling/tambah" element={<AddKavling />} />
+          <Route path="/admin/perlengkapan/kavling/ubah/:id" element={<UpdateKavling />} />
+        </Route>
 
         {/* test page */}
         <Route path="/tes" element={<UpdateKavling />} />
