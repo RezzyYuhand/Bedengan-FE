@@ -1,32 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import { Button, KavlingLayout, GroundModal, NumberModal, KavlingModal } from '../../components';
-
-const initialKavlingStructure = {
-    A: {
-      A1: [
-        ['A1.1', 'A1.2'],
-      ],
-    },
-};
+import { createGround, getAllGround } from '../../services/groundService'; // Import necessary services
+import { getAllSubGrounds, createSubGround } from '../../services/subGroundService'; // Import sub-ground services
+import { createKavling, getAllKavling } from '../../services/kavlingService'; // Import kavling services
 
 const AddKavling = () => {
-    const [kavlingData, setKavlingData] = useState(initialKavlingStructure);
+    const [kavlingData, setKavlingData] = useState({});
+    const [subGroundData, setSubGroundData] = useState([]); // For storing sub-ground data
+    const [kavlings, setKavlings] = useState([]); // To store kavling data
     const [selectedGround, setSelectedGround] = useState('');
     const [selectedNumber, setSelectedNumber] = useState('');
     const [isGroundModalOpen, setIsGroundModalOpen] = useState(false);
     const [isNumberModalOpen, setIsNumberModalOpen] = useState(false);
     const [isKavlingModalOpen, setIsKavlingModalOpen] = useState(false);
     const [modalData, setModalData] = useState({ ground: '', groundNumber: '', kavlingNumber: '' });
+    const token = localStorage.getItem('token'); // Assume token is stored in localStorage
+
+    // Function to fetch all ground data and update the state
+    const fetchGroundData = async () => {
+        try {
+            const response = await getAllGround(token); // Fetch all grounds
+            const groundData = response.data.reduce((acc, ground) => {
+                acc[ground.id] = ground; // Using 'id' for ground keys
+                return acc;
+            }, {});
+            setKavlingData(groundData);
+        } catch (error) {
+            console.error('Error fetching ground data:', error);
+            alert('Terjadi kesalahan saat mengambil data ground.');
+        }
+    };
+
+    // Fetch sub-grounds when a ground is selected
+    const fetchSubGroundData = async (groundId) => {
+        try {
+            const response = await getAllSubGrounds(token, groundId);
+            setSubGroundData(response.data); // Store sub-ground data
+        } catch (error) {
+            console.error('Error fetching sub-ground data:', error);
+        }
+    };
+
+    const fetchKavlings = async (subGroundId) => {
+        try {
+            const response = await getAllKavling(token);
+        
+            // Log the response to inspect its structure
+            console.log('Kavling API response:', response);
+        
+            // Check if the sub-ground exists in the response
+            const kavlingsBySubGround = response.data[subGroundId];
+        
+            if (kavlingsBySubGround) {
+                // Flatten the rows (like 1, 2, ...) into a single array
+                const kavlingsArray = Object.values(kavlingsBySubGround).flat();
+                console.log('Flattened kavlings array:', kavlingsArray); // Debugging log
+                setKavlings(kavlingsArray);
+            } else {
+                console.error('No kavlings found for this sub-ground');
+                setKavlings([]); // No kavlings found for the selected sub-ground
+            }
+        } catch (error) {
+            console.error('Error fetching kavling data:', error);
+            alert('Terjadi kesalahan saat mengambil data kavling.');
+        }
+    };
+    
+    
+    
+    
+
+
+    // Fetch ground data on component mount
+    useEffect(() => {
+        fetchGroundData();
+    }, []);
 
     const handleGroundChange = (e) => {
-        setSelectedGround(e.target.value);
-        setSelectedNumber(''); // Reset number when ground changes
+        const selectedGroundId = e.target.value;
+        setSelectedGround(selectedGroundId);
+        setSelectedNumber(''); // Reset sub-ground when ground changes
+        fetchSubGroundData(selectedGroundId); // Fetch sub-ground data based on selected ground
     };
 
     const handleNumberChange = (e) => {
-        setSelectedNumber(e.target.value);
+        const subGroundId = e.target.value;
+        setSelectedNumber(subGroundId);
+        fetchKavlings(subGroundId); // Fetch kavlings for the selected sub-ground
     };
 
     const handleAddGround = () => {
@@ -41,65 +103,60 @@ const AddKavling = () => {
         }
     };
 
-    const addNewGround = (groundName) => {
-        if (groundName && !kavlingData[groundName]) {
-            setKavlingData({
-                ...kavlingData,
-                [groundName]: {},
-            });
+    // Save the new ground with the image and refresh ground data
+    const addNewGround = async ({ groundName, image }) => {
+        try {
+            await createGround(token, { nama: groundName, image });
+            await fetchGroundData(); // Refresh ground data
+        } catch (error) {
+            console.error('Error creating ground:', error);
+            alert('Terjadi kesalahan saat menambahkan ground.');
         }
     };
 
-    const addNewNumber = (numberName) => {
-        if (selectedGround && numberName && !kavlingData[selectedGround][numberName]) {
-            setKavlingData({
-                ...kavlingData,
-                [selectedGround]: {
-                    ...kavlingData[selectedGround],
-                    [numberName]: [[]], // Start with an empty row
-                },
-            });
+    // Save the new sub-ground and refresh sub-ground data
+    const addNewSubGround = async (numberName) => {
+        try {
+            await createSubGround(token, { ground_id: selectedGround, nama: numberName });
+            await fetchSubGroundData(selectedGround); // Refresh sub-ground data after adding new sub-ground
+        } catch (error) {
+            console.error('Error creating sub-ground:', error);
+            alert('Terjadi kesalahan saat menambahkan nomor ground.');
         }
+    };
+
+    // Save the new kavling and refresh kavling data
+    const saveNewKavling = async (kavlingDetails) => {
+        try {
+            await createKavling(token, {
+                ...kavlingDetails,
+                sub_ground_id: selectedNumber, // Include the sub-ground ID
+            });
+            await fetchKavlings(selectedNumber); // Refresh kavlings after adding new one
+        } catch (error) {
+            console.error('Error creating kavling:', error);
+            alert('Terjadi kesalahan saat menambahkan kavling.');
+        }
+        setIsKavlingModalOpen(false);
     };
 
     const handleAddKavling = (rowIndex) => {
         if (selectedGround && selectedNumber) {
-            setModalData({ ground: selectedGround, groundNumber: selectedNumber, kavlingNumber: rowIndex === null ? kavlingData[selectedGround][selectedNumber].length + 1 : rowIndex + 1 });
+            const groundName = kavlingData[selectedGround]?.nama;
+            const subGroundName = subGroundData.find(sub => sub.id === selectedNumber)?.nama;
+    
+            setModalData({
+                ground: groundName, // Pass ground name
+                groundNumber: subGroundName, // Pass sub-ground name
+                kavlingNumber: rowIndex === null ? (subGroundName.length + 1) : rowIndex + 1,
+            });
+    
             setIsKavlingModalOpen(true);
         } else {
             alert('Mohon memilih ground atau nomor ground terlebih dahulu.');
         }
     };
-
-    const saveNewKavling = (kavlingDetails) => {
-        const { groundId, idKavling, harga, jenisTenda, nama, status } = kavlingDetails;
-        const currentRows = kavlingData[selectedGround][selectedNumber];
-        if (modalData.kavlingNumber - 1 < currentRows.length) {
-            currentRows[modalData.kavlingNumber - 1].push({
-                idKavling,
-                harga,
-                jenisTenda,
-                nama,
-                status,
-            });
-        } else {
-            currentRows.push([{
-                idKavling,
-                harga,
-                jenisTenda,
-                nama,
-                status,
-            }]);
-        }
-        setKavlingData({
-            ...kavlingData,
-            [selectedGround]: {
-                ...kavlingData[selectedGround],
-                [selectedNumber]: [...currentRows],
-            },
-        });
-        setIsKavlingModalOpen(false);
-    };
+    
 
     return (
         <div className='w-screen h-screen p-10'>
@@ -126,8 +183,8 @@ const AddKavling = () => {
                                             required
                                         >
                                             <option value="">Pilih Ground</option>
-                                            {Object.keys(kavlingData).map((ground) => (
-                                                <option key={ground} value={ground}>{ground}</option>
+                                            {Object.keys(kavlingData).map((groundId) => (
+                                                <option key={groundId} value={groundId}>{kavlingData[groundId].nama}</option>
                                             ))}
                                         </select>
                                         <button
@@ -150,8 +207,8 @@ const AddKavling = () => {
                                             required
                                         >
                                             <option value="">Pilih Nomor Ground</option>
-                                            {selectedGround && Object.keys(kavlingData[selectedGround]).map((number) => (
-                                                <option key={number} value={number}>{number}</option>
+                                            {subGroundData.map((subGround) => (
+                                                <option key={subGround.id} value={subGround.id}>{subGround.nama}</option>
                                             ))}
                                         </select>
                                         <button
@@ -166,7 +223,7 @@ const AddKavling = () => {
 
                                 {/* Display Kavling Layout */}
                                 <KavlingLayout
-                                    kavlings={selectedGround && selectedNumber ? kavlingData[selectedGround][selectedNumber] : []}
+                                    kavlings={kavlings}
                                     onAddKavling={handleAddKavling}
                                 />
                             </form>
@@ -178,8 +235,8 @@ const AddKavling = () => {
             {isGroundModalOpen && (
                 <GroundModal
                     onClose={() => setIsGroundModalOpen(false)}
-                    onSave={(groundName) => {
-                        addNewGround(groundName);
+                    onSave={(groundData) => {
+                        addNewGround(groundData);
                         setIsGroundModalOpen(false);
                     }}
                 />
@@ -187,10 +244,10 @@ const AddKavling = () => {
 
             {isNumberModalOpen && (
                 <NumberModal
-                    selectedGround={selectedGround}
+                    selectedGround={kavlingData[selectedGround]?.nama}
                     onClose={() => setIsNumberModalOpen(false)}
                     onSave={(numberName) => {
-                        addNewNumber(numberName);
+                        addNewSubGround(numberName);
                         setIsNumberModalOpen(false);
                     }}
                 />

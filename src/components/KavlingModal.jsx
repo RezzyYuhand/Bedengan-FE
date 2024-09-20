@@ -3,21 +3,32 @@ import Button from './Button';
 
 const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) => {
   const [price, setPrice] = useState('');
-  const [customKavlingNumber, setCustomKavlingNumber] = useState(kavlingNumber); // Allow editing
+  const [customKavlingNumber, setCustomKavlingNumber] = useState(String(kavlingNumber)); // Ensure it's a string
   const [isAvailable, setIsAvailable] = useState(true);
+  const [row, setRow] = useState(0); // Baris (Row)
+  const [column, setColumn] = useState(0); // Kolom (Column)
+  const [kavlingName, setKavlingName] = useState(''); // Nama (Kavling name)
 
   const handleSave = () => {
-    if (price.trim() && customKavlingNumber.trim()) {
+    const parsedPrice = parseInt(price, 10); // Ensure price is an integer
+
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      alert('Harga kavling harus berupa angka yang valid.');
+      return;
+    }
+
+    // Ensure that customKavlingNumber is treated as a string before calling trim
+    if (String(customKavlingNumber).trim() && kavlingName.trim()) {
       onSave({
-        groundId: `${ground}${groundNumber}`, // e.g., A1
-        idKavling: `${groundNumber}.${customKavlingNumber}`, // e.g., A1.3
-        harga: price,
-        jenisTenda: '', // You can add inputs for jenis tenda and nama if needed
-        nama: '',       // as required by your application
-        status: isAvailable ? 'Available' : 'Unavailable',
+        baris: row, // Baris (Row)
+        kolom: column, // Kolom (Column)
+        harga: parsedPrice, // Ensure the price is an integer
+        nama: kavlingName, // Kavling name
+        sub_ground_id: groundNumber, // Sub-ground ID
+        status: isAvailable ? 'Available' : 'Unavailable', // Status (availability)
       });
     } else {
-      alert('Harga kavling dan nomor kavling tidak boleh kosong.');
+      alert('Nomor kavling dan nama kavling tidak boleh kosong.');
     }
   };
 
@@ -27,16 +38,36 @@ const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) 
         <h2 className='text-lg font-semibold mb-4'>Tambah Kavling</h2>
         <div className='flex flex-col gap-5 w-96'>
           <div className='flex flex-col gap-1 text-sm'>
-            <span>Ground: {ground}</span>
-            <span>Nomor Ground: {groundNumber}</span>
-            <span>Kode Kavling: {`${groundNumber}.${customKavlingNumber}`}</span>
+            <span>Ground: {ground}</span> {/* Now shows Ground Name */}
+            <span>Nomor Ground: {groundNumber}</span> {/* Now shows Sub-Ground Name */}
           </div>
           <div className='flex flex-col gap-2'>
-            <span>Nomor Kavling</span>
+            <span>Nama Kavling</span>
             <input
               type="text"
-              placeholder="Nomor Kavling: 1, 2, 3, ..."
-              onChange={(e) => setCustomKavlingNumber(e.target.value)}
+              placeholder="Nama Kavling"
+              value={kavlingName}
+              onChange={(e) => setKavlingName(e.target.value)}
+              className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
+            />
+          </div>
+          <div className='flex flex-col gap-2'>
+            <span>Baris (Row)</span>
+            <input
+              type="number"
+              placeholder="Baris"
+              value={row}
+              onChange={(e) => setRow(parseInt(e.target.value, 10))}
+              className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
+            />
+          </div>
+          <div className='flex flex-col gap-2'>
+            <span>Kolom (Column)</span>
+            <input
+              type="number"
+              placeholder="Kolom"
+              value={column}
+              onChange={(e) => setColumn(parseInt(e.target.value, 10))}
               className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
             />
           </div>
