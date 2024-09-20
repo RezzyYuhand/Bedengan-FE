@@ -4,6 +4,7 @@ import MetodePembayaran from './MetodePembayaran'
 import RincianPembayaran from './RincianPembayaran'
 import InformasiPembayaran from './InformasiPembayaran'
 import UnggahBuktiPembayaran from './UnggahBuktiPembayaran'
+import UnggahBuktiPembayaranKelompok from './UnggahBuktiPembayaranKelompok'
 
 const Pembayaran = () => {
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -25,7 +26,7 @@ const Pembayaran = () => {
   return (
     <div>
         <Navbar />
-        <UnggahBuktiPembayaran/>
+        <RincianPembayaran />
         <Footer className='mt-20' />
     </div>
   )
