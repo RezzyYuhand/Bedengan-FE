@@ -1,9 +1,9 @@
 import { apiClient } from "./apiClient.js";
 
 // GET all perlengkapan
-export const getAllPerlengkapan = async (token) => {
+export const getAllPerlengkapan = async (token, query) => {
   try {
-    const response = await apiClient.get('/perlengkapan', {
+    const response = await apiClient.get(`/perlengkapan${(query) ? `?${query}` : ''}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

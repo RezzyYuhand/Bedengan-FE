@@ -1,16 +1,30 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {IoIosArrowDown} from "react-icons/io";
 import {Button} from '../../components/index'
 import Cookies from 'js-cookie'
+import {getAllPerlengkapan} from "../../services/perlengkapanService.js";
 
 const DetailKavling = ({onNext}) => {
     const [formData, setFormData] = useState({
         visitorType: '',
         numberOfVisitor: '',
-        tentType: '',
+        tentType: {
+            id:''
+        },
         arrivalDate: '',
         departureDate: '',
     });
+
+    const [tentType, setTentType] = useState([])
+
+    useEffect(() => {
+        getAllPerlengkapan(localStorage.getItem("token"), "jenis=tenda_paket,tenda_non_paket")
+            .then((response) => {
+                if(response.data){
+                    setTentType(response.data)
+                }
+            })
+    }, [])
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -43,12 +57,10 @@ const DetailKavling = ({onNext}) => {
         if (validationErrors.length > 0) {
             alert(validationErrors.join('\n\n'));
         } else {
-            const old = Cookies.get("tmp-add-reservasi") ?? {}
-            Cookies.set(
-                "tmp-add-reservasi",
-                {...old}
-            )
-            onNext(formData);
+            onNext({
+                ...formData,
+                tentType: JSON.parse(formData.tentType)
+            });
         }
     }
 
@@ -103,9 +115,9 @@ const DetailKavling = ({onNext}) => {
                             required
                         >
                             <option>Pilih</option>
-                            <option value="Dome - 2 Orang">Dome - 2 Orang</option>
-                            <option value="Dome - 4 Orang">Dome - 4 Orang</option>
-                            <option value="Dome - 8 Orang">Dome - 8 Orang</option>
+                            {tentType.map((item, index) => {
+                                return <option key={index} value={JSON.stringify(item)}>{item.nama}</option>
+                            })}
                         </select>
                         <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
                         <IoIosArrowDown/>

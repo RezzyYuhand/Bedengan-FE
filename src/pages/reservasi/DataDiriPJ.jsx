@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Button } from '../../components/index'
-import Cookies from 'js-cookie'
 
 
 const DataDiriPJ = ({ onPrev, onSubmit }) => {
@@ -31,14 +30,6 @@ const DataDiriPJ = ({ onPrev, onSubmit }) => {
     const handleSubmit = () => {
         onSubmit(formData);
         console.log(formData);
-        const old = Cookies.get("tmp-add-reservasi") ?? {}
-        Cookies.set(
-            "tmp-add-reservasi",
-            JSON.stringify({
-                formData,
-                ...old
-            })
-        )
     };
 
     return (
