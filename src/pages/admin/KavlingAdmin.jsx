@@ -1,22 +1,9 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import SidePanel from './SidePanel'
-import HeaderBar from './HeaderBar'
-import KavlingList from './KavlingList'
-
-const initialKavlingData = {
-  A: {
-    A1: [
-      [{ id: 1, ground: 'A', nomorGround: 'A1', nomorKavling: 'A1.1', harga: 100000, isAvailable: true }],
-      [{ id: 2, ground: 'A', nomorGround: 'A1', nomorKavling: 'A1.2', harga: 100000, isAvailable: false }],
-    ],
-  },
-  B: {
-    B1: [
-      [{ id: 3, ground: 'B', nomorGround: 'B1', nomorKavling: 'B1.1', harga: 120000, isAvailable: true }],
-    ],
-  },
-};
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SidePanel from './SidePanel';
+import HeaderBar from './HeaderBar';
+import KavlingList from './KavlingList';
+import { getAllKavling } from '../../services/kavlingService'; // Import your kavling fetching service
 
 const flattenKavlingData = (data) => {
   let kavlingList = [];
@@ -40,8 +27,27 @@ const flattenKavlingData = (data) => {
 };
 
 const KavlingAdmin = () => {
-  const [kavlingData, setKavlingData] = useState(initialKavlingData);
+  const [kavlingData, setKavlingData] = useState({});
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
+
+  // Fetch kavling data when the component mounts
+  useEffect(() => {
+    const fetchKavlings = async () => {
+      try {
+        const response = await getAllKavling(); // Fetch kavlings
+        const data = response.data; // Ensure data contains `sub_ground_id`
+        setKavlingData(data); // Save data in state
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching kavling data:', error);
+        setLoading(false);
+      }
+    };
+  
+    fetchKavlings();
+  }, []);
+  
 
   const handleAddKavling = () => {
     navigate('/admin/perlengkapan/kavling/tambah');
@@ -51,7 +57,8 @@ const KavlingAdmin = () => {
     navigate(`/admin/perlengkapan/kavling/ubah/${kavling.id}`, { state: { kavling } });
   };
 
-  const kavlingList = flattenKavlingData(kavlingData); // Flatten the nested structure
+  // Flatten the kavling data
+  const kavlingList = flattenKavlingData(kavlingData);
 
   return (
     <div className='w-screen h-screen p-10'>
@@ -78,7 +85,11 @@ const KavlingAdmin = () => {
                   <span className='w-28 max-w-28'>Aksi</span>
                 </div>
                 <div>
-                  <KavlingList kavlings={kavlingList} onEdit={handleEdit} />
+                  {loading ? (
+                    <p>Loading...</p> // Show loading indicator
+                  ) : (
+                    <KavlingList kavlings={kavlingList} onEdit={handleEdit} /> // Pass the flattened kavling list to KavlingList
+                  )}
                 </div>
               </div>
             </div>

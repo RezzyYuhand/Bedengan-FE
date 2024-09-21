@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
-import { Button, ConfirmationModal } from '../../components'; // Assuming ConfirmationModal is part of your components
+import { Button, ConfirmationModal } from '../../components'; 
+import { updateKavlingById } from '../../services/kavlingService'; // Import the service
 
 const UpdateKavling = () => {
     const { state } = useLocation();
@@ -10,18 +11,21 @@ const UpdateKavling = () => {
     const [price, setPrice] = useState(kavling?.harga || '');
     const [customKavlingNumber, setCustomKavlingNumber] = useState(kavling?.nomorKavling || '');
     const [isAvailable, setIsAvailable] = useState(kavling?.isAvailable || true);
+    const [row, setRow] = useState(kavling?.baris || 0); // Ensure row (baris) is included
+    const [column, setColumn] = useState(kavling?.kolom || 0); // Ensure column (kolom) is included
+    const [subGroundId, setSubGroundId] = useState(kavling?.sub_ground_id || ""); // Ensure sub ground ID is included
     
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    
     const navigate = useNavigate();
+    const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
     const handleCancel = () => {
         navigate('/admin/perlengkapan/kavling');
     };
-  
+
     const openModal = () => {
-        // Show the confirmation modal
         setIsModalOpen(true);
     };
 
@@ -29,22 +33,33 @@ const UpdateKavling = () => {
         setIsModalOpen(false);
     };
 
-    const handleSave = () => {
-      if (price && customKavlingNumber.trim()) {
-        // Save logic here, send updated data to the backend or update state
-        console.log('Updated Kavling:', {
-          ...kavling,
-          harga: price,
-          nomorKavling: customKavlingNumber,
-          status: isAvailable ? 'Available' : 'Unavailable',
-        });
-        closeModal(); // Close the modal after saving
-        navigate('/admin/perlengkapan/kavling'); // Navigate back after saving
-      } else {
-        alert('Harga kavling dan nomor kavling tidak boleh kosong.');
-      }
+    const handleSave = async () => {
+        if (price && customKavlingNumber.trim()) {
+            const updatedKavling = {
+                baris: row,
+                harga: price,
+                kolom: column,
+                nama: customKavlingNumber,
+                sub_ground_id: subGroundId,
+            };
+    
+            console.log('Payload:', updatedKavling); // Log the payload to check its structure
+    
+            try {
+                await updateKavlingById(token, kavling.id, updatedKavling);
+                console.log('Kavling updated successfully:', updatedKavling);
+                closeModal();
+                navigate('/admin/perlengkapan/kavling'); 
+            } catch (error) {
+                console.error('Error updating kavling:', error); // Log detailed error
+                alert('Terjadi kesalahan saat memperbarui kavling.');
+            }
+        } else {
+            alert('Harga kavling dan nomor kavling tidak boleh kosong.');
+        }
     };
   
+
     return (
       <div className='w-screen h-screen p-10'>
         <div className='flex flex-row gap-10 h-full'>
@@ -80,7 +95,7 @@ const UpdateKavling = () => {
                     <span>Nomor Kavling</span>
                     <input
                       type="text"
-                      placeholder="Nomor Kavling: 1, 2, 3, ..."
+                      placeholder="Nomor Kavling"
                       value={customKavlingNumber}
                       onChange={(e) => setCustomKavlingNumber(e.target.value)}
                       className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
@@ -93,6 +108,26 @@ const UpdateKavling = () => {
                       placeholder="Harga Kavling"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
+                      className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
+                    />
+                  </div>
+                  <div className='flex flex-col gap-2'>
+                    <span>Baris (Row)</span>
+                    <input
+                      type="number"
+                      placeholder="Baris"
+                      value={row}
+                      onChange={(e) => setRow(parseInt(e.target.value, 10))}
+                      className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
+                    />
+                  </div>
+                  <div className='flex flex-col gap-2'>
+                    <span>Kolom (Column)</span>
+                    <input
+                      type="number"
+                      placeholder="Kolom"
+                      value={column}
+                      onChange={(e) => setColumn(parseInt(e.target.value, 10))}
                       className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm'
                     />
                   </div>
