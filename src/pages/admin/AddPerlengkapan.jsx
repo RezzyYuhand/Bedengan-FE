@@ -54,9 +54,10 @@ const AddPerlengkapan = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append('nama', formData.namaBarang);
-    formDataToSend.append('deskripsi', JSON.stringify({ jenis: formData.jenisBarang, kode: formData.kodeBarang }));
+    formDataToSend.append('deskripsi', JSON.stringify({ kode: formData.kodeBarang }));
     formDataToSend.append('harga', parseInt(formData.harga, 10));
     formDataToSend.append('stok', parseInt(formData.stok, 10));
+    formDataToSend.append('jenis', formData.jenisBarang); // Ensure 'jenis' field is added
 
     if (compressedImage) {
       formDataToSend.append('image', compressedImage); // Append compressed image
@@ -124,8 +125,9 @@ const AddPerlengkapan = () => {
                     required
                   >
                     <option value="">Pilih Jenis Barang</option>
-                    <option value="Paket">Paket</option>
-                    <option value="Item">Item</option>
+                    <option value="tenda_paket">tenda_paket</option>
+                    <option value="tenda_non_paket">tenda_non_paket</option>
+                    <option value="item_tambahan">item_tambahan</option>
                   </select>
                 </div>
 

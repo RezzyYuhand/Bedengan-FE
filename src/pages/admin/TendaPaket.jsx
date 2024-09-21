@@ -15,18 +15,10 @@ const TendaPaket = () => {
         const token = localStorage.getItem('token');
         const response = await getAllPerlengkapan(token);
         
-        // Filter the items where deskripsi.jenis is 'Paket'
-        const paketItems = response.data.filter(item => {
-          try {
-            const deskripsi = JSON.parse(item.deskripsi || '{}');
-            return deskripsi.jenis === 'Paket';
-          } catch (error) {
-            console.error('Error parsing deskripsi:', error);
-            return false;
-          }
-        });
+        // Filter the items where item.jenis is 'tenda_paket'
+        const tendaPaketItems = response.data.filter(item => item.jenis === 'tenda_paket');
 
-        setItems(paketItems);
+        setItems(tendaPaketItems);
       } catch (error) {
         console.error('Error fetching perlengkapan:', error);
       }
@@ -68,7 +60,7 @@ const TendaPaket = () => {
                   {items.length > 0 ? (
                     <ItemPerlengkapanList items={items} />
                   ) : (
-                    <p>Tidak ada data untuk jenis paket.</p>
+                    <p>Tidak ada data untuk tenda paket.</p>
                   )}
                 </div>
               </div>

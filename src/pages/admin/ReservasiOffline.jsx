@@ -1,31 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import OffReservationActionList from './OffReservationActionList';
+import { getAllInvoiceReservasiAdmin } from '../../services/invoiceService'; // Updated import to use the admin API
 
 const ReservasiOffline = () => {
   const navigate = useNavigate();
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const reservations = [
-    {
-      id: 1,
-      kode: 'RES123',
-      nama: 'John Doe',
-      tglMasuk: '2024-09-15',
-      tglKeluar: '2024-09-16',
-      ktpImage: '/path-to-ktp-image.jpg',
-      buktiImage: '/path-to-bukti-image.jpg',
-      totalPrice: 'Rp 500.000',
-      jenisPembayaran: 'Cash',
-      kavling: 'B5',
-      status: 'Berlangsung'
-    },
-  ];
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await getAllInvoiceReservasiAdmin(token); // Use the admin API
+        setReservations(response.data);  // Set the 'data' field from the API response
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, []);
 
   const handleAddReservation = () => {
     navigate('/admin/reservasi/offline/tambah');
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='w-screen h-screen p-10'>
@@ -33,7 +40,7 @@ const ReservasiOffline = () => {
         <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
           <HeaderBar title='Reservasi' searchTerm='' onSearchChange={() => {}} username='Admin' />
-          
+
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>

@@ -15,16 +15,8 @@ const Item = () => {
         const token = localStorage.getItem('token');
         const response = await getAllPerlengkapan(token);
 
-        // Filter the items where deskripsi.jenis is 'Item'
-        const itemList = response.data.filter(item => {
-          try {
-            const deskripsi = JSON.parse(item.deskripsi || '{}');
-            return deskripsi.jenis === 'Item';
-          } catch (error) {
-            console.error('Error parsing deskripsi:', error);
-            return false;
-          }
-        });
+        // Filter the items where jenis is 'item_tambahan'
+        const itemList = response.data.filter(item => item.jenis === 'item_tambahan');
 
         setItems(itemList);
       } catch (error) {
@@ -49,7 +41,7 @@ const Item = () => {
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-3'>
               <div className='flex flex-row w-full justify-between items-center'>
-                <span className='font-semibold'>Item</span>
+                <span className='font-semibold'>Item Tambahan</span>
                 <button onClick={handleAddItem} className='px-3 py-2 bg-accent text-primary text-sm shadow-md rounded-md hover:bg-hover-green'>
                   Tambah Perlengkapan
                 </button>
@@ -68,7 +60,7 @@ const Item = () => {
                   {items.length > 0 ? (
                     <ItemPerlengkapanList items={items} />
                   ) : (
-                    <p>Tidak ada data untuk jenis item.</p>
+                    <p>Tidak ada data untuk jenis item tambahan.</p>
                   )}
                 </div>
               </div>

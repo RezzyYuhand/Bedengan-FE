@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
 
 const ItemCard = ({ item, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(0);
@@ -20,8 +20,9 @@ const ItemCard = ({ item, onQuantityChange }) => {
   return (
     <div className='flex flex-col px-5 py-4 gap-7 justify-end border rounded-md w-full'>
       <div className='flex flex-row justify-between items-center text-sm'>
-        <span className='font-semibold'>{item.name}</span>
-        <span className='font-semibold'>Rp {item.price.toLocaleString()}</span>
+        {/* Display item name and price */}
+        <span className='font-semibold'>{item.nama}</span>
+        <span className='font-semibold'>Rp {item.harga ? item.harga.toLocaleString() : 'N/A'}</span>
       </div>
       
       <div className='flex w-full justify-end'>
@@ -43,7 +44,7 @@ const ItemCard = ({ item, onQuantityChange }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ItemCard
+export default ItemCard;
