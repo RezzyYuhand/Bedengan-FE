@@ -35,13 +35,13 @@ const Kavling = () => {
     const [selectedKavling, setSelectedKavling] = useState(null);
 
     useEffect(() => {
-        // const _lastFormData = localStorage.getItem("tmp_add_reservasi")
-        //
-        // if (_.isEmpty(_lastFormData)) {
-        //     navigate("/reservasi")
-        // } else {
-        //     setLastFormData(_lastFormData)
-        // }
+        const _lastFormData = localStorage.getItem("tmp_add_reservasi")
+
+        if (_.isEmpty(_lastFormData)) {
+            navigate("/reservasi")
+        } else {
+            setLastFormData(_lastFormData)
+        }
 
         getAllKavling(localStorage.getItem("token")).then((response) => {
             console.log(response)
