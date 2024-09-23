@@ -27,7 +27,7 @@ const UpdatePerlengkapan = () => {
       const deskripsi = JSON.parse(item.deskripsi || '{}'); // Parse deskripsi as JSON
       setFormData({
         kodeBarang: deskripsi.kode || '',
-        jenisBarang: deskripsi.jenis || '',
+        jenisBarang: item.jenis || '', // Ensure jenis is properly set from item
         namaBarang: item.nama,
         harga: item.harga,
         stok: item.stok,
@@ -74,10 +74,10 @@ const UpdatePerlengkapan = () => {
     updatedData.append(
       'deskripsi',
       JSON.stringify({
-        jenis: formData.jenisBarang,
         kode: formData.kodeBarang,
       })
     );
+    updatedData.append('jenis', formData.jenisBarang);
     updatedData.append('harga', parseInt(formData.harga, 10));
     updatedData.append('stok', parseInt(formData.stok, 10));
 
@@ -137,8 +137,9 @@ const UpdatePerlengkapan = () => {
                     required
                   >
                     <option value="">Pilih Jenis Barang</option>
-                    <option value="Paket">Paket</option>
-                    <option value="Item">Item</option>
+                    <option value="tenda_paket">Tenda Paket</option>
+                    <option value="tenda_non_paket">Tenda Non Paket</option>
+                    <option value="item_tambahan">Item Tambahan</option>
                   </select>
                 </div>
 

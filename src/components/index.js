@@ -15,6 +15,7 @@ import GroundModal from './GroundModal';
 import NumberModal from './NumberModal';
 import KavlingModal from './KavlingModal';
 import AdminRoute from './AdminRoute';
+import SelectKavling from './SelectKavling';
 
 export { 
     ScrollToTop,
@@ -33,5 +34,6 @@ export {
     GroundModal,
     NumberModal,
     KavlingModal,
-    AdminRoute
+    AdminRoute,
+    SelectKavling,
  };

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Button from './Button';
 
-const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) => {
+const KavlingModal = ({ ground, groundNumber, onClose, onSave }) => {
   const [price, setPrice] = useState('');
-  const [customKavlingNumber, setCustomKavlingNumber] = useState(String(kavlingNumber)); // Ensure it's a string
   const [isAvailable, setIsAvailable] = useState(true);
   const [row, setRow] = useState(0); // Baris (Row)
   const [column, setColumn] = useState(0); // Kolom (Column)
@@ -17,8 +16,7 @@ const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) 
       return;
     }
 
-    // Ensure that customKavlingNumber is treated as a string before calling trim
-    if (String(customKavlingNumber).trim() && kavlingName.trim()) {
+    if (kavlingName.trim()) {
       onSave({
         baris: row, // Baris (Row)
         kolom: column, // Kolom (Column)
@@ -28,7 +26,7 @@ const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) 
         status: isAvailable ? 'Available' : 'Unavailable', // Status (availability)
       });
     } else {
-      alert('Nomor kavling dan nama kavling tidak boleh kosong.');
+      alert('Nama kavling tidak boleh kosong.');
     }
   };
 
@@ -38,8 +36,8 @@ const KavlingModal = ({ ground, groundNumber, kavlingNumber, onClose, onSave }) 
         <h2 className='text-lg font-semibold mb-4'>Tambah Kavling</h2>
         <div className='flex flex-col gap-5 w-96'>
           <div className='flex flex-col gap-1 text-sm'>
-            <span>Ground: {ground}</span> {/* Now shows Ground Name */}
-            <span>Nomor Ground: {groundNumber}</span> {/* Now shows Sub-Ground Name */}
+            <span>Ground: {ground}</span>
+            <span>Nomor Ground: {groundNumber}</span>
           </div>
           <div className='flex flex-col gap-2'>
             <span>Nama Kavling</span>

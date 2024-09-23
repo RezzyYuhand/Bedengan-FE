@@ -1,18 +1,54 @@
-import React from 'react';
-import { Button } from '../../components';
+import React, { useState, useEffect } from 'react';
+import { Button, SelectKavling } from '../../components';
 
-const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
-  const handleChange = (e) => {
+const OfflineFormStep = ({
+  formData,
+  setFormData,
+  selectedKavlings,
+  setSelectedKavlings,
+  onCancel,
+  goToNextStep,
+  fetchGrounds,
+  fetchSubGrounds,
+  fetchKavlings
+}) => {
+  const [groundData, setGroundData] = useState([]);
+  const [subGroundData, setSubGroundData] = useState([]);
+
+  // Fetch Grounds on component mount
+  useEffect(() => {
+    const loadGrounds = async () => {
+      const grounds = await fetchGrounds(); // Fetch all grounds from service
+      setGroundData(grounds);
+    };
+    loadGrounds();
+  }, [fetchGrounds]);
+
+  // Handle change in ground and fetch sub-grounds based on selected ground
+  const handleGroundChange = async (e) => {
+    const selectedGroundId = e.target.value;
+    setFormData({ ...formData, groundId: selectedGroundId, subGroundId: '' }); // Reset sub-ground when ground changes
+    const subGrounds = await fetchSubGrounds(selectedGroundId); // Fetch sub-grounds
+    setSubGroundData(subGrounds);
+  };
+
+  const handleSubGroundChange = (e) => {
+    const selectedSubGroundId = e.target.value;
+    setFormData({ ...formData, subGroundId: selectedSubGroundId });
+  };
+
+  const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
     <form className='flex flex-col gap-4 text-xs'>
+      {/* Visitor Type */}
       <div className='flex flex-col gap-2'>
         <label className="font-semibold">Jenis Pengunjung</label>
         <select
           name="visitorType"
-          onChange={handleChange}
+          onChange={handleFormChange}
           value={formData.visitorType}
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
@@ -22,13 +58,14 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
         </select>
       </div>
 
+      {/* Visitor Details */}
       <div className='flex flex-row gap-5'>
         <div className='flex flex-col gap-2 w-full'>
           <label className="font-semibold">Nama</label>
           <input
             type="text"
             name="name"
-            onChange={handleChange}
+            onChange={handleFormChange}
             value={formData.name}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
@@ -39,60 +76,33 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
           <input
             type="tel"
             name="phoneNumber"
-            onChange={handleChange}
+            onChange={handleFormChange}
             value={formData.phoneNumber}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>
       </div>
 
-      <div className='flex flex-col gap-2'>
-        <label className="font-semibold">Jenis Tenda</label>
-        <select
-          name="tentType"
-          onChange={handleChange}
-          value={formData.tentType}
-          className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-        >
-          <option value="">Pilih</option>
-          <option value="Dome - 2 Orang">Dome - 2 Orang</option>
-          <option value="Dome - 4 Orang">Dome - 4 Orang</option>
-          <option value="Dome - 8 Orang">Dome - 8 Orang</option>
-        </select>
-      </div>
-
+      {/* Quantity */}
       <div className='flex flex-col gap-2'>
         <label className="font-semibold">Jumlah</label>
         <input
           type="number"
           name="quantity"
-          onChange={handleChange}
+          onChange={handleFormChange}
           value={formData.quantity}
           className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         />
       </div>
 
-      <div className='flex flex-col gap-2'>
-        <label className="font-semibold">Kavling</label>
-        <select
-          name="kavling"
-          onChange={handleChange}
-          value={formData.kavling}
-          className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-        >
-          <option value="">Pilih</option>
-          <option value="Kavling A1">Kavling A1</option>
-          <option value="Kavling A2">Kavling A2</option>
-        </select>
-      </div>
-
+      {/* Arrival and Departure Dates */}
       <div className='flex flex-row gap-5'>
         <div className='flex flex-col gap-2 w-full'>
           <label className="font-semibold">Tanggal Kedatangan</label>
           <input
             type="date"
             name="arrivalDate"
-            onChange={handleChange}
+            onChange={handleFormChange}
             value={formData.arrivalDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
@@ -102,13 +112,59 @@ const OfflineFormStep = ({ formData, setFormData, onCancel, goToNextStep }) => {
           <input
             type="date"
             name="departureDate"
-            onChange={handleChange}
+            onChange={handleFormChange}
             value={formData.departureDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>
       </div>
 
+      {/* Ground Selection */}
+      <div className='flex flex-col gap-2 w-full'>
+        <label className="font-semibold">Ground</label>
+        <select
+          value={formData.groundId}
+          onChange={handleGroundChange}
+          className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2"
+          required
+        >
+          <option value="">Pilih Ground</option>
+          {groundData.map((ground) => (
+            <option key={ground.id} value={ground.id}>{ground.nama}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* SubGround Selection */}
+      <div className='flex flex-col gap-2 w-full'>
+        <label className="font-semibold">Nomor Ground</label>
+        <select
+          value={formData.subGroundId}
+          onChange={handleSubGroundChange}
+          className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2"
+          required
+          disabled={!formData.groundId} // Disable until ground is selected
+        >
+          <option value="">Pilih Nomor Ground</option>
+          {subGroundData.map((subGround) => (
+            <option key={subGround.id} value={subGround.id}>{subGround.nama}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Kavling Selection */}
+      <div className='flex flex-col gap-2'>
+        <label className="font-semibold">Pilih Kavling</label>
+        <SelectKavling
+          groundId={formData.groundId}
+          subGroundId={formData.subGroundId}
+          selectedKavlings={selectedKavlings}
+          setSelectedKavlings={setSelectedKavlings}
+          fetchKavlings={fetchKavlings}
+        />
+      </div>
+
+      {/* Action Buttons */}
       <div className='flex flex-row gap-3 w-full justify-end'>
         <Button onClick={onCancel} className='border-[1.5px] border-red-600 bg-primary text-red-600 hover:bg-red-600 hover:text-primary'>Batal</Button>
         <Button onClick={goToNextStep}>Selanjutnya</Button>

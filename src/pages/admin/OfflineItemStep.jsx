@@ -1,33 +1,59 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { ItemCard, Button } from '../../components';
+import { getAllPerlengkapan } from '../../services/perlengkapanService';
 
 const OfflineItemStep = ({ onCancel, goToNextStep, selectedItems, setSelectedItems }) => {
-  const items = [
-    { name: 'Item 1', price: 20000 },
-    { name: 'Item 2', price: 30000 },
-    { name: 'Item 3', price: 30000 },
-    { name: 'Item 4', price: 30000 },
-    // Add more items as needed
-  ];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await getAllPerlengkapan(token);
+        if (response && Array.isArray(response.data)) {
+          const availableItems = response.data.filter(item => item.stok > 0);
+          setItems(availableItems);
+        } else {
+          console.error('Unexpected response format:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, [token]);
 
   const handleItemSelect = (item, quantity) => {
-    // Update selected items based on quantity
-    const updatedItems = selectedItems.filter((i) => i.name !== item.name);
+    const updatedItems = selectedItems.filter((i) => i.id !== item.id);
     if (quantity > 0) {
-      updatedItems.push({ ...item, quantity });
+      // Add `nama` to the updated item
+      updatedItems.push({
+        id: item.id,
+        nama: item.nama, // Add the item name here
+        harga: item.harga,
+        jumlah: quantity
+      });
     }
-    setSelectedItems(updatedItems);
+    setSelectedItems(updatedItems); // Update the selectedItems state with the new item, name, quantity, and price
   };
-  
+
+  if (loading) {
+    return <div>Loading items...</div>;
+  }
+
   return (
     <div className='flex flex-col items-center gap-4'>
       <span className='font-semibold w-full text-left'>Item Tambahan</span>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full'>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <ItemCard 
-            key={index} 
-            item={item}
-            onQuantityChange={handleItemSelect}
+            key={item.id} 
+            item={item} 
+            onQuantityChange={handleItemSelect} 
           />
         ))}
       </div>
@@ -36,7 +62,7 @@ const OfflineItemStep = ({ onCancel, goToNextStep, selectedItems, setSelectedIte
         <Button onClick={goToNextStep} className=''>Selanjutnya</Button>
       </div>
     </div>
-  )
+  );
 }
 
-export default OfflineItemStep
+export default OfflineItemStep;

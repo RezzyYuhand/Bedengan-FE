@@ -15,18 +15,10 @@ const TendaNonPaket = () => {
         const token = localStorage.getItem('token');
         const response = await getAllPerlengkapan(token);
 
-        // Filter the items where jenis = 'Item' and nama contains 'Tenda'
-        const tendaItems = response.data.filter(item => {
-          try {
-            const deskripsi = JSON.parse(item.deskripsi || '{}');
-            return deskripsi.jenis === 'Item' && item.nama.toLowerCase().includes('tenda');
-          } catch (error) {
-            console.error('Error parsing deskripsi:', error);
-            return false;
-          }
-        });
+        // Filter the items where jenis is 'tenda_non_paket'
+        const tendaNonPaketItems = response.data.filter(item => item.jenis === 'tenda_non_paket');
 
-        setItems(tendaItems);
+        setItems(tendaNonPaketItems);
       } catch (error) {
         console.error('Error fetching perlengkapan:', error);
       }
@@ -35,6 +27,10 @@ const TendaNonPaket = () => {
     fetchData();
   }, []);
 
+  const handleDeleteSuccess = (id) => {
+    setItems((prevItems) => prevItems.filter(item => item.id !== id));
+  };
+  
   const handleAddItem = () => {
     navigate('/admin/perlengkapan/tambah');
   };
@@ -66,7 +62,7 @@ const TendaNonPaket = () => {
                 </div>
                 <div>
                   {items.length > 0 ? (
-                    <ItemPerlengkapanList items={items} />
+                    <ItemPerlengkapanList items={items} onDeleteSuccess={handleDeleteSuccess}/>
                   ) : (
                     <p>Tidak ada data untuk Tenda Non Paket.</p>
                   )}

@@ -57,8 +57,8 @@ const PerlengkapanList = ({ perlengkapan, onDeleteSuccess }) => {
             <span className='w-28 max-w-28'>{item.harga}</span>
             <span className='w-28 max-w-28'>{item.stok}</span>
             <span className='w-28 max-w-28 text-center'>
-              <span className={`w-fit px-4 py-1 rounded-full ${deskripsi.jenis === 'Paket' ? 'bg-accent-2' : 'bg-accent-3'}`}>
-                {deskripsi.jenis} {/* Access jenis from deskripsi */}
+              <span className={`w-fit px-4 py-1 rounded-full ${item.jenis === 'tenda_paket' ? 'bg-accent-2' : 'bg-accent-3'}`}>
+                {item.jenis} {/* Access jenis from deskripsi */}
               </span>
             </span>
 
