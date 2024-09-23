@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
+import { toast } from 'react-toastify';
 import OfflineFormStep from './OfflineFormStep';
 import OfflineItemStep from './OfflineItemStep';
 import OfflinePaymentStep from './OfflinePaymentStep';
@@ -65,12 +66,13 @@ const AddReservasiOffline = () => {
     try {
       const response = await createInvoiceReservasi(token, payload); // API call
       console.log('Reservation successfully created:', response);
-      alert('Reservasi berhasil disimpan!');
+      toast.success('Reservasi berhasil disimpan!');
 
       // Navigate back to the reservations page after a successful save
       navigate('/admin/reservasi/offline');
     } catch (error) {
       console.error('Error saving reservation:', error);
+      toast.error('Gagal membuat reservasi offline');
       // Handle error case (e.g., display an error message)
     }
   };

@@ -27,6 +27,10 @@ const TendaNonPaket = () => {
     fetchData();
   }, []);
 
+  const handleDeleteSuccess = (id) => {
+    setItems((prevItems) => prevItems.filter(item => item.id !== id));
+  };
+  
   const handleAddItem = () => {
     navigate('/admin/perlengkapan/tambah');
   };
@@ -58,7 +62,7 @@ const TendaNonPaket = () => {
                 </div>
                 <div>
                   {items.length > 0 ? (
-                    <ItemPerlengkapanList items={items} />
+                    <ItemPerlengkapanList items={items} onDeleteSuccess={handleDeleteSuccess}/>
                   ) : (
                     <p>Tidak ada data untuk Tenda Non Paket.</p>
                   )}

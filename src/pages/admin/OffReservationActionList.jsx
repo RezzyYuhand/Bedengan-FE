@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { FaPen, FaTrash } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmationModal } from '../../components';
@@ -21,21 +20,20 @@ const OffReservationActionList = ({ reservations }) => {
   };
 
   const handleEdit = (reservation) => {
-    // Navigate to the update page with reservation data
     navigate('/admin/reservasi/offline/update', { state: { reservation } });
   };
 
   const handleDelete = (id) => {
-    
     console.log(`Delete reservation with ID: ${id}`);
   };
+  
 
   return (
     <div className='flex flex-col gap-1'>
       {reservations.map((reservation, index) => {
         const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, reservasi, status } = reservation;
         const parsedKeterangan = JSON.parse(keterangan); // Parse the 'keterangan' field to get 'nama' and 'jenis_pembayaran'
-        const kavling = reservasi.length > 0 ? reservasi[0].kavling.nama : 'N/A'; // Get kavling name from the first reservation entry
+        const kavling = reservasi.length > 0 ? reservasi[0].kavling.nama : 'N/A';
 
         return (
           <div className='flex flex-row text-xs items-center' key={reservation.id}>

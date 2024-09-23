@@ -17,7 +17,7 @@ export const getAllInvoiceReservasi = async (token) => {
 // Get all invoices for admin
 export const getAllInvoiceReservasiAdmin = async (token) => {
     try {
-        const response = await apiClient.get('/invoice-reservasi/admin', {
+        const response = await apiClient.get('/admin/invoice-reservasi', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

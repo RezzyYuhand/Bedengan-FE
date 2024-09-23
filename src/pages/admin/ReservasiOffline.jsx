@@ -14,8 +14,14 @@ const ReservasiOffline = () => {
     const fetchReservations = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await getAllInvoiceReservasiAdmin(token); // Use the admin API
-        setReservations(response.data);  // Set the 'data' field from the API response
+        if (!token) {
+          console.error('Token not found. Please log in.');
+          return;
+        }
+        
+        const response = await getAllInvoiceReservasiAdmin(token);
+        console.log('API response:', response);  // Log the API response
+        setReservations(response.invoices || []);  // Set the 'invoices' field or an empty array
       } catch (error) {
         console.error('Error fetching reservations:', error);
       } finally {

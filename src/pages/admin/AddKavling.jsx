@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
+import { toast } from 'react-toastify';
 import { Button, KavlingLayout, GroundModal, NumberModal, KavlingModal } from '../../components';
 import { createGround, getAllGround } from '../../services/groundService';
 import { getAllSubGrounds, createSubGround } from '../../services/subGroundService';
@@ -29,7 +30,7 @@ const AddKavling = () => {
             setKavlingData(groundData);
         } catch (error) {
             console.error('Error fetching ground data:', error);
-            alert('Terjadi kesalahan saat mengambil data ground.');
+            toast.error('Terjadi kesalahan saat mengambil data ground.');
         }
     };
 
@@ -78,7 +79,7 @@ const AddKavling = () => {
     
         } catch (error) {
             console.error('Error fetching kavling data:', error);
-            alert('Terjadi kesalahan saat mengambil data kavling.');
+            toast.error('Terjadi kesalahan saat mengambil data kavling.');
         }
     };
     
