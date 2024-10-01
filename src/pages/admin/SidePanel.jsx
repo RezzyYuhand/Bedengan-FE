@@ -26,14 +26,10 @@ const SidePanel = () => {
     }
 
     try {
-      // Attempt to log out
-      await logoutUser(token);
-
-      // Clear token and userData from localStorage
+      await logoutUser(token)
       localStorage.removeItem('token');
       localStorage.removeItem('userData');
 
-      // Redirect to login page
       navigate('/masuk');
       toast.success('Logout successful');
     } catch (error) {

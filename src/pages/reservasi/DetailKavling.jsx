@@ -83,8 +83,8 @@ const DetailKavling = ({onNext}) => {
                             required
                         >
                             <option>Pilih</option>
-                            <option value="Individu">Individu</option>
-                            <option value="Organisasi">Organisasi</option>
+                            <option value="individu">Individu</option>
+                            <option value="kelompok">Kelompok</option>
                         </select>
                         <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
                         <IoIosArrowDown/>

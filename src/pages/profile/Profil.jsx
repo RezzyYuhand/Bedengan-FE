@@ -9,7 +9,7 @@ import ContentPesanan from './ContentPesanan';
 import ContentRiwayat from './ContentRiwayat';
 
 const Profil = () => {
-  const { '*': subroute } = useParams();  // Fetch the current subroute
+  const { '*': subroute } = useParams();
   const renderContent = () => {
     switch (subroute) {
       case 'pesanan':
@@ -24,7 +24,7 @@ const Profil = () => {
   return (
     <div>
       <Navbar />
-      <div className='flex flex-row justify-center gap-6 w-screen px-10 lg:px-28'>
+      <div className='flex flex-row justify-center gap-6 px-10 lg:px-28'>
         <ol className='hidden lg:flex flex-col items-start pt-3 min-w-64 gap-6 border-r-[1.5px] border-inactive-gray-2'>
           <li className={`flex flex-row gap-2 items-center cursor-pointer transition-colors duration-300 ${subroute === '' ? 'font-bold border-r-4 border-accent w-full' : ''}`}>
             <Link to="/profil" className="flex flex-row gap-2 items-center">

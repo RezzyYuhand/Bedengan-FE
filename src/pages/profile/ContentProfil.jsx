@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/index';
-import { getMyUserInfo, updateUser } from '../../services/userService';
+import { getMyUserInfo, updateUser, logoutUser } from '../../services/userService';
+import { toast } from 'react-toastify';
 
 const ContentProfil = () => {
   const [userInfo, setUserInfo] = useState({
@@ -12,6 +14,7 @@ const ContentProfil = () => {
   const [loading, setLoading] = useState(true); // For showing a loading state
   const [error, setError] = useState(null);
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -59,10 +62,32 @@ const ContentProfil = () => {
 
     try {
       await updateUser(updatedData, token); // Only send `name` and `phone`
-      alert('Profil berhasil diperbarui');
+      toast.success('Profil berhasil diperbarui');
     } catch (err) {
       console.error('Error updating profile:', err.response ? err.response.data : err);
       setError('Error updating profile');
+    }
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      toast.error('No token found, please log in again.');
+      navigate('/masuk');
+      return;
+    }
+
+    try {
+      await logoutUser(token)
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+
+      navigate('/masuk');
+      toast.success('Logout successful');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(error.response?.data?.message || 'Logout failed, please try again.');
     }
   };
 
@@ -123,13 +148,22 @@ const ContentProfil = () => {
               required
             />
           </div>
-          <Button 
-            type='submit' 
-            disabled={!isUserInfoChanged()} 
-            className={!isUserInfoChanged() ? 'bg-gray-400 hover:bg-gray-400' : ''}
-          >
-            Simpan Perubahan
-          </Button>
+          <div className='flex flex-col lg:flex-row gap-3'>
+            <Button 
+              type='submit' 
+              disabled={!isUserInfoChanged()} 
+              className={!isUserInfoChanged() ? 'bg-gray-400 hover:bg-gray-400' : ''}
+            >
+              Simpan Perubahan
+            </Button>
+            <Button
+              type='button'
+              onClick={handleLogout}
+              className='text-red-600 border-[1.5px] border-red-600 bg-primary hover:bg-red-600 hover:text-white'
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </form>
     </div>

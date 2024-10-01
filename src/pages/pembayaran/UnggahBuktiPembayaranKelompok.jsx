@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components';
 import imageCompression from 'browser-image-compression';
+import { updateInvoiceReservasiFiles } from '../../services/invoiceService'; // Import the API function
+import { toast } from 'react-toastify';
 
-const UnggahBuktiPembayaranKelompok = () => {
+const UnggahBuktiPembayaranKelompok = ({ invoiceId }) => {
   const [selectedSuratFile, setSelectedSuratFile] = useState(null);
   const [selectedBuktiFile, setSelectedBuktiFile] = useState(null);
   const [compressedSuratFile, setCompressedSuratFile] = useState(null);
   const [compressedBuktiFile, setCompressedBuktiFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
 
+  // Function to handle file compression and selection
   const handleFileUpload = async (event, setFile, setCompressedFile) => {
     const file = event.target.files[0];
 
@@ -23,13 +29,30 @@ const UnggahBuktiPembayaranKelompok = () => {
         setCompressedFile(compressedImage);
       } catch (error) {
         console.error('Error compressing the image:', error);
+        toast.error('Gagal memproses gambar.');
       }
     }
   };
 
-  const handleUpload = () => {
+  // Function to handle the actual upload to the server
+  const handleUpload = async () => {
     if (compressedSuratFile && compressedBuktiFile) {
-      alert('Bukti pembayaran dan surat keterangan acara berhasil diunggah!');
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append('pembayaran', compressedBuktiFile); // Key should match API documentation
+      formData.append('perizinan', compressedSuratFile);  // Key should match API documentation
+
+      try {
+        const token = localStorage.getItem('token');
+        await updateInvoiceReservasiFiles(token, invoiceId, formData);
+        toast.success('Bukti pembayaran dan surat keterangan acara berhasil diunggah!');
+        navigate(`/invoice/${invoiceId}`);
+      } catch (error) {
+        console.error('Error uploading files:', error);
+        toast.error('Gagal mengunggah bukti pembayaran dan surat keterangan.');
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -114,9 +137,9 @@ const UnggahBuktiPembayaranKelompok = () => {
         <Button
           className={`w-full ${(!compressedSuratFile || !compressedBuktiFile) ? 'bg-gray-400 cursor-not-allowed' : 'bg-accent'}`}
           onClick={handleUpload}
-          disabled={!compressedSuratFile || !compressedBuktiFile}
+          disabled={!compressedSuratFile || !compressedBuktiFile || isUploading}
         >
-          Unggah Bukti Transfer
+          {isUploading ? 'Mengunggah...' : 'Unggah Bukti Transfer'}
         </Button>
       </div>
     </div>

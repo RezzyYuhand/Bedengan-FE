@@ -27,7 +27,8 @@ import {
   UpdatePerlengkapan,
   AddKavling,
   UpdateKavling,
-  UpdateOfflineReservation
+  UpdateOfflineReservation,
+  PembayaranUpload
 } from './pages'
 import { ScrollToTop, PrivateRoute, AdminRoute } from './components'
 import {ToastContainer} from "react-toastify";
@@ -51,7 +52,8 @@ function App() {
           <Route path="/reservasi" element={<Reservasi />} />
           <Route path="/kavling" element={<Kavling />} />
           <Route path="/pembayaran" element={<Pembayaran />} />
-          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/pembayaran/:id" element={<PembayaranUpload />} />
+          <Route path="/invoice/:id" element={<Invoice />} />
           <Route path="/profil/*" element={<Profil />} />
         </Route>
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaXmark, FaCheck } from "react-icons/fa6";
 import { DetailModal } from '../../components';
-
+import { toast } from 'react-toastify';
+import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/invoiceService'; // Import the API methods
 
 const ReservasionActionList = ({ reservations }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -23,15 +24,38 @@ const ReservasionActionList = ({ reservations }) => {
     setIsModalOpen(false);
   };
 
-  const handleApprove = (id) => {
-    // Logic to approve reservation
-    console.log(`Approve reservation with ID: ${id}`);
+  const handleApprove = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await verifyInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation approved successfully');
+        // Optionally update the UI with new data or refresh the list
+      } else {
+        toast.error('Failed to approve reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to approve reservation');
+      console.error('Error approving reservation:', error);
+    }
   };
-
-  const handleReject = (id) => {
-    // Logic to reject reservation
-    console.log(`Reject reservation with ID: ${id}`);
+  
+  const handleReject = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await rejectInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation rejected successfully');
+        // Optionally update the UI with new data or refresh the list
+      } else {
+        toast.error('Failed to reject reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to reject reservation');
+      console.error('Error rejecting reservation:', error);
+    }
   };
+  
 
   const openDetailPage = (reservation) => {
     if (reservation.jenisPengunjung === 'Individu') {
@@ -64,7 +88,7 @@ const ReservasionActionList = ({ reservations }) => {
 
           {/* Total Price */}
           <span className='w-28 max-w-28 text-center'>
-            {reservation.totalPrice}
+            Rp {reservation.total}
           </span>
 
           {/* Bukti Button */}
@@ -125,7 +149,7 @@ const ReservasionActionList = ({ reservations }) => {
         onClose={closeModal}
       />
     </div>
-  )
-}
+  );
+};
 
-export default ReservasionActionList
+export default ReservasionActionList;

@@ -1,129 +1,213 @@
-import React, {useEffect, useState} from 'react'
-import {Navbar, Footer, Button, KavlingItem} from '../../components'
-import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
-import _ from "lodash";
-import {useNavigate} from "react-router-dom";
-import {getAllKavling} from "../../services/kavlingService.js";
+import React, { useEffect, useState } from 'react';
+import { Navbar, Footer, Button, KavlingLayout } from '../../components';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import { getAllGround } from '../../services/groundService';
+import { getAllSubGrounds } from '../../services/subGroundService';
+import { getAllKavling } from '../../services/kavlingService';
 
 const Kavling = () => {
-    const navigate = useNavigate()
-    const rowOptions = {
-        A1: [
-            ['A1.1', 'A1.2', 'A1.3', 'A1.4', 'A1.5', 'A1.6', 'A1.7', 'A1.8'],
-            ['B1.1', 'B1.2', 'B1.3', 'B1.4', 'B1.5', 'B1.6', 'B1.7', 'B1.8'],
-            ['C1.1', 'C1.2', 'C1.3', 'C1.4', 'C1.5', 'C1.6', 'C1.7', 'C1.8'],
-        ],
-        A2: [
-            ['D1.1', 'D1.2',],
-            ['E1.1', 'E1.2',],
-            ['F1.1', 'F1.2',],
-        ],
-        A3: [
-            ['G1.1',],
-            ['H1.1',],
-            ['I1.1',],
-        ],
-        A4: [
-            ['J1.1', 'J1.2', 'J1.3',],
-            ['K1.1', 'K1.2', 'K1.3',],
-            ['L1.1', 'L1.2', 'L1.3',],
-        ],
+  const navigate = useNavigate();
+  const [lastFormData, setLastFormData] = useState({});
+  const [groundData, setGroundData] = useState([]);
+  const [subGroundData, setSubGroundData] = useState([]);
+  const [selectedGround, setSelectedGround] = useState('');
+  const [selectedSubGround, setSelectedSubGround] = useState('');
+  const [selectedKavlings, setSelectedKavlings] = useState([]); // Holds multiple selected kavlings
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    const _lastFormData = localStorage.getItem('tmp_add_reservasi');
+    if (!_lastFormData) {
+      navigate('/reservasi');
+    } else {
+      setLastFormData(JSON.parse(_lastFormData));
+    }
+
+    // Fetch grounds when component mounts
+    fetchGrounds();
+  }, [navigate]);
+
+  const fetchGrounds = async () => {
+    const response = await getAllGround(token);
+    setGroundData(response.data);
+  };
+
+  const fetchSubGrounds = async (groundId) => {
+    const response = await getAllSubGrounds(token, groundId);
+    setSubGroundData(response.data);
+  };
+
+  const fetchKavlings = async (groundId, subGroundId) => {
+    const response = await getAllKavling(token);
+    const groundKey = Object.keys(response.data).find((key) =>
+      Object.values(response.data[key]).flat(2).some((kavling) => kavling.groud_id === groundId)
+    );
+
+    if (!groundKey) {
+      console.error(`Ground with ID "${groundId}" not found in response.`);
+      return [];
+    }
+
+    const kavlingsBySubGround = Object.keys(response.data[groundKey]).find((key) =>
+      response.data[groundKey][key].flat(2).some((kavling) => kavling.sub_ground_id === subGroundId)
+    );
+
+    if (!kavlingsBySubGround) {
+      console.error(`Sub Ground "${subGroundId}" not found for Ground "${groundKey}".`);
+      return [];
+    }
+
+    const flattenedKavlings = response.data[groundKey][kavlingsBySubGround].flat(2);
+    return flattenedKavlings;
+  };
+
+  const handleGroundChange = (e) => {
+    const selectedGroundId = e.target.value;
+    setSelectedGround(selectedGroundId);
+    fetchSubGrounds(selectedGroundId);
+    setSelectedSubGround(''); 
+    setSelectedKavlings([]); 
+  };
+
+  const handleSubGroundChange = (e) => {
+    const selectedSubGroundId = e.target.value;
+    setSelectedSubGround(selectedSubGroundId);
+  };
+
+  // Calculate total price based on selected kavlings
+  const getTotalPrice = () => {
+    return selectedKavlings.reduce((total, kavling) => total + (kavling.harga || 0), 0);
+  };
+
+  const getSelectedKavlingNames = () => {
+    return selectedKavlings
+      .map(kavling => `${kavling.ground}${kavling.nomorGround}.${kavling.nomorKavling}`)
+      .join(', ');
+  };
+
+  const handleSubmit = () => {
+    // Add selected kavlings to the reservasi array in the lastFormData
+    const updatedFormData = {
+      ...lastFormData,
+      reservasi: [
+        ...lastFormData.reservasi,
+        ...selectedKavlings.map(kavling => ({
+          kavling_id: kavling.id, // use kavling.id as kavling_id
+          name: `Kavling ${kavling.ground}${kavling.nomorGround}.${kavling.nomorKavling}`, // Add the kavling name here
+          harga: kavling.harga,
+          jumlah: 1 // Assuming 1 for each kavling selected
+        }))
+      ]
     };
+  
+    // Save updated form data to localStorage
+    console.log('Updated Form Data:', updatedFormData);
+    localStorage.setItem('tmp_add_reservasi', JSON.stringify(updatedFormData));
+  
+    // Navigate to /pembayaran page
+    navigate('/pembayaran');
+  };
+  
+  
 
-    const [lastFormData, setLastFormData] = useState({})
-    const [selectedRowOption, setSelectedRowOption] = useState('A1');
-    const [selectedKavling, setSelectedKavling] = useState(null);
-
-    useEffect(() => {
-        const _lastFormData = localStorage.getItem("tmp_add_reservasi")
-
-        if (_.isEmpty(_lastFormData)) {
-            navigate("/reservasi")
-        } else {
-            setLastFormData(_lastFormData)
-        }
-
-        getAllKavling(localStorage.getItem("token")).then((response) => {
-            console.log(response)
-        })
-    }, [])
-
-    const handleRowClick = (option) => {
-        setSelectedRowOption(option);
-        setSelectedKavling(null); // Reset selected kavling when row option changes
-    };
-
-    const handleItemClick = (item) => {
-        setSelectedKavling(item);
-        console.log('Selected Kavling:', item);
-    };
-
-    return (
-        <div>
-            <Navbar/>
-            <div className='flex flex-col items-center gap-6 px-10 lg:px-28'>
-                <h2 className='font-semibold text-2xl lg:text-4xl'>Pilih Kavling</h2>
-                <div className='flex flex-col gap-4'>
-                    <h3 className='text-xl font-semibold'>Ground A</h3>
-                    <div className='flex flex-row gap-3'>
-                        <button><IoIosArrowBack/></button>
-                        <img src="/images/background.JPG" alt="" className='h-64 w-[35rem]'/>
-                        <button><IoIosArrowForward/></button>
-                    </div>
-                    <h3 className='text-xl font-semibold'>Pilih Kavling</h3>
-                    <div className='flex flex-col gap-3'>
-                        <ol className='flex flex-row font-semibold gap-5 cursor-pointer'>
-                            {Object.keys(rowOptions).map((key) => (
-                                <li
-                                    key={key}
-                                    onClick={() => handleRowClick(key)}
-                                    className={`${
-                                        selectedRowOption === key ? 'text-accent' : 'text-secondary'
-                                    }`}
-                                >
-                                    {key}
-                                </li>
-                            ))}
-                        </ol>
-                        <KavlingItem rows={rowOptions[selectedRowOption]} onItemClick={handleItemClick}/>
-                        <div className='flex flex-row  gap-4 justify-center w-full'>
-                            <div className='flex flex-row gap-1 items-center'>
-                                <div className='p-[0.5rem] bg-accent-2 rounded-full'/>
-                                <p className='text-sm'>Tersedia</p>
-                            </div>
-                            <div className='flex flex-row gap-1 items-center'>
-                                <div className='p-[0.5rem] bg-accent rounded-full'/>
-                                <p className='text-sm'>Terpilih</p>
-                            </div>
-                            <div className='flex flex-row gap-1 items-center'>
-                                <div className='p-[0.5rem] bg-red-700 rounded-full'/>
-                                <p className='text-sm'>Tidak Tersedia</p>
-                            </div>
-                        </div>
-                        <h3 className='text-xl font-semibold'>Detail Harga</h3>
-                        <div className='flex flex-col gap-1'>
-                            <div className='flex flex-row'>
-                                <p className='w-28 max-w-28'>Jenis Tenda</p>
-                                <p>: Tenda Dome - 6 Orang</p>
-                            </div>
-                            <div className='flex flex-row'>
-                                <p className='w-28 max-w-28'>Kavling</p>
-                                <p>: {selectedKavling ? selectedKavling : '-'}</p>
-                            </div>
-                            <div className='flex flex-row'>
-                                <p className='w-28 max-w-28'>Harga</p>
-                                <p>: Rp 85.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='flex flex-row w-full justify-end'>
-                        <Button>Selanjutnya</Button>
-                    </div>
-                </div>
+  return (
+    <div>
+      <Navbar />
+      <div className='flex flex-col items-center gap-6 px-10 lg:px-28'>
+        <h2 className='font-semibold text-2xl lg:text-4xl'>Pilih Kavling</h2>
+        <img src="/images/PetaBedengan.jpeg" alt="petaBedengan" className='lg:h-96 rounded-lg' />
+        
+        {/* Ground Selection */}
+        <div className='flex flex-col gap-4 w-[40rem]'>
+          <div className='flex flex-col gap-3'>
+            <div className='flex flex-col gap-2 w-full'>
+              <label className='font-semibold'>Pilih Ground</label>
+              <select
+                value={selectedGround}
+                onChange={handleGroundChange}
+                className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2'
+                required
+              >
+                <option value=''>Pilih Ground</option>
+                {groundData.map((ground) => (
+                  <option key={ground.id} value={ground.id}>
+                    {ground.nama}
+                  </option>
+                ))}
+              </select>
             </div>
-            <Footer className='mt-20'/>
-        </div>
-    )
-}
 
-export default Kavling
+            {/* SubGround Selection */}
+            <div className='flex flex-col gap-2 w-full'>
+              <label className='font-semibold'>Pilih Nomor Ground</label>
+              <select
+                value={selectedSubGround}
+                onChange={handleSubGroundChange}
+                className='block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2'
+                required
+                disabled={!selectedGround} // Disable until ground is selected
+              >
+                <option value=''>Pilih Nomor Ground</option>
+                {subGroundData.map((subGround) => (
+                  <option key={subGround.id} value={subGround.id}>
+                    {subGround.nama}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Kavling Selection */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-semibold'>Pilih Kavling</label>
+              <KavlingLayout
+                groundId={selectedGround}
+                subGroundId={selectedSubGround}
+                selectedKavlings={selectedKavlings}
+                setSelectedKavlings={setSelectedKavlings}
+                fetchKavlings={fetchKavlings}
+              />
+            </div>
+
+            {/* Kavling Status Legend */}
+            <div className='flex flex-row gap-4 justify-center w-full'>
+              <div className='flex flex-row gap-1 items-center'>
+                <div className='p-[0.5rem] bg-accent-2 rounded-full' />
+                <p className='text-sm'>Tersedia</p>
+              </div>
+              <div className='flex flex-row gap-1 items-center'>
+                <div className='p-[0.5rem] bg-accent rounded-full' />
+                <p className='text-sm'>Terpilih</p>
+              </div>
+              <div className='flex flex-row gap-1 items-center'>
+                <div className='p-[0.5rem] bg-red-700 rounded-full' />
+                <p className='text-sm'>Tidak Tersedia</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Detail Harga */}
+        <h3 className='text-xl font-semibold'>Detail Harga</h3>
+        <div className='flex flex-col gap-1'>
+          <div className='flex flex-row'>
+            <p className='w-28 max-w-28'>Kavling</p>
+            <p>: {getSelectedKavlingNames() || '-'}</p>
+          </div>
+          <div className='flex flex-row'>
+            <p className='w-28 max-w-28'>Harga</p> 
+            <p>: Rp {getTotalPrice().toLocaleString()}</p>
+          </div>
+        </div>
+
+        {/* Next Button */}
+        <div className='flex flex-row w-full justify-end'>
+          <Button onClick={handleSubmit}>Selanjutnya</Button>
+        </div>
+      </div>
+      <Footer className='mt-20' />
+    </div>
+  );
+};
+
+export default Kavling;

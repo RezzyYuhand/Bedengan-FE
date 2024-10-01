@@ -54,6 +54,7 @@ const OfflineItemStep = ({ onCancel, goToNextStep, selectedItems, setSelectedIte
             key={item.id} 
             item={item} 
             onQuantityChange={handleItemSelect} 
+            className='w-full'
           />
         ))}
       </div>

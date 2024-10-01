@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ItemCard = ({ item, onQuantityChange }) => {
+const ItemCard = ({ item, onQuantityChange, className = '' }) => {
   const [quantity, setQuantity] = useState(0);
   
   const handleIncrement = (id) => {
@@ -18,9 +18,8 @@ const ItemCard = ({ item, onQuantityChange }) => {
   };
 
   return (
-    <div className='flex flex-col px-5 py-4 gap-7 justify-end border rounded-md w-full'>
+    <div className={`flex flex-col px-5 py-4 gap-7 justify-end border rounded-md ${className}`}>
       <div className='flex flex-row justify-between items-center text-sm'>
-        {/* Display item name and price */}
         <span className='font-semibold'>{item.nama}</span>
         <span className='font-semibold'>Rp {item.harga ? item.harga.toLocaleString() : 'N/A'}</span>
       </div>

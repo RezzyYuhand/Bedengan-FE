@@ -1,6 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const KavlingLayout = ({ kavlings, onAddKavling }) => {
+const KavlingLayout = ({ groundId, subGroundId, selectedKavlings, setSelectedKavlings, fetchKavlings }) => {
+  const [kavlings, setKavlings] = useState([]); // Initialize as an empty array
+
+  useEffect(() => {
+    if (groundId && subGroundId) {
+      fetchKavlings(groundId, subGroundId).then((data) => {
+        console.log("Flattened kavlings:", data); // Log the data for debugging
+        setKavlings(data); // Set the flattened kavlings array
+      }).catch(error => {
+        console.error("Error fetching kavlings:", error);
+        setKavlings([]);
+      });
+    }
+  }, [groundId, subGroundId, fetchKavlings]);
+
+  const handleKavlingSelect = (kavling) => {
+    if (selectedKavlings.some((selected) => selected.id === kavling.id)) {
+      setSelectedKavlings(selectedKavlings.filter((selected) => selected.id !== kavling.id));
+    } else {
+      setSelectedKavlings([...selectedKavlings, kavling]);
+    }
+  };
+
   // Group kavlings by 'baris'
   const groupedKavlings = kavlings.reduce((acc, kavling) => {
     acc[kavling.baris] = acc[kavling.baris] || [];
@@ -9,29 +31,32 @@ const KavlingLayout = ({ kavlings, onAddKavling }) => {
   }, {});
 
   return (
-    <div className='flex flex-col gap-3 items-center w-full rounded-md border-[1.5px] px-10 py-7 border-inactive-gray-2'>
+    <div className="flex flex-col gap-3 items-center w-full rounded-md border-[1.5px] px-10 py-7 border-inactive-gray-2">
       {/* Map over the grouped kavlings by 'baris' */}
-      {Object.entries(groupedKavlings).map(([baris, kavlingRow]) => (
-        <div key={baris} className='flex gap-2'>
-          {/* Sort kavlings by 'kolom' for each 'baris' */}
-          {kavlingRow.sort((a, b) => a.kolom - b.kolom).map((kavling, kavlingIndex) => (
-            <div
-              key={kavlingIndex}
-              className={`flex flex-col items-center justify-center w-12 h-12 ${kavling.isAvailable ? 'bg-accent-2' : 'bg-red-500'} rounded-lg text-secondary cursor-pointer p-1`}
-            >
-              {/* Display kavling details */}
-              <span className='text-xs font-semibold'>{kavling.ground}{kavling.nomorGround}.{kavling.nomorKavling}</span>
-            </div>
-          ))}
-        </div>
-      ))}
-      {/* Single Add Kavling button */}
-      <div
-        className='flex items-center justify-center w-12 h-12 border-[1px] border-inactive-gray bg-primary text-secondary rounded-lg cursor-pointer'
-        onClick={() => onAddKavling()} // No argument needed since modal handles input for row/column
-      >
-        +
-      </div>
+      {Object.keys(groupedKavlings).length > 0 ? (
+        Object.entries(groupedKavlings).map(([baris, kavlingRow]) => (
+          <div key={baris} className="flex gap-2">
+            {/* Sort kavlings by 'kolom' for each 'baris' */}
+            {kavlingRow.sort((a, b) => a.kolom - b.kolom).map((kavling, kavlingIndex) => (
+              <div
+                key={kavlingIndex}
+                className={`flex items-center justify-center w-12 h-12 cursor-pointer rounded-lg ${
+                  kavling.isAvailable
+                    ? selectedKavlings.some((selected) => selected.id === kavling.id)
+                      ? 'bg-green-500'
+                      : 'bg-accent-2'
+                    : 'bg-red-500'
+                } text-secondary`}
+                onClick={() => kavling.isAvailable && handleKavlingSelect(kavling)}
+              >
+                <span className="text-xs font-semibold">{`${kavling.ground}${kavling.nomorGround}.${kavling.nomorKavling}`}</span>
+              </div>
+            ))}
+          </div>
+        ))
+      ) : (
+        <p className="text-red-500">No kavlings available or failed to load.</p>
+      )}
     </div>
   );
 };

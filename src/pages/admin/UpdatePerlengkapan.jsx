@@ -82,7 +82,7 @@ const UpdatePerlengkapan = () => {
     updatedData.append('stok', parseInt(formData.stok, 10));
 
     if (formData.image) {
-      updatedData.append('image', formData.image); // Append the image file if it's updated
+      updatedData.append('image', formData.image);
     }
 
     try {

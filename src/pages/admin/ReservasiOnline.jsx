@@ -1,50 +1,77 @@
-import React from 'react'
-import SidePanel from './SidePanel'
-import HeaderBar from './HeaderBar'
-import ReservasionActionList from './ReservasionActionList'
+import React, { useState, useEffect } from 'react';
+import SidePanel from './SidePanel';
+import HeaderBar from './HeaderBar';
+import ReservasionActionList from './ReservasionActionList';
+import { getAllInvoiceReservasiAdmin } from '../../services/invoiceService'; // Import the API function
 
 const ReservasiOnline = () => {
-  const reservations = [
-    {
-        id: 1,
-        kode: 'RES123',
-        nama: 'John Doe',
-        jenisPengunjung: 'Individu',
-        telepon: '081234567890',
-        jumlah: 2,
-        tglMasuk: '2024-09-15',
-        tglKeluar: '2024-09-16',
-        ktpImage: '/images/background.JPG',
-        buktiImage: '/images/background.JPG',
-        totalPrice: 'Rp 500.000',
-        status: 'Menunggu'
-      },
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      {
-        id: 2,
-        kode: 'ABC345',
-        nama: 'wasd wasd',
-        jenisPengunjung: 'Kelompok',
-        telepon: '08888888888',
-        jumlah: 4,
-        tglMasuk: '2024-09-15',
-        tglKeluar: '2024-09-16',
-        ktpImage: '/images/background.JPG',
-        buktiImage: '/images/background.JPG',
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('Token not found.');
+          return;
+        }
+  
+        const response = await getAllInvoiceReservasiAdmin(token);
+        console.log("API Response:", response);
+  
+        if (response?.data?.invoices) {
+          // Filter for online reservations and map the fields correctly
+          const onlineReservations = response.data.invoices
+            .filter(invoice => invoice.tipe === 'online')
+            .map(invoice => {
+              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, link_pembayaran, link_perizinan, jumlah } = invoice;
+              const parsedKeterangan = JSON.parse(keterangan);
+  
+              return {
+                id: invoice.id,
+                kode: nomor_invoice,
+                nama: parsedKeterangan.nama,
+                jenisPengunjung: invoice.jenis_pengunjung,
+                telepon: parsedKeterangan.nomor_telepon,
+                jumlah: parsedKeterangan.jumlah,
+                total: invoice.jumlah,
+                tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
+                tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
+                ktpImage: '/images/background.JPG',  // Placeholder for KTP image
+                buktiImage: invoice.link_pembayaran,
+                totalPrice: `Rp ${invoice.total}`,  // Assuming 'total' is the price
+                status: status
+              };
+            });
+  
+          setReservations(onlineReservations);
+          console.log("Parsed Reservations:", onlineReservations); // Check the parsed data
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchReservations();
+  }, []);
+  
+  
 
-        totalPrice: 'Rp 500.000',
-        status: 'Menunggu'
-      },
-  ];
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className='w-screen h-screen p-10'>
       <div className='flex flex-row gap-10 h-full'>
-        <SidePanel/>
+        <SidePanel />
         <div className='flex flex-col py-3 w-full gap-8'>
           <HeaderBar title='Reservasi' searchTerm='' onSearchChange={() => {}} username='Admin'/>
           
           <div className='flex flex-col gap-10'>
-
             <div className='flex flex-col gap-3'>
               <span className='font-semibold'>Reservasi Online</span>
               <div className='w-full bg-secondary h-[1px] mt-2'/>
@@ -70,7 +97,7 @@ const ReservasiOnline = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ReservasiOnline
+export default ReservasiOnline;

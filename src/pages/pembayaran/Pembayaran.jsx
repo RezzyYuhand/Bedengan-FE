@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
-import { Navbar, Footer } from '../../components/index'
-import MetodePembayaran from './MetodePembayaran'
-import RincianPembayaran from './RincianPembayaran'
-import InformasiPembayaran from './InformasiPembayaran'
-import UnggahBuktiPembayaran from './UnggahBuktiPembayaran'
-import UnggahBuktiPembayaranKelompok from './UnggahBuktiPembayaranKelompok'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Navbar, Footer } from '../../components';
+import { toast } from 'react-toastify';
+import RincianPembayaran from './RincianPembayaran';
 
 const Pembayaran = () => {
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [step, setStep] = useState(1);
+  const [lastFormData, setLastFormData] = useState(null);
+  const navigate = useNavigate();
 
-  const reservationData = {
-    name: 'John Doe',
-    total: 'Rp. 1.000.000',
+  useEffect(() => {
+    const storedData = localStorage.getItem('tmp_add_reservasi');
+    if (storedData) {
+      setLastFormData(JSON.parse(storedData));
+    }
+  }, []);
+
+  const handleInvoiceCreated = (reservationId) => {
+    toast.success('Reservasi berhasil dibuat');
+    localStorage.removeItem('tmp_add_reservasi');
+    navigate(`/pembayaran/${reservationId}`);
   };
-
-  const handleMethodSelect = (method) => {
-    setPaymentMethod(method);
-  }
-
-  const handleNext = () => {
-    setStep(step + 1);
-  }
 
   return (
     <div>
-        <Navbar />
-        <RincianPembayaran />
-        <Footer className='mt-20' />
+      <Navbar />
+      {lastFormData && (
+        <RincianPembayaran formData={lastFormData} onInvoiceCreated={handleInvoiceCreated} />
+      )}
+      <Footer className='mt-20' />
     </div>
-  )
-}
+  );
+};
 
-export default Pembayaran
+export default Pembayaran;

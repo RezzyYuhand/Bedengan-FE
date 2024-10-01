@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from '../../components';
+import { useNavigate } from 'react-router-dom';
 import imageCompression from 'browser-image-compression';
+import { updateInvoiceReservasiFiles } from '../../services/invoiceService'; // Import the API function
+import { toast } from 'react-toastify';
 
-const UnggahBuktiPembayaran = () => {
+const UnggahBuktiPembayaran = ({ invoiceId }) => { // Add invoiceId as a prop
   const [selectedFile, setSelectedFile] = useState(null);
   const [compressedFile, setCompressedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -22,13 +26,28 @@ const UnggahBuktiPembayaran = () => {
         setCompressedFile(compressedImage);
       } catch (error) {
         console.error('Error compressing the image:', error);
+        toast.error('Gagal memproses gambar.');
       }
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (compressedFile) {
-      alert('Bukti pembayaran berhasil diunggah!');
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append('pembayaran', compressedFile); // Key should match API documentation
+
+      try {
+        const token = localStorage.getItem('token');
+        await updateInvoiceReservasiFiles(token, invoiceId, formData);
+        toast.success('Bukti pembayaran berhasil diunggah!');
+        navigate(`/invoice/${invoiceId}`);
+      } catch (error) {
+        console.error('Error uploading payment proof:', error);
+        toast.error('Gagal mengunggah bukti pembayaran.');
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -65,10 +84,6 @@ const UnggahBuktiPembayaran = () => {
               </ul>
             </div>
           </div>
-          <div>
-            <p className='text-accent font-bold'>Keterangan Tambahan</p>
-            <p>Bagi pendaftar kelompok/acara, silahkan mengunggah <strong>surat keterangan acara</strong> beserta <strong>bukti pembayaran</strong> pada kolom file di bawah ini!</p>
-          </div>
         </div>
 
         <div className='flex flex-col gap-1'>
@@ -101,7 +116,7 @@ const UnggahBuktiPembayaran = () => {
           onClick={handleUpload} 
           disabled={!compressedFile || isUploading}
         >
-          Unggah Bukti Transfer
+          {isUploading ? 'Mengunggah...' : 'Unggah Bukti Transfer'}
         </Button>
       </div>
     </div>

@@ -142,6 +142,8 @@ const NavbarUserInfo = () => {
                     setUser(response.data)
                 })
                 .catch((e) => {
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('userData')
                     toast.error(e.message)
                 })
         }
