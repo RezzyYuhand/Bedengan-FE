@@ -14,6 +14,7 @@ const Kavling = () => {
   const [selectedGround, setSelectedGround] = useState('');
   const [selectedSubGround, setSelectedSubGround] = useState('');
   const [selectedKavlings, setSelectedKavlings] = useState([]); // Holds multiple selected kavlings
+  const [selectedGroundImage, setSelectedGroundImage] = useState(''); // Holds the selected ground's image link
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -65,6 +66,13 @@ const Kavling = () => {
   const handleGroundChange = (e) => {
     const selectedGroundId = e.target.value;
     setSelectedGround(selectedGroundId);
+
+    // Get the image link for the selected ground
+    const selectedGroundObj = groundData.find((ground) => ground.id === selectedGroundId);
+    if (selectedGroundObj) {
+      setSelectedGroundImage(selectedGroundObj.image_link || ''); // Set image link if available
+    }
+
     fetchSubGrounds(selectedGroundId);
     setSelectedSubGround(''); 
     setSelectedKavlings([]); 
@@ -75,7 +83,6 @@ const Kavling = () => {
     setSelectedSubGround(selectedSubGroundId);
   };
 
-  // Calculate total price based on selected kavlings
   const getTotalPrice = () => {
     return selectedKavlings.reduce((total, kavling) => total + (kavling.harga || 0), 0);
   };
@@ -87,39 +94,40 @@ const Kavling = () => {
   };
 
   const handleSubmit = () => {
-    // Add selected kavlings to the reservasi array in the lastFormData
     const updatedFormData = {
       ...lastFormData,
       reservasi: [
         ...lastFormData.reservasi,
         ...selectedKavlings.map(kavling => ({
-          kavling_id: kavling.id, // use kavling.id as kavling_id
+          kavling_id: kavling.id,
           name: `Kavling ${kavling.ground}${kavling.nomorGround}.${kavling.nomorKavling}`, // Add the kavling name here
           harga: kavling.harga,
-          jumlah: 1 // Assuming 1 for each kavling selected
+          jumlah: 1
         }))
       ]
     };
   
-    // Save updated form data to localStorage
     console.log('Updated Form Data:', updatedFormData);
     localStorage.setItem('tmp_add_reservasi', JSON.stringify(updatedFormData));
   
-    // Navigate to /pembayaran page
     navigate('/pembayaran');
   };
   
-  
-
   return (
     <div>
       <Navbar />
       <div className='flex flex-col items-center gap-6 px-10 lg:px-28'>
         <h2 className='font-semibold text-2xl lg:text-4xl'>Pilih Kavling</h2>
-        <img src="/images/PetaBedengan.jpeg" alt="petaBedengan" className='lg:h-96 rounded-lg' />
         
+        {/* Display Ground Image */}
+        {selectedGroundImage ? (
+          <img src={selectedGroundImage} alt="Selected Ground" className='lg:h-96 rounded-lg' />
+        ) : (
+          <img src="/images/PetaBedengan.jpeg" alt="petaBedengan" className='lg:h-96 rounded-lg' />
+        )}
+
         {/* Ground Selection */}
-        <div className='flex flex-col gap-4 w-[40rem]'>
+        <div className='flex flex-col gap-4 lg:w-[40rem]'>
           <div className='flex flex-col gap-3'>
             <div className='flex flex-col gap-2 w-full'>
               <label className='font-semibold'>Pilih Ground</label>

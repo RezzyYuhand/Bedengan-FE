@@ -58,9 +58,9 @@ const ReservasionActionList = ({ reservations }) => {
   
 
   const openDetailPage = (reservation) => {
-    if (reservation.jenisPengunjung === 'Individu') {
+    if (reservation.jenisPengunjung === 'individu') {
       navigate('/admin/reservasi/online/detail', { state: { reservation } });
-    } else if (reservation.jenisPengunjung === 'Kelompok') {
+    } else if (reservation.jenisPengunjung === 'kelompok') {
       navigate('/admin/reservasi/online/detail-kelompok', { state: { reservation } });
     }
     console.log(`Open detail for reservation with ID: ${reservation.id}`);

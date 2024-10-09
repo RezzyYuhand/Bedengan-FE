@@ -66,11 +66,12 @@ const AddReservasiOffline = () => {
     try {
       const response = await createInvoiceReservasi(token, payload); // API call
       console.log('Reservation successfully created:', response);
+      console.log(payload);
       toast.success('Reservasi berhasil disimpan!');
-
       // Navigate back to the reservations page after a successful save
       navigate('/admin/reservasi/offline');
     } catch (error) {
+      console.log(payload)
       console.error('Error saving reservation:', error);
       toast.error('Gagal membuat reservasi offline');
       // Handle error case (e.g., display an error message)

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getKavlingById } from '../../services/kavlingService';
 import { getSubGroundById } from '../../services/subGroundService';
 import { getGroundById } from '../../services/groundService';
 
 const ReservasionList = ({ reservations }) => {
   const [kavlingNamesList, setKavlingNamesList] = useState({}); // Store kavling names for each reservation
 
-  // Fetch kavling data
   useEffect(() => {
     const fetchKavlingData = async () => {
       try {
@@ -15,38 +13,32 @@ const ReservasionList = ({ reservations }) => {
 
         await Promise.all(
           reservations.map(async (reservation) => {
-            const kavlingId = reservation.kavling_id; // Fetch kavling_id directly
+            // Iterate through each kavling in the kavlingDetails array
+            const kavlingNames = await Promise.all(
+              reservation.kavlingDetails
+                .filter(kavling => kavling.id && kavling.nama) // Filter out empty or invalid kavlings
+                .map(async (kavling) => {
+                  try {
+                    // Fetch sub-ground and ground details
+                    const subGroundResponse = await getSubGroundById(token, kavling.sub_ground_id);
+                    const groundResponse = await getGroundById(token, subGroundResponse.data.ground_id);
 
-            console.log(`Processing reservation ID: ${reservation.id}`);
-            console.log('Kavling ID:', kavlingId);
-
-            // Check if kavling_id exists
-            if (kavlingId) {
-              try {
-                console.log(`Fetching kavling details for ID: ${kavlingId}`);
-                const kavlingResponse = await getKavlingById(token, kavlingId);
-                const subGroundResponse = await getSubGroundById(token, kavlingResponse.data.sub_ground_id);
-                const groundResponse = await getGroundById(token, subGroundResponse.data.ground_id);
-
-                // Store the fetched kavling name
-                fetchedNames[reservation.id] = `${groundResponse.data.nama}.${subGroundResponse.data.nama}.${kavlingResponse.data.nama}`;
-              } catch (error) {
-                console.error(`Error fetching data for kavling_id ${kavlingId}:`, error);
-                fetchedNames[reservation.id] = 'Error fetching Kavling';
-              }
-            } else if (reservation.perlengkapan && reservation.perlengkapan.nama) {
-              // If it's a perlengkapan, use its name
-              fetchedNames[reservation.id] = `Perlengkapan: ${reservation.perlengkapan.nama}`;
-            } else {
-              // Neither kavling nor perlengkapan exists
-              fetchedNames[reservation.id] = 'N/A';
-            }
+                    // Construct the full kavling name as {groundName}{subGroundName}.{kavlingName}
+                    return `${groundResponse.data.nama}${subGroundResponse.data.nama}.${kavling.nama}`;
+                  } catch (error) {
+                    console.error(`Error fetching data for kavling_id ${kavling.id}:`, error);
+                    return null; // Return null for failed fetches
+                  }
+                })
+            );
+            // Join all valid kavling names with commas and store them for this reservation
+            fetchedNames[reservation.id] = kavlingNames.filter(name => name !== null).join(', ');
           })
         );
 
         setKavlingNamesList(fetchedNames);
       } catch (error) {
-        console.error('Error fetching kavling/perlengkapan data:', error);
+        console.error('Error fetching kavling data:', error);
       }
     };
 
@@ -57,7 +49,9 @@ const ReservasionList = ({ reservations }) => {
 
   const formatStatus = (status) => {
     if (status === 'menunggu_pembayaran') {
-      return 'Menunggu';
+      return 'Pembayaran';
+    } else if (status === 'menunggu_verifikasi') {
+      return 'Verifikasi';
     }
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
   };
@@ -66,7 +60,7 @@ const ReservasionList = ({ reservations }) => {
     <div className='flex flex-col gap-1'>
       {reservations.map((reservation, index) => {
         const normalizedStatus = reservation.status.toLowerCase().trim();
-        const kavlingName = kavlingNamesList[reservation.id] || 'No Kavling/Perlengkapan Available';
+        const kavlingName = kavlingNamesList[reservation.id] || 'Loading...';
 
         return (
           <div className='flex flex-row text-sm items-center' key={reservation.id}>
@@ -75,7 +69,7 @@ const ReservasionList = ({ reservations }) => {
             <span className='w-56 max-w-56'>{reservation.nama}</span>
             <span className='w-28 max-w-28'>{reservation.tglMasuk}</span>
             <span className='w-28 max-w-28'>{reservation.tglKeluar}</span>
-            <span className='w-20 max-w-20'>{kavlingName}</span> {/* Display kavling or perlengkapan */}
+            <span className='w-20 max-w-20'>{kavlingName || ''}</span> {/* Display concatenated kavling names or nothing */}
             <span className='flex w-32 max-w-32 items-center justify-center'>
               <div className={`px-3 py-1 rounded-full ${reservation.jenis === 'online' ? 'bg-accent-2' : 'bg-accent-3'}`}>
                 {reservation.jenis}
@@ -91,6 +85,8 @@ const ReservasionList = ({ reservations }) => {
                     : normalizedStatus === 'selesai'
                     ? 'bg-selesai'
                     : normalizedStatus === 'menunggu_pembayaran'
+                    ? 'bg-menunggu'
+                    : normalizedStatus === 'menunggu_verifikasi'
                     ? 'bg-menunggu'
                     : ''
                 }`}

@@ -6,6 +6,7 @@ import ItemTambahan from './ItemTambahan';
 import { Navbar, Footer } from '../../components/index'
 import _ from "lodash";
 import {useNavigate} from "react-router-dom";
+import { getMyUserInfo } from '../../services/userService';
 
 const Reservasi = () => {
   const [step, setStep] = useState(1);
@@ -25,36 +26,48 @@ const Reservasi = () => {
     setStep(1);
   }
 
-  const handleSubmit = (data) => {
-    const finalData = {
-      jenis_pengunjung: formData.visitorType,
-      tanggal_kedatangan: formData.arrivalDate,
-      tanggal_kepulangan: formData.departureDate,
-      keterangan: JSON.stringify({
-        jumlah_pengunjung: formData.numberOfVisitor
-      }),
-      reservasi: data // The selected items will now include the item names
-    };
+  const handleSubmit = async (data) => {
+    try {
+      const token = localStorage.getItem('token');
+      const userInfoResponse = await getMyUserInfo(token);
+      const userInfo = userInfoResponse?.data;
   
-    const tentInItemTambahanIndex = _.findIndex(
-      finalData?.reservasi ?? [],
-      (s) => s?.perlengkapan_id === formData?.tentType?.id
-    );
+      const finalData = {
+        jenis_pengunjung: formData.visitorType,
+        tanggal_kedatangan: formData.arrivalDate,
+        tanggal_kepulangan: formData.departureDate,
+        keterangan: JSON.stringify({
+          jumlah_pengunjung: formData.numberOfVisitor,
+          nama: userInfo?.name, 
+          link_ktp: userInfo?.link_ktp,
+          telepon: userInfo?.phone
+        }),
+        reservasi: data
+      };
   
-    if (tentInItemTambahanIndex !== -1) {
-      finalData.reservasi[tentInItemTambahanIndex].jumlah += 1;
-    } else {
-      finalData.reservasi.push({
-        perlengkapan_id: formData.tentType.id,
-        nama: formData.tentType.nama, // Add tent name to the reservation
-        harga: formData.tentType.harga,
-        jumlah: 1
-      });
+      const tentInItemTambahanIndex = _.findIndex(
+        finalData?.reservasi ?? [],
+        (s) => s?.perlengkapan_id === formData?.tentType?.id
+      );
+  
+      if (tentInItemTambahanIndex !== -1) {
+        finalData.reservasi[tentInItemTambahanIndex].jumlah += 1;
+      } else {
+        finalData.reservasi.push({
+          perlengkapan_id: formData.tentType.id,
+          nama: formData.tentType.nama, // Add tent name to the reservation
+          harga: formData.tentType.harga,
+          jumlah: 1
+        });
+      }
+  
+      console.log('Final Reservation Data:', finalData);
+      localStorage.setItem('tmp_add_reservasi', JSON.stringify(finalData));
+      navigate('/kavling');
+    } catch (error) {
+      console.error('Error fetching user info or submitting reservation:', error);
+      // Handle error (display message, etc.)
     }
-  
-    console.log('Final Reservation Data:', finalData);
-    localStorage.setItem('tmp_add_reservasi', JSON.stringify(finalData));
-    navigate('/kavling');
   };
   
 

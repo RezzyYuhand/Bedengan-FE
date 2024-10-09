@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
-import { LuClock4 } from "react-icons/lu";
+import { LuClock4, LuCheck, LuX } from "react-icons/lu";
 import { PiCopy } from "react-icons/pi";
 import { Navbar, Footer, Button } from '../../components';
 import { getInvoiceReservasiById } from '../../services/invoiceService'; // Import the API service
@@ -36,6 +36,35 @@ const Invoice = () => {
       });
   };
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'menunggu_verifikasi':
+        return 'Menunggu Verifikasi';
+      case 'ditolak':
+         return 'Ditolak';
+      case 'berhasil':
+         return 'Pembayaran Berhasil';
+      case 'selesai':
+         return 'Selesai';
+      default:
+        return 'Status Tidak Diketahui';
+    }
+  }
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'menunggu_verifikasi':
+        return <LuClock4 className='text-center text-5xl text-secondary' />;
+      case 'ditolak':
+        return <LuX className='text-center text-5xl text-secondary' />;
+      case 'berhasil':
+      case 'selesai':
+        return <LuCheck className='text-center text-5xl text-secondary' />;
+      default:
+        return <LuClock4 className='text-center text-5xl text-secondary' />; // Default to LuClock4 if unknown
+    }
+  };
+
   // Fetch invoice data
   useEffect(() => {
     const fetchInvoiceData = async () => {
@@ -58,7 +87,7 @@ const Invoice = () => {
                 name: kavlingName,
                 harga: kavlingResponse.data.harga,
                 jumlah: item.jumlah,
-                kavlingName, // Return the formatted kavling name
+                kavlingName,
               };
             } else if (item.perlengkapan_id) {
               const perlengkapanResponse = await getPerlengkapanById(token, item.perlengkapan_id);
@@ -72,12 +101,11 @@ const Invoice = () => {
           })
         );
         
-        // Set reservation details and concatenate kavling names
         setReservationDetails(details.filter(Boolean));
         const kavlingNamesList = details
-          .filter((item) => item.kavlingName) // Only get kavling items
+          .filter((item) => item.kavlingName)
           .map((item) => item.kavlingName)
-          .join(', '); // Concatenate kavling names with commas
+          .join(', ');
         setKavlingNames(kavlingNamesList);
 
       } catch (error) {
@@ -114,9 +142,16 @@ const Invoice = () => {
       <Navbar />
       <div className='flex flex-col items-center gap-5 px-10 lg:px-28'>
         <div className='flex flex-col gap-3 items-center'>
-          <h2 className='font-semibold text-2xl lg:text-4xl'>Menunggu Verifikasi</h2>
-          <div className='flex bg-accent-wait w-fit h-fit p-4 items-center rounded-full'>
-            <LuClock4 className='text-center text-5xl text-secondary'/>
+          <h2 className='font-semibold text-2xl lg:text-4xl'>{getStatusText(invoiceData.status)}</h2>
+          <div className={`flex ${invoiceData.status === 'menunggu_verifikasi'
+            ? 'bg-accent-wait'
+            : invoiceData.status === 'ditolak'
+            ? 'bg-accent-error'
+            : invoiceData.status === 'berhasil' || invoiceData.status === 'selesai'
+            ? 'bg-green-500'
+            : 'bg-gray-400'
+          } w-fit h-fit p-4 items-center rounded-full`}>
+            {getStatusIcon(invoiceData.status)}
           </div>
           <div className='flex flex-row gap-3'>
             <h2 className='text-2xl lg:text-4xl mt-2'>{invoiceData.nomor_invoice}</h2>
@@ -132,7 +167,7 @@ const Invoice = () => {
         <div className='flex flex-col items-start gap-3 w-full lg:w-[29rem]'>
           <div className='flex flex-col gap-1'>
             <span>Pembayaran dari:</span>
-            <span className='font-semibold'>{userData.name}</span> {/* Display user name */}
+            <span className='font-semibold'>{userData.name}</span>
           </div>
           <div className='flex flex-col gap-1'>
             <span>Tanggal Pembayaran:</span>
@@ -140,7 +175,7 @@ const Invoice = () => {
           </div>
           <div className='flex flex-col gap-1'>
             <span>Nomor Kavling:</span>
-            <span className='font-semibold'>{kavlingNames || '-'}</span> {/* Display kavling names */}
+            <span className='font-semibold'>{kavlingNames || '-'}</span>
           </div>
         </div>
         <div className='w-full bg-secondary h-[1px]' />
@@ -153,7 +188,7 @@ const Invoice = () => {
                 <div key={index} className='flex flex-row w-full'>
                   <span className='min-w-44 max-w-48 lg:min-w-48 lg:max-w-48 text-left'>{item.name}</span>
                   <span className='min-w-14 max-w-14 lg:min-w-40 lg:max-w-40 text-center'>{item.jumlah}x</span>
-                  <span className='min-w-28 max-w-28 lg:min-w-28 lg:max-w-28 text-right'>Rp {item.harga.toLocaleString()}</span>
+                  <span className='min-w-28 max-w-28 lg:min-w-28 lg:max-w-28 text-right'>Rp {(item.harga*item.jumlah).toLocaleString()}</span>
                 </div>
               ))}
             </div>

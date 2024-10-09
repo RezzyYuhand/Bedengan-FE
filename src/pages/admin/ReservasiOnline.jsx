@@ -38,7 +38,7 @@ const ReservasiOnline = () => {
                 total: invoice.jumlah,
                 tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
                 tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
-                ktpImage: '/images/background.JPG',  // Placeholder for KTP image
+                ktpImage: parsedKeterangan.link_ktp,  // Placeholder for KTP image
                 buktiImage: invoice.link_pembayaran,
                 totalPrice: `Rp ${invoice.total}`,  // Assuming 'total' is the price
                 status: status

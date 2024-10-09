@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import imageCompression from 'browser-image-compression'; // Import image compression library
+import imageCompression from 'browser-image-compression';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import { Button } from '../../components';
+import { toast } from 'react-toastify';
 import { createPerlengkapan } from '../../services/perlengkapanService';
 
 const AddPerlengkapan = () => {
@@ -14,14 +15,14 @@ const AddPerlengkapan = () => {
     namaBarang: '',
     harga: '',
     stok: '',
-    image: null, // For handling image input
+    image: null,
   });
 
-  const [compressedImage, setCompressedImage] = useState(null); // State to hold compressed image
+  const [compressedImage, setCompressedImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const generatedKodeBarang = `P${nanoid(3).toUpperCase()}`; // Generates something like 'PXYZ'
+    const generatedKodeBarang = `P${nanoid(3).toUpperCase()}`;
     setFormData((prevData) => ({ ...prevData, kodeBarang: generatedKodeBarang }));
   }, []);
 
@@ -31,15 +32,14 @@ const AddPerlengkapan = () => {
     if (name === 'image' && files.length > 0) {
       const imageFile = files[0];
       
-      // Compress the image
       const options = {
-        maxSizeMB: 1, // Maximum file size of 1MB
+        maxSizeMB: 1,
         useWebWorker: true,
       };
 
       try {
         const compressedFile = await imageCompression(imageFile, options);
-        setCompressedImage(compressedFile); // Set compressed image file
+        setCompressedImage(compressedFile);
       } catch (error) {
         console.error('Error compressing image:', error);
         alert('Terjadi kesalahan saat mengompresi gambar.');
@@ -57,21 +57,21 @@ const AddPerlengkapan = () => {
     formDataToSend.append('deskripsi', JSON.stringify({ kode: formData.kodeBarang }));
     formDataToSend.append('harga', parseInt(formData.harga, 10));
     formDataToSend.append('stok', parseInt(formData.stok, 10));
-    formDataToSend.append('jenis', formData.jenisBarang); // Ensure 'jenis' field is added
+    formDataToSend.append('jenis', formData.jenisBarang);
 
     if (compressedImage) {
-      formDataToSend.append('image', compressedImage); // Append compressed image
+      formDataToSend.append('image', compressedImage);
     }
 
     const token = localStorage.getItem('token');
 
     try {
       await createPerlengkapan(token, formDataToSend);
-      alert('Perlengkapan berhasil ditambahkan!');
+      toast.success('Perlengkapan berhasil ditambahkan!');
       navigate('/admin/perlengkapan');
     } catch (error) {
       console.error('Error creating perlengkapan:', error);
-      alert('Terjadi kesalahan saat menambahkan perlengkapan');
+      toast.error('Terjadi kesalahan saat menambahkan perlengkapan');
     }
   };
 

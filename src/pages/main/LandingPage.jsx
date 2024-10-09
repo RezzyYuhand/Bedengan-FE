@@ -223,7 +223,7 @@ const LandingPage = () => {
                                     fasilitas modern, dan rasakan ketenangan jauh dari hiruk-pikuk kota. Mulai
                                     petualangan Anda hari ini dengan mudah - cari tanggal, pilih lokasi, dan buat
                                     reservasi hanya dengan beberapa klik!"</p>
-                                <p className='font-semibold'>-John Doe-</p>
+                                <p className='font-semibold'>-Rafie Zein-</p>
                             </div>
                         </div>
                     </div>

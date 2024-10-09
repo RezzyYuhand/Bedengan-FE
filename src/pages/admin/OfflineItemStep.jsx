@@ -27,18 +27,28 @@ const OfflineItemStep = ({ onCancel, goToNextStep, selectedItems, setSelectedIte
     fetchItems();
   }, [token]);
 
-  const handleItemSelect = (item, quantity) => {
-    const updatedItems = selectedItems.filter((i) => i.id !== item.id);
+  const handleItemSelect = (itemId, quantity) => {
+    const selectedItem = items.find((item) => item.id === itemId);
+    
+    if (!selectedItem) {
+      console.error(`Item with ID ${itemId} not found`);
+      return;
+    }
+
+    console.log(`Selected item: ${selectedItem.nama}, Quantity: ${quantity}`);
+
+    const updatedItems = selectedItems.filter((i) => i.id !== selectedItem.id);
+
     if (quantity > 0) {
-      // Add `nama` to the updated item
       updatedItems.push({
-        id: item.id,
-        nama: item.nama, // Add the item name here
-        harga: item.harga,
+        id: selectedItem.id,
+        nama: selectedItem.nama,
+        harga: selectedItem.harga,
         jumlah: quantity
       });
     }
-    setSelectedItems(updatedItems); // Update the selectedItems state with the new item, name, quantity, and price
+
+    setSelectedItems(updatedItems);
   };
 
   if (loading) {
@@ -53,14 +63,24 @@ const OfflineItemStep = ({ onCancel, goToNextStep, selectedItems, setSelectedIte
           <ItemCard 
             key={item.id} 
             item={item} 
-            onQuantityChange={handleItemSelect} 
+            onQuantityChange={handleItemSelect}
             className='w-full'
           />
         ))}
       </div>
       <div className='flex justify-end w-full gap-5'>
-        <Button onClick={onCancel} className='border-[1.5px] border-red-600 bg-primary text-red-600 hover:bg-red-600 hover:text-primary'>Batal</Button>
-        <Button onClick={goToNextStep} className=''>Selanjutnya</Button>
+        <Button onClick={onCancel} className='border-[1.5px] border-red-600 bg-primary text-red-600 hover:bg-red-600 hover:text-primary'>
+          Batal
+        </Button>
+        <Button 
+          onClick={() => {
+            console.log('Selected items:', selectedItems);
+            goToNextStep();
+          }} 
+          className=''
+        >
+          Selanjutnya
+        </Button>
       </div>
     </div>
   );

@@ -20,30 +20,29 @@ const Dashboard = () => {
           console.error('Token not found.');
           return;
         }
-
+  
         const response = await getAllInvoiceReservasiAdmin(token);
-        console.log('API response:', response);
-
+  
         if (response?.data?.invoices) {
           const parsedReservations = response.data.invoices.map(invoice => {
             const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, reservasi, status, tipe } = invoice;
             const parsedKeterangan = JSON.parse(keterangan);
-
-            // Check if the first item in reservasi has kavling, else fallback to 'N/A'
-            const kavlingName = reservasi.length > 0 && reservasi[0].kavling ? reservasi[0].kavling.nama : 'N/A';
-
+  
+            // Extract kavlingDetails for each reservasi
+            const kavlingDetails = reservasi.map(r => r.kavling ? r.kavling : 'N/A');
+            
             return {
               id: invoice.id,
               kode: nomor_invoice,
               nama: parsedKeterangan.nama,
               tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
               tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
-              kavling: kavlingName,
+              kavlingDetails: kavlingDetails.length > 0 ? kavlingDetails : ['N/A'],  // Pass the full kavling details
               jenis: tipe,
               status: status
             };
           });
-
+  
           setReservations(parsedReservations);
           setTotalOnline(response.data.jumlah_online);
           setTotalOffline(response.data.jumlah_offline);
@@ -54,9 +53,10 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-
+  
     fetchReservations();
   }, []);
+  
 
   if (loading) {
     return <div>Loading...</div>;
@@ -117,6 +117,7 @@ const Dashboard = () => {
                   <span className='w-32 max-w-32'>Status</span>
                 </div>
                 <div>
+                  {/* Pass kavlingDetails to ReservasionList */}
                   <ReservasionList reservations={reservations} />
                 </div>
               </div>
