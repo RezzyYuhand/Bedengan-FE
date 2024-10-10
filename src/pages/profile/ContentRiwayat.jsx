@@ -13,14 +13,13 @@ const ContentRiwayat = () => {
         const response = await getAllInvoiceReservasi(token);
         const invoices = response.data;
 
-        // Filter invoices based on the desired statuses
         const filteredInvoices = invoices.filter(invoice => 
           ['selesai', 'ditolak'].includes(invoice.status)
         );
 
         const formattedOrders = filteredInvoices.map((invoice) => ({
           kodePesanan: invoice.nomor_invoice,
-          reservasi: invoice.reservasi, // Pass the entire reservasi array
+          reservasi: invoice.reservasi,
           tanggalKedatangan: new Date(invoice.tanggal_kedatangan).toLocaleDateString('id-ID'),
           status: invoice.status,
           id: invoice.id,
