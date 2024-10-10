@@ -30,7 +30,6 @@ const ReservasionActionList = ({ reservations }) => {
       const response = await verifyInvoiceReservasi(token, id);
       if (response?.message === 'success') {
         toast.success('Reservation approved successfully');
-        // Optionally update the UI with new data or refresh the list
       } else {
         toast.error('Failed to approve reservation');
       }
@@ -46,7 +45,6 @@ const ReservasionActionList = ({ reservations }) => {
       const response = await rejectInvoiceReservasi(token, id);
       if (response?.message === 'success') {
         toast.success('Reservation rejected successfully');
-        // Optionally update the UI with new data or refresh the list
       } else {
         toast.error('Failed to reject reservation');
       }
@@ -64,6 +62,17 @@ const ReservasionActionList = ({ reservations }) => {
       navigate('/admin/reservasi/online/detail-kelompok', { state: { reservation } });
     }
     console.log(`Open detail for reservation with ID: ${reservation.id}`);
+  };
+
+  const formatStatus = (status) => {
+    if (status === 'menunggu_pembayaran') {
+      return 'Pembayaran';
+    } else if (status === 'menunggu_verifikasi') {
+      return 'Verifikasi';
+    } else if (status === 'verifikasi') {
+      return 'Berlangsung';
+    }
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
   };
 
   return (
@@ -105,16 +114,16 @@ const ReservasionActionList = ({ reservations }) => {
           <span className='flex flex-row items-center justify-center gap-4 w-32 max-w-32'>
             <div
               className={`w-2 h-2 rounded-full ${
-                reservation.status === 'Ditolak'
+                reservation.status === 'ditolak'
                   ? 'bg-ditolak'
-                  : reservation.status === 'Berlangsung'
+                  : reservation.status === 'verifikasi'
                   ? 'bg-berlangsung'
                   : reservation.status === 'Selesai'
                   ? 'bg-selesai'
                   : 'bg-menunggu'
               }`}
             />
-            {reservation.status}
+            {formatStatus(reservation.status)}
           </span>
 
           {/* Action Buttons */}

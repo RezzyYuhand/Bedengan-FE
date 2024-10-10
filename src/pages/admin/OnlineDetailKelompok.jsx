@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import { DetailModal } from '../../components';
+import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/invoiceService';
+import { toast } from 'react-toastify';
 
 const OnlineDetailKelompok = () => {
   const { state } = useLocation();
@@ -10,6 +12,7 @@ const OnlineDetailKelompok = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openImageModal = (imageUrl, title) => {
     setSelectedImage(imageUrl);
@@ -26,8 +29,28 @@ const OnlineDetailKelompok = () => {
     console.log('Payment rejected');
   };
 
-  const handleApprovePayment = () => {
-    console.log('Payment approved');
+  const handleApprovePayment = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await verifyInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation approved successfully');
+        navigate('/admin/reservasi/online');
+      } else {
+        toast.error('Failed to approve reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to approve reservation');
+      console.error('Error approving reservation:', error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const [month, day, year] = dateString.split('/');
+    const date = new Date(`${year}-${month}-${day}`);
+    if (isNaN(date)) return '';
+    
+    return date.toISOString().split('T')[0];
   };
 
   return (
@@ -52,7 +75,7 @@ const OnlineDetailKelompok = () => {
                     name="reservationCode"
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     readOnly
-                    value={reservation?.kode || ''} // Replace with actual data
+                    value={reservation?.kode || ''}
                   />
                 </div>
 
@@ -64,8 +87,8 @@ const OnlineDetailKelompok = () => {
                     value={reservation?.jenisPengunjung || ''}
                   >
                     <option>Pilih</option>
-                    <option value="Individu">Individu</option>
-                    <option value="Kelompok">Kelompok</option>
+                    <option value="individu">Individu</option>
+                    <option value="kelompok">Kelompok</option>
                   </select>
                 </div>
 
@@ -121,7 +144,7 @@ const OnlineDetailKelompok = () => {
                       type="date"
                       name="arrivalDate"
                       className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                      value={reservation?.tglMasuk || ''}
+                      value={reservation?.tglMasuk ? formatDate(reservation.tglMasuk) : ''}
                     />
                   </div>
                   <div className='flex flex-col gap-2 w-full'>
@@ -130,7 +153,7 @@ const OnlineDetailKelompok = () => {
                       type="date"
                       name="departureDate"
                       className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                      value={reservation?.tglKeluar || ''}
+                      value={reservation?.tglKeluar ? formatDate(reservation.tglMasuk) : ''}
                     />
                   </div>
                 </div>
@@ -145,7 +168,7 @@ const OnlineDetailKelompok = () => {
                         name="totalPayment"
                         className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                         readOnly
-                        value={reservation?.totalPrice || ''}// Replace with actual data
+                        value={reservation?.total || ''}
                       />
                     </div>
                     <div className='w-full'>
@@ -155,7 +178,7 @@ const OnlineDetailKelompok = () => {
                         name="kavling"
                         className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                         readOnly
-                        value="Kavling A2" // Replace with actual data
+                        value="Kavling A2"
                       />
                     </div>
                   </div>
@@ -214,7 +237,7 @@ const OnlineDetailKelompok = () => {
                   <button
                     className='px-4 py-2 bg-accent hover:bg-hover-green text-white rounded shadow-md'
                     type='button'
-                    onClick={handleApprovePayment}
+                    onClick={() => handleApprovePayment(reservation.id)}
                   >
                     Verifikasi Pembayaran
                   </button>
@@ -224,7 +247,6 @@ const OnlineDetailKelompok = () => {
           </div>
         </div>
       </div>
-      {/* Detail Modal for KTP, Bukti Pembayaran, and Detail Pembayaran */}
       <DetailModal
         isOpen={isModalOpen}
         imageUrl={selectedImage}

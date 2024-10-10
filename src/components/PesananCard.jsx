@@ -10,7 +10,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'berhasil':
+      case 'verifikasi':
         return 'bg-accent';
       case 'menunggu_pembayaran':
         return 'bg-orange-500';
@@ -18,7 +18,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
         return 'bg-orange-500';
       case 'selesai':
         return 'bg-accent';
-      case 'pembayaran_gagal':
+      case 'ditolak':
         return 'bg-red-500';
       default:
         return 'bg-inactive-gray-2';
@@ -27,7 +27,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
 
   const getDisplayStatus = (status) => {
     switch (status) {
-      case 'berhasil':
+      case 'verifikasi':
         return 'BERHASIL';
       case 'menunggu_pembayaran':
         return 'MENUNGGU PEMBAYARAN';
@@ -35,7 +35,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
         return 'MENUNGGU VERIFIKASI';
       case 'selesai':
         return 'SELESAI';
-      case 'pembayaran_gagal':
+      case 'ditolak':
         return 'PEMBAYARAN GAGAL';
       default:
         return 'Status Tidak Diketahui';
@@ -44,7 +44,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
 
   const getButtonText = (status) => {
     switch (status) {
-      case 'berhasil':
+      case 'verifikasi':
       case 'menunggu_verifikasi':
       case 'selesai':
         return 'Lihat Detail Pesanan';
@@ -56,7 +56,7 @@ const PesananCard = ({ kodePesanan, reservasi = [], tanggalKedatangan, status, i
   };
 
   const handleButtonClick = () => {
-    if (status === 'berhasil' || status === 'menunggu_verifikasi' || status === 'selesai') {
+    if (status === 'verifikasi' || status === 'menunggu_verifikasi' || status === 'selesai') {
       navigate(`/invoice/${id}`);
     } else if (status === 'menunggu_pembayaran') {
       navigate(`/pembayaran/${id}`);

@@ -52,6 +52,8 @@ const ReservasionList = ({ reservations }) => {
       return 'Pembayaran';
     } else if (status === 'menunggu_verifikasi') {
       return 'Verifikasi';
+    } else if (status === 'verifikasi') {
+      return 'Berlangsung';
     }
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
   };
@@ -80,7 +82,7 @@ const ReservasionList = ({ reservations }) => {
                 className={`w-2 h-2 rounded-full ${
                   normalizedStatus === 'ditolak'
                     ? 'bg-ditolak'
-                    : normalizedStatus === 'berlangsung'
+                    : normalizedStatus === 'verifikasi'
                     ? 'bg-berlangsung'
                     : normalizedStatus === 'selesai'
                     ? 'bg-selesai'

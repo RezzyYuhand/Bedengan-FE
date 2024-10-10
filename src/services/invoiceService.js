@@ -120,7 +120,7 @@ export const updateInvoiceReservasiFiles = async (token, id, formData) => {
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data', // Make sure to handle file upload correctly
+                    'Content-Type': 'multipart/form-data',
                 },
             }
         );

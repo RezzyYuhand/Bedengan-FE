@@ -25,7 +25,7 @@ const ReservasiOnline = () => {
           const onlineReservations = response.data.invoices
             .filter(invoice => invoice.tipe === 'online')
             .map(invoice => {
-              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, link_pembayaran, link_perizinan, jumlah } = invoice;
+              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, link_pembayaran, link_perizinan, jumlah, created_at } = invoice;
               const parsedKeterangan = JSON.parse(keterangan);
   
               return {
@@ -33,17 +33,20 @@ const ReservasiOnline = () => {
                 kode: nomor_invoice,
                 nama: parsedKeterangan.nama,
                 jenisPengunjung: invoice.jenis_pengunjung,
-                telepon: parsedKeterangan.nomor_telepon,
-                jumlah: parsedKeterangan.jumlah,
+                telepon: parsedKeterangan.telepon,
+                jumlah: parsedKeterangan.jumlah_pengunjung,
                 total: invoice.jumlah,
                 tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
                 tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
                 ktpImage: parsedKeterangan.link_ktp,  // Placeholder for KTP image
                 buktiImage: invoice.link_pembayaran,
                 totalPrice: `Rp ${invoice.total}`,  // Assuming 'total' is the price
-                status: status
+                totalHarga: invoice.total,
+                status: status,
+                createdAt: new Date(created_at)
               };
-            });
+            })
+            .sort((a, b) => b.createdAt - a.createdAt);
   
           setReservations(onlineReservations);
           console.log("Parsed Reservations:", onlineReservations); // Check the parsed data

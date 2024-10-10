@@ -53,8 +53,8 @@ const OfflineFormStep = ({
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
           <option value="">Pilih</option>
-          <option value="Individu">Individu</option>
-          <option value="Kelompok">Kelompok</option>
+          <option value="individu">Individu</option>
+          <option value="kelompok">Kelompok</option>
         </select>
       </div>
 

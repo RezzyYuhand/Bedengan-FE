@@ -25,7 +25,7 @@ const Dashboard = () => {
   
         if (response?.data?.invoices) {
           const parsedReservations = response.data.invoices.map(invoice => {
-            const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, reservasi, status, tipe } = invoice;
+            const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, reservasi, status, tipe, created_at } = invoice;
             const parsedKeterangan = JSON.parse(keterangan);
   
             // Extract kavlingDetails for each reservasi
@@ -39,11 +39,14 @@ const Dashboard = () => {
               tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
               kavlingDetails: kavlingDetails.length > 0 ? kavlingDetails : ['N/A'],  // Pass the full kavling details
               jenis: tipe,
-              status: status
+              status: status,
+              createdAt: new Date(created_at)
             };
-          });
+          })
+          .sort((a, b) => b.createdAt - a.createdAt);
   
           setReservations(parsedReservations);
+          console.log("Parsed Reservations:", parsedReservations);
           setTotalOnline(response.data.jumlah_online);
           setTotalOffline(response.data.jumlah_offline);
         }

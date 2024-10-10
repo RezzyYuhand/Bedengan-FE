@@ -15,7 +15,7 @@ const ContentRiwayat = () => {
 
         // Filter invoices based on the desired statuses
         const filteredInvoices = invoices.filter(invoice => 
-          ['selesai', 'pembayaran_gagal'].includes(invoice.status)
+          ['selesai', 'ditolak'].includes(invoice.status)
         );
 
         const formattedOrders = filteredInvoices.map((invoice) => ({

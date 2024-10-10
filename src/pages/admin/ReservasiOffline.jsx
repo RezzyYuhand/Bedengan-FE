@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import OffReservationActionList from './OffReservationActionList';
-import { getAllInvoiceReservasiAdmin } from '../../services/invoiceService'; // Updated import to use the admin API
+import { getAllInvoiceReservasiAdmin } from '../../services/invoiceService'; // Import the API function
 
 const ReservasiOffline = () => {
   const navigate = useNavigate();
@@ -18,10 +18,44 @@ const ReservasiOffline = () => {
           console.error('Token not found. Please log in.');
           return;
         }
-        
+    
         const response = await getAllInvoiceReservasiAdmin(token);
-        console.log('API response:', response);  // Log the API response
-        setReservations(response.invoices || []);  // Set the 'invoices' field or an empty array
+        console.log('API response:', response);
+    
+        if (response?.data?.invoices) {
+          const offlineReservations = response.data.invoices
+            .filter(invoice => invoice.tipe === 'offline')
+            .map(invoice => {
+              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, reservasi, status, created_at } = invoice;
+              let parsedKeterangan = {};
+    
+              // Safely parse keterangan
+              try {
+                parsedKeterangan = keterangan ? JSON.parse(keterangan) : {};
+              } catch (error) {
+                console.error('Error parsing keterangan:', error);
+              }
+    
+              // Extract kavlingDetails for each reservasi (similar to Dashboard)
+              const kavlingDetails = reservasi.map(r => r.kavling ? r.kavling.id : 'N/A');
+    
+              return {
+                id: invoice.id,
+                kode: nomor_invoice,
+                nama: parsedKeterangan?.nama || 'Unknown',
+                tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
+                tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
+                kavlingDetails: kavlingDetails.length > 0 ? kavlingDetails.join(', ') : 'N/A',
+                jenisPembayaran: parsedKeterangan?.jenis_pembayaran || 'N/A',
+                status: status,
+                createdAt: new Date(created_at)
+              };
+            })
+            .sort((a, b) => b.createdAt - a.createdAt);
+    
+          setReservations(offlineReservations);
+          console.log("Parsed Reservations:", offlineReservations);
+        }
       } catch (error) {
         console.error('Error fetching reservations:', error);
       } finally {

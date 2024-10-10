@@ -32,6 +32,14 @@ const OnlineDetail = () => {
     console.log('Payment approved');
   };
 
+  const formatDate = (dateString) => {
+    const [month, day, year] = dateString.split('/');
+    const date = new Date(`${year}-${month}-${day}`);
+    if (isNaN(date)) return '';
+    
+    return date.toISOString().split('T')[0];
+  };
+
   return (
     <div className='w-screen h-screen p-10'>
       <div className='flex flex-row gap-10 h-full'>
@@ -123,7 +131,7 @@ const OnlineDetail = () => {
                       type="date"
                       name="arrivalDate"
                       className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                      value={reservation?.tglMasuk || ''}
+                      value={reservation?.tglMasuk ? formatDate(reservation.tglMasuk) : ''}
                     />
                   </div>
                   <div className='flex flex-col gap-2 w-full'>
@@ -132,7 +140,7 @@ const OnlineDetail = () => {
                       type="date"
                       name="departureDate"
                       className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
-                      value={reservation?.tglKeluar || ''}
+                      value={reservation?.tglKeluar ? formatDate(reservation.tglKeluar) : ''}
                     />
                   </div>
                 </div>
@@ -147,7 +155,7 @@ const OnlineDetail = () => {
                         name="totalPayment"
                         className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                         readOnly
-                        value={reservation?.totalPrice || ''}// Replace with actual data
+                        value={reservation?.total || ''}// Replace with actual data
                       />
                     </div>
                     <div className='w-full'>

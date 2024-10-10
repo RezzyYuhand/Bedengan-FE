@@ -13,24 +13,23 @@ const ContentPesanan = () => {
         const response = await getAllInvoiceReservasi(token);
         const invoices = response.data;
 
-        // Filter invoices based on the desired statuses
         const filteredInvoices = invoices.filter(invoice => 
-          ['menunggu_verifikasi', 'menunggu_pembayaran', 'berhasil'].includes(invoice.status)
+          ['menunggu_verifikasi', 'menunggu_pembayaran', 'verifikasi'].includes(invoice.status)
         );
         
         const formattedOrders = filteredInvoices.map((invoice) => ({
           kodePesanan: invoice.nomor_invoice,
-          reservasi: invoice.reservasi, // Pass the entire reservasi array
+          reservasi: invoice.reservasi,
           tanggalKedatangan: new Date(invoice.tanggal_kedatangan).toLocaleDateString('id-ID'),
           status: invoice.status,
           id: invoice.id,
         }));
 
-        setOrders(formattedOrders); // Set orders state
-        setLoading(false); // Disable loading state
+        setOrders(formattedOrders);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching invoices:', error);
-        setLoading(false); // Disable loading even in case of error
+        setLoading(false);
       }
     };
 
@@ -50,7 +49,7 @@ const ContentPesanan = () => {
             <PesananCard
               key={index}
               kodePesanan={order.kodePesanan}
-              reservasi={order.reservasi} // Pass reservasi as a prop
+              reservasi={order.reservasi}
               tanggalKedatangan={order.tanggalKedatangan}
               status={order.status}
               id={order.id}
