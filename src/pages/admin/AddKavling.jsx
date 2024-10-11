@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import SidePanel from './SidePanel';
 import HeaderBar from './HeaderBar';
 import { toast } from 'react-toastify';
-import { Button, KavlingLayout, GroundModal, NumberModal, KavlingModal } from '../../components';
+import { Button, KavlingLayout, GroundModal, NumberModal, KavlingModal, KavlingAdd } from '../../components';
 import { createGround, getAllGround } from '../../services/groundService';
 import { getAllSubGrounds, createSubGround } from '../../services/subGroundService';
 import { createKavling, getAllKavling } from '../../services/kavlingService';
 
 const AddKavling = () => {
     const [kavlingData, setKavlingData] = useState({});
-    const [subGroundData, setSubGroundData] = useState([]); // For storing sub-ground data
-    const [kavlings, setKavlings] = useState([]); // To store kavling data
+    const [subGroundData, setSubGroundData] = useState([]);
+    const [kavlings, setKavlings] = useState([]);
     const [selectedGround, setSelectedGround] = useState('');
     const [selectedNumber, setSelectedNumber] = useState('');
     const [isGroundModalOpen, setIsGroundModalOpen] = useState(false);
     const [isNumberModalOpen, setIsNumberModalOpen] = useState(false);
     const [isKavlingModalOpen, setIsKavlingModalOpen] = useState(false);
     const [modalData, setModalData] = useState({ ground: '', groundNumber: '', kavlingNumber: '' });
-    const token = localStorage.getItem('token'); // Assume token is stored in localStorage
+    const token = localStorage.getItem('token');
 
     // Fetch all ground data and update state
     const fetchGroundData = async () => {
@@ -197,12 +197,11 @@ const AddKavling = () => {
             const groundName = kavlingData[selectedGround]?.nama;
             const subGroundName = subGroundData.find(sub => sub.id === selectedNumber)?.nama;
     
-            // Ensure subGroundName is not undefined before accessing its length
             const kavlingNumber = rowIndex === null ? (subGroundName ? subGroundName.length + 1 : 1) : rowIndex + 1;
     
             setModalData({
                 ground: groundName,
-                groundNumber: subGroundName || '', // Ensure groundNumber has a value, even if subGroundName is undefined
+                groundNumber: subGroundName || '',
                 kavlingNumber, 
             });
     
@@ -276,7 +275,7 @@ const AddKavling = () => {
                                 </div>
 
                                 {/* Display Kavling Layout */}
-                                <KavlingLayout
+                                <KavlingAdd
                                     kavlings={kavlings}
                                     onAddKavling={handleAddKavling}
                                 />

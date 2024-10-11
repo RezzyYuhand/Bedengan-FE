@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const KavlingLayout = ({ groundId, subGroundId, selectedKavlings, setSelectedKavlings, fetchKavlings }) => {
-  const [kavlings, setKavlings] = useState([]); // Initialize as an empty array
+  const [kavlings, setKavlings] = useState([]);
 
   useEffect(() => {
     if (groundId && subGroundId) {
       fetchKavlings(groundId, subGroundId).then((data) => {
-        console.log("Flattened kavlings:", data); // Log the data for debugging
-        setKavlings(data); // Set the flattened kavlings array
+        console.log("Flattened kavlings:", data);
+        setKavlings(data);
       }).catch(error => {
         console.error("Error fetching kavlings:", error);
         setKavlings([]);
@@ -32,11 +32,9 @@ const KavlingLayout = ({ groundId, subGroundId, selectedKavlings, setSelectedKav
 
   return (
     <div className="flex flex-col gap-3 items-center w-full rounded-md border-[1.5px] px-10 py-7 border-inactive-gray-2">
-      {/* Map over the grouped kavlings by 'baris' */}
       {Object.keys(groupedKavlings).length > 0 ? (
         Object.entries(groupedKavlings).map(([baris, kavlingRow]) => (
           <div key={baris} className="flex gap-2">
-            {/* Sort kavlings by 'kolom' for each 'baris' */}
             {kavlingRow.sort((a, b) => a.kolom - b.kolom).map((kavling, kavlingIndex) => (
               <div
                 key={kavlingIndex}
