@@ -25,8 +25,19 @@ const OnlineDetailKelompok = () => {
     setIsModalOpen(false);
   };
 
-  const handleRejectPayment = () => {
-    console.log('Payment rejected');
+  const handleRejectPayment = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await rejectInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation rejected successfully');
+      } else {
+        toast.error('Failed to reject reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to reject reservation');
+      console.error('Error rejecting reservation:', error);
+    }
   };
 
   const handleApprovePayment = async (id) => {
@@ -210,7 +221,7 @@ const OnlineDetailKelompok = () => {
                     <button
                       className="block px-3 py-2 w-fit text-primary bg-accent hover:bg-hover-green rounded-md"
                       type="button"
-                      onClick={() => openImageModal(reservation?.suratKeteranganImage, 'Surat Keterangan')}
+                      onClick={() => openImageModal(reservation?.perizinanImage, 'Surat Keterangan')}
                     >
                       Lihat Surat Keterangan
                     </button>
@@ -230,7 +241,7 @@ const OnlineDetailKelompok = () => {
                   <button
                     className='px-4 py-2 border-[1.5px] text-red-600 border-red-600 bg-primary hover:bg-red-600 hover:text-primary rounded shadow-md'
                     type='button'
-                    onClick={handleRejectPayment}
+                    onClick={() => handleRejectPayment(reservation.id)}
                   >
                     Tolak Pembayaran
                   </button>
