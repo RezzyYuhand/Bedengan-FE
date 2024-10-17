@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SidePanel from './SidePanel'
 import HeaderBar from './HeaderBar'
 import { DetailModal } from '../../components'
+import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/invoiceService';
+import { toast } from 'react-toastify';
 
 const OnlineDetail = () => {
   const { state } = useLocation();
@@ -10,6 +12,7 @@ const OnlineDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openImageModal = (imageUrl, title) => {
     setSelectedImage(imageUrl);
@@ -22,14 +25,35 @@ const OnlineDetail = () => {
     setIsModalOpen(false);
   };
 
-  const handleRejectPayment = () => {
-    // Logic for rejecting payment
-    console.log('Payment rejected');
+  const handleRejectPayment = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await rejectInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation rejected successfully');
+      } else {
+        toast.error('Failed to reject reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to reject reservation');
+      console.error('Error rejecting reservation:', error);
+    }
   };
 
-  const handleApprovePayment = () => {
-    // Logic for approving payment
-    console.log('Payment approved');
+  const handleApprovePayment = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await verifyInvoiceReservasi(token, id);
+      if (response?.message === 'success') {
+        toast.success('Reservation approved successfully');
+        navigate('/admin/reservasi/online');
+      } else {
+        toast.error('Failed to approve reservation');
+      }
+    } catch (error) {
+      toast.error('Failed to approve reservation');
+      console.error('Error approving reservation:', error);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -62,7 +86,7 @@ const OnlineDetail = () => {
                     name="reservationCode"
                     className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                     readOnly
-                    value={reservation?.kode || ''} // Replace with actual data
+                    value={reservation?.kode || ''}
                   />
                 </div>
 
@@ -74,8 +98,8 @@ const OnlineDetail = () => {
                     value={reservation?.jenisPengunjung || ''}
                   >
                     <option>Pilih</option>
-                    <option value="Individu">Individu</option>
-                    <option value="Kelompok">Kelompok</option>
+                    <option value="individu">Individu</option>
+                    <option value="kelompok">Kelompok</option>
                   </select>
                 </div>
 
@@ -155,7 +179,7 @@ const OnlineDetail = () => {
                         name="totalPayment"
                         className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
                         readOnly
-                        value={reservation?.total || ''}// Replace with actual data
+                        value={reservation?.total || ''}
                       />
                     </div>
                     <div className='w-full'>
@@ -207,14 +231,14 @@ const OnlineDetail = () => {
                   <button
                     className='px-4 py-2 border-[1.5px] text-red-600 border-red-600 bg-primary hover:bg-red-600 hover:text-primary rounded shadow-md'
                     type='button'
-                    onClick={handleRejectPayment}
+                    onClick={() => handleRejectPayment(reservation?.id)}
                   >
                     Tolak Pembayaran
                   </button>
                   <button
                     className='px-4 py-2 bg-accent hover:bg-hover-green text-white rounded shadow-md'
                     type='button'
-                    onClick={handleApprovePayment}
+                    onClick={() => handleApprovePayment(reservation?.id)}
                   >
                     Verifikasi Pembayaran
                   </button>
