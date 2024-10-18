@@ -8,7 +8,7 @@ import OfflineItemStep from './OfflineItemStep';
 import OfflinePaymentStep from './OfflinePaymentStep';
 import { getAllGround } from '../../services/groundService';
 import { getAllSubGrounds } from '../../services/subGroundService';
-import { getAllKavling } from '../../services/kavlingService';
+import { getAllKavling, getKavlingByTgl } from '../../services/kavlingService';
 import { createInvoiceReservasi } from '../../services/invoiceService'; // Import API service
 
 const AddReservasiOffline = () => {
@@ -106,7 +106,8 @@ const AddReservasiOffline = () => {
   };
 
   const fetchKavlings = async (groundId, subGroundId) => {
-    const response = await getAllKavling(token);
+    const { arrivalDate, departureDate } = formData;
+    const response = await getKavlingByTgl(token, arrivalDate, departureDate);
     console.log('Kavling API response:', response.data);
 
     const groundKey = Object.keys(response.data).find((key) =>

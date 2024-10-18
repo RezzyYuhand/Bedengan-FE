@@ -47,6 +47,23 @@ export const getKavlingById = async (token, id) => {
     }
 };
 
+export const getKavlingByTgl = async (token, tanggal_kedatangan, tanggal_kepulangan) => {
+    try {
+        const response = await apiClient.get(`/kavling`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                tanggal_kedatangan,
+                tanggal_kepulangan,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};
+
 // Update a kavling by ID
 export const updateKavlingById = async (token, id, request) => {
     try {

@@ -4,7 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { getAllGround } from '../../services/groundService';
 import { getAllSubGrounds } from '../../services/subGroundService';
-import { getAllKavling } from '../../services/kavlingService';
+import { getAllKavling, getKavlingByTgl } from '../../services/kavlingService';
 
 const Kavling = () => {
   const navigate = useNavigate();
@@ -40,7 +40,10 @@ const Kavling = () => {
   };
 
   const fetchKavlings = async (groundId, subGroundId) => {
-    const response = await getAllKavling(token);
+    const lastFormData = JSON.parse(localStorage.getItem('tmp_add_reservasi'));
+    const { tanggal_kedatangan, tanggal_kepulangan } = lastFormData;
+
+    const response = await getKavlingByTgl(token, tanggal_kedatangan, tanggal_kepulangan);
     const groundKey = Object.keys(response.data).find((key) =>
       Object.values(response.data[key]).flat(2).some((kavling) => kavling.groud_id === groundId)
     );
