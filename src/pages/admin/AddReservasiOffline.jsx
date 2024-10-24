@@ -154,7 +154,7 @@ const AddReservasiOffline = () => {
                   selectedKavlings={selectedKavlings}
                   setSelectedKavlings={setSelectedKavlings}
                   onCancel={handleCancel}
-                  goToNextStep={goToNextStep} // Use goToNextStep here
+                  goToNextStep={goToNextStep} 
                   fetchGrounds={fetchGrounds}
                   fetchSubGrounds={fetchSubGrounds}
                   fetchKavlings={fetchKavlings}
@@ -165,16 +165,16 @@ const AddReservasiOffline = () => {
                   selectedItems={selectedItems}
                   setSelectedItems={setSelectedItems}
                   onCancel={handleCancel}
-                  goToNextStep={goToNextStep} // Use goToNextStep here
+                  goToNextStep={goToNextStep}
                 />
               )}
               {currentStep === 3 && (
                 <OfflinePaymentStep
                   items={selectedItems}
-                  kavlings={selectedKavlings} // Pass selected kavlings here
-                  formData={formData} // Pass formData here
+                  kavlings={selectedKavlings}
+                  formData={formData}
                   onCancel={handleCancel}
-                  onSave={handleSave} // Pass handleSave to trigger API call
+                  onSave={handleSave}
                   updatePaymentMethod={(method) => setFormData({ ...formData, metodePembayaran: method })}
                 />
               )}

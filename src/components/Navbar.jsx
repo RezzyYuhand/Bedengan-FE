@@ -145,6 +145,7 @@ const NavbarUserInfo = () => {
                     localStorage.removeItem('token')
                     localStorage.removeItem('userData')
                     toast.error(e.message)
+                    window.location.reload();
                 })
         }
     }, [])
@@ -153,17 +154,21 @@ const NavbarUserInfo = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const getFirstName = (name) => {
+        return name ? name.split(' ')[0] : '';
+    };
+
     return (
       <div className="relative">
       {/* Username and dropdown toggle */}
         <div>
-            <Link className='hidden lg:flex text-base font-semibold' to={'/profil'}>{user.name}</Link>
+            <Link className='hidden lg:flex text-base font-semibold' to={'/profil'}>{getFirstName(user.name)}</Link>
         </div>
         <div
             onClick={toggleDropdown}
             className="flex flex-row justify-between lg:hidden items-center cursor-pointer"
         >
-            <span className="font-semibold text-base">{user.name}</span>
+            <span className="font-semibold text-base">{getFirstName(user.name)}</span>
             <svg
             className={`w-4 h-4 ml-2 transition-transform ${
                 isDropdownOpen ? 'rotate-180' : 'rotate-0'

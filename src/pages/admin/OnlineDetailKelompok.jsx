@@ -98,8 +98,8 @@ const OnlineDetailKelompok = () => {
                     value={reservation?.jenisPengunjung || ''}
                   >
                     <option>Pilih</option>
-                    <option value="individu">Individu</option>
-                    <option value="kelompok">Kelompok</option>
+                    <option value="individu">Pribadi</option>
+                    <option value="kelompok">Instansi</option>
                   </select>
                 </div>
 

@@ -96,6 +96,32 @@ const LandingPage = () => {
                         </div>
                     </div>
 
+                    <div ref={sec2Ref}
+                         className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec2InView ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className='flex flex-col gap-2 items-center text-center'>
+                            <p className='text-lg text-secondary-gray'>Pahami dan simak syarat dan ketentuan sebelum reservasi</p>
+                            <h2 className='font-semibold'>Syarat dan Ketentuan</h2>
+                        </div>
+                        <div className='flex flex-col gap-8 lg:flex-row px-10 lg:px-28 lg:gap-10 items-center'>
+                            <div className='flex flex-col gap-9  items-center lg:items-start'>
+                                <p>Sudah tidak sabar untuk menikmati keindahan alam di jantung Bedengan?
+                                    Eitss, cek syarat dan ketentuan sebelum melakukan reservasi. 
+                                    Pastikan kamu memahami dan menyetujui syarat dan ketentuan yang berlaku.
+                                     Cek sekarang, lakukan reservasi, dan sampai berjumpa di mana kamu
+                                      dapat menemukan ketenangan!</p>
+                                <Button
+                                    onClick={
+                                        () => {
+                                            handleNavigateToLink("/syarat-dan-ketentuan")
+                                        }
+                                    }
+                                >Cek Syarat dan Ketentuan</Button>
+                            </div>
+                            <img src="/images/cuate.png" alt=""
+                                className='hidden lg:block rounded-lg h-72 w-auto'/>
+                        </div>
+                    </div>
+
                     <div ref={sec3Ref}
                          className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec3InView ? 'opacity-100' : 'opacity-0'}`}>
                         <div className='flex flex-col gap-2 items-center text-center'>
@@ -204,6 +230,18 @@ const LandingPage = () => {
                                 </div>
                                 <Button onClick={handleMapButtonClick}>Buka Google Maps</Button>
                             </div>
+                        </div>
+                    </div>
+
+                    <div ref={sec7Ref}
+                         className={`flex flex-col gap-8 items-center transition-opacity duration-1000 ${sec7InView ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className='flex flex-col gap-2 items-center text-center'>
+                            <p className='text-lg text-secondary-gray'>Lihat dan Tentukan Spot Campingan!</p>
+                            <h2 className='font-semibold'>Peta Bumi Perkemahan Bedengan</h2>
+                        </div>
+                        <div className='flex flex-col gap-8 lg:flex-row px-10 lg:px-28 lg:gap-10 items-center'>
+                            <img src="/images/PetaBedengan.jpeg" alt=""
+                                className='h-96 w-auto'/>
                         </div>
                     </div>
 

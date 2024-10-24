@@ -42,7 +42,7 @@ const Invoice = () => {
         return 'Menunggu Verifikasi';
       case 'ditolak':
          return 'Ditolak';
-      case 'berhasil':
+      case 'verifikasi':
          return 'Pembayaran Berhasil';
       case 'selesai':
          return 'Selesai';
@@ -57,7 +57,8 @@ const Invoice = () => {
         return <LuClock4 className='text-center text-5xl text-secondary' />;
       case 'ditolak':
         return <LuX className='text-center text-5xl text-secondary' />;
-      case 'berhasil':
+      case 'verifikasi':
+        return <LuCheck className='text-center text-5xl text-secondary' />;
       case 'selesai':
         return <LuCheck className='text-center text-5xl text-secondary' />;
       default:
@@ -147,8 +148,8 @@ const Invoice = () => {
             ? 'bg-accent-wait'
             : invoiceData.status === 'ditolak'
             ? 'bg-accent-error'
-            : invoiceData.status === 'berhasil' || invoiceData.status === 'selesai'
-            ? 'bg-green-500'
+            : invoiceData.status === 'verifikasi' || invoiceData.status === 'selesai'
+            ? 'bg-accent-2'
             : 'bg-gray-400'
           } w-fit h-fit p-4 items-center rounded-full`}>
             {getStatusIcon(invoiceData.status)}
@@ -161,6 +162,23 @@ const Invoice = () => {
               <PiCopy />
               <span>Salin</span>
             </button>
+          </div>
+          <div>
+            {invoiceData.status === 'menunggu_verifikasi' && (
+              <p className="text-center text-sm lg:text-sm">
+                Pembayaran anda sedang diverifikasi maksimal 1x24 jam. Silahkan hubungi admin jika status anda tidak berubah dalam 1x24 jam.
+              </p>
+            )}
+            {invoiceData.status === 'verifikasi' && (
+              <p className="text-center text-sm lg:text-sm">
+                Pembayaran telah berhasil diverifikasi! Sampai jumpa di Bumi Perkemahan Bedengan.
+              </p>
+            )}
+            {invoiceData.status === 'ditolak' && (
+              <p className="text-center text-sm lg:text-sm">
+                Mohon maaf, pembayaran kamu gagal. Silahkan coba lagi
+              </p>
+            )}
           </div>
         </div>
         <div className='w-full bg-secondary h-[1px]' />
