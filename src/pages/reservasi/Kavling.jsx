@@ -44,7 +44,7 @@ const Kavling = () => {
     const { tanggal_kedatangan, tanggal_kepulangan } = lastFormData;
 
     // const response = await getKavlingByTgl(token, tanggal_kedatangan, tanggal_kepulangan);
-    const response = await getAllKavling(token);
+    const response = await getKavlingByTgl(token, tanggal_kedatangan, tanggal_kepulangan);
     const groundKey = Object.keys(response.data).find((key) =>
       Object.values(response.data[key]).flat(2).some((kavling) => kavling.groud_id === groundId)
     );
