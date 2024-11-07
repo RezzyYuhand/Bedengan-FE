@@ -4,23 +4,21 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaXmark, FaCheck } from "react-icons/fa6";
 import { DetailModal } from '../../components';
 import { toast } from 'react-toastify';
-import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/invoiceService'; // Import the API methods
+import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/invoiceService';
 
 const ReservasionActionList = ({ reservations }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [modalTitle, setModalTitle] = useState('');
+  const [selectedReservation, setSelectedReservation] = useState(null); // Store selected reservation details
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  const openImageModal = (imageUrl, title) => {
-    setSelectedImage(imageUrl);
-    setModalTitle(title);
+  const openModal = (reservation) => {
+    setSelectedReservation(reservation);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setSelectedImage(null);
+    setSelectedReservation(null);
     setIsModalOpen(false);
   };
 
@@ -38,7 +36,7 @@ const ReservasionActionList = ({ reservations }) => {
       console.error('Error approving reservation:', error);
     }
   };
-  
+
   const handleReject = async (id) => {
     try {
       const token = localStorage.getItem('token');
@@ -53,7 +51,6 @@ const ReservasionActionList = ({ reservations }) => {
       console.error('Error rejecting reservation:', error);
     }
   };
-  
 
   const openDetailPage = (reservation) => {
     if (reservation.jenisPengunjung === 'individu') {
@@ -84,12 +81,12 @@ const ReservasionActionList = ({ reservations }) => {
           <span className='w-44 max-w-44'>{reservation.nama}</span>
           <span className='w-28 max-w-28'>{reservation.tglMasuk}</span>
           <span className='w-28 max-w-28'>{reservation.tglKeluar}</span>
-          
-          {/* KTP Button */}
+
+          {/* NIK & Alamat Button */}
           <span className='flex items-center justify-center w-10 max-w-10 text-center'>
             <button
               className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => openImageModal(reservation.ktpImage, 'KTP')}
+              onClick={() => openModal(reservation)}
             >
               <MdOutlineRemoveRedEye />
             </button>
@@ -104,7 +101,7 @@ const ReservasionActionList = ({ reservations }) => {
           <span className='flex items-center justify-center w-10 max-w-10 text-center'>
             <button
               className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => openImageModal(reservation.buktiImage, 'Bukti Pembayaran')}
+              onClick={() => console.log('Open payment proof modal logic here')}
             >
               <MdOutlineRemoveRedEye />
             </button>
@@ -150,13 +147,30 @@ const ReservasionActionList = ({ reservations }) => {
         </div>
       ))}
 
-      {/* Image Modal */}
-      <DetailModal
-        isOpen={isModalOpen}
-        imageUrl={selectedImage}
-        title={modalTitle}
-        onClose={closeModal}
-      />
+      {/* Modal for NIK & Alamat */}
+      {isModalOpen && selectedReservation && (
+        <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+        <div className='flex flex-col bg-white p-5 rounded gap-4 w-96'>
+          <span className='font-semibold text-lg'>Data Diri</span>
+          <div className='flex flex-col gap-2'>
+            <p>
+              <strong>NIK:</strong> {nik || 'N/A'}
+            </p>
+            <p>
+              <strong>Alamat:</strong> {alamat || 'N/A'}
+            </p>
+          </div>
+          <div className='flex justify-end'>
+            <button
+              className='mt-4 px-4 py-2 bg-accent hover:bg-hover-green text-white rounded shadow-md'
+              onClick={onClose}
+            >
+              Kembali
+            </button>
+          </div>
+        </div>
+      </div>
+      )}
     </div>
   );
 };

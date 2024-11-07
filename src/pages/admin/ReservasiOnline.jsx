@@ -25,7 +25,7 @@ const ReservasiOnline = () => {
           const onlineReservations = response.data.invoices
             .filter(invoice => invoice.tipe === 'online')
             .map(invoice => {
-              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, link_pembayaran, link_perizinan, jumlah, created_at } = invoice;
+              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, nik, alamat, link_pembayaran, link_perizinan, jumlah, created_at } = invoice;
               const parsedKeterangan = JSON.parse(keterangan);
     
               return {
@@ -38,6 +38,8 @@ const ReservasiOnline = () => {
                 total: invoice.jumlah,
                 tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
                 tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
+                nik: nik,
+                alamat: alamat,
                 ktpImage: parsedKeterangan.link_ktp,
                 buktiImage: link_pembayaran,
                 perizinanImage: link_perizinan,
