@@ -163,7 +163,7 @@ const ReservasionActionList = ({ reservations }) => {
           <div className='flex justify-end'>
             <button
               className='mt-4 px-4 py-2 bg-accent hover:bg-hover-green text-white rounded shadow-md'
-              onClick={onClose}
+              onClick={closeModal}
             >
               Kembali
             </button>
