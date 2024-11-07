@@ -154,10 +154,10 @@ const ReservasionActionList = ({ reservations }) => {
           <span className='font-semibold text-lg'>Data Diri</span>
           <div className='flex flex-col gap-2'>
             <p>
-              <strong>NIK:</strong> {nik || 'N/A'}
+              <strong>NIK:</strong> {selectedReservation?.nik || 'N/A'}
             </p>
             <p>
-              <strong>Alamat:</strong> {alamat || 'N/A'}
+              <strong>Alamat:</strong> {selectedReservation?.alamat || 'N/A'}
             </p>
           </div>
           <div className='flex justify-end'>
