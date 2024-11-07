@@ -223,7 +223,7 @@ const OnlineDetail = () => {
                     <button
                       className="block px-3 py-2 w-fit text-primary bg-accent hover:bg-hover-green rounded-md"
                       type="button"
-                      onClick={() => openImageModal(reservation?.buktiImage, 'Bukti Pembayaran')}
+                      onClick={() => openDetailModal(reservation?.buktiImage, 'Bukti Pembayaran')}
                     >
                       Lihat Bukti Pembayaran
                     </button>
