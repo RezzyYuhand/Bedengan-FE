@@ -28,11 +28,11 @@ const Footer = ({ className }) => {
               <p className='text-secondary font-bold'>Contact</p>
               <div className='flex flex-row gap-2 items-center'>
                 <PiPhoneFill className='text-secondary text-xl'/>
-                <p>+62 851-6119-1942</p>
+                <p>+62 851-7227-3501</p>
               </div>
               <div className='flex flex-row gap-2 items-center'>
                 <BiSolidEnvelope className='text-secondary text-xl'/>
-                <p>bumperbedengan@gmail.com</p>
+                <p>reservasibedengan@gmail.com</p>
               </div>
               <div className='flex flex-row gap-2'>
                 <FaLocationDot className='text-secondary text-xl'/>
