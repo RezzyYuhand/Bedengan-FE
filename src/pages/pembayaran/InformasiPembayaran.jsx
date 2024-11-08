@@ -24,13 +24,12 @@ const InformasiPembayaran = ({ total, onNext }) => { // Accept the total prop
       <div className='flex flex-col gap-4'>
         <div className='flex items-center lg:items-start flex-col lg:flex-row gap-4'>
           <div className='flex flex-col gap-4 max-w-96'>
-            {/* Total Tagihan Section */}
             <div className='flex flex-col gap-4 border-[1.5px] border-secondary rounded-md px-2 py-3 lg:px-7 lg:py-6'>
               <span className='text-left w-full px-3'>Total Tagihan</span>
               <div className='w-full bg-secondary h-[1px]' />
               <div className='flex flex-row items-center'>
                 <span className='w-60 text-center text-2xl font-semibold'>
-                  Rp {total?.toLocaleString() || '0'} {/* Display the total amount */}
+                  Rp {total?.toLocaleString() || '0'}
                 </span>
                 <button
                   className='flex flex-row gap-1 px-6 py-2 border-[1.5px] border-secondary rounded-full hover:bg-secondary hover:text-primary transition-colors duration-300'
@@ -41,7 +40,6 @@ const InformasiPembayaran = ({ total, onNext }) => { // Accept the total prop
               </div>
             </div>
 
-            {/* Informasi Pembayaran Section */}
             <div className='flex flex-col gap-4 border-[1.5px] border-secondary rounded-md px-2 py-3 lg:px-7 lg:py-6'>
               <span className='px-3'>Informasi Pembayaran</span>
               <div className='w-full bg-secondary h-[1px]' />
@@ -75,7 +73,10 @@ const InformasiPembayaran = ({ total, onNext }) => { // Accept the total prop
                   Salin
                 </button>
               </div>
-              <span>AN. YOGIK INDRA PRATAMA</span>
+              <span className='flex flex-row gap-2 items-center'>
+                <img src="/images/BCALogo.webp" className='h-4 w-auto' alt="" />
+                AN. YOGIK INDRA PRATAMA (BANK BCA)
+              </span>
             </div>
           </div>
         </div>

@@ -35,8 +35,8 @@ const UpdateOfflineReservation = () => {
         tentType: reservation.tentType || '',
         quantity: reservation.quantity || '',
         kavling: reservation.kavling || '',
-        arrivalDate: reservation.tglMasuk || '',
-        departureDate: reservation.tglKeluar || '',
+        arrivalDate: formatDateForInput(reservation.tglMasuk) || '',
+        departureDate: formatDateForInput(reservation.tglKeluar) || '',
         metodePembayaran: reservation.jenisPembayaran || '',
       });
       setSelectedItems(reservation.selectedItems || []);
@@ -61,6 +61,16 @@ const UpdateOfflineReservation = () => {
   const updatePaymentMethod = (method) => {
     setFormData((prevData) => ({ ...prevData, metodePembayaran: method }));
   };
+
+  const formatDateForInput = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+  
 
   return (
     <div className='w-screen h-screen p-10'>

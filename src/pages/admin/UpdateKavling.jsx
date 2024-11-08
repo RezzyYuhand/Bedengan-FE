@@ -11,8 +11,8 @@ const UpdateKavling = () => {
     const [price, setPrice] = useState(kavling?.harga || '');
     const [customKavlingNumber, setCustomKavlingNumber] = useState(kavling?.nomorKavling || '');
     const [isAvailable, setIsAvailable] = useState(kavling?.isAvailable || true);
-    const [row, setRow] = useState(kavling?.baris || 0); // Ensure row (baris) is included
-    const [column, setColumn] = useState(kavling?.kolom || 0); // Ensure column (kolom) is included
+    const [row, setRow] = useState(kavling?.baris || 0);
+    const [column, setColumn] = useState(kavling?.kolom || 0);
     const [subGroundId, setSubGroundId] = useState(kavling?.sub_ground_id || ""); // Ensure sub ground ID is included
     
     // Modal state

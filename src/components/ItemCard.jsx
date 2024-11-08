@@ -20,7 +20,14 @@ const ItemCard = ({ item, onQuantityChange, className = '' }) => {
   return (
     <div className={`flex flex-col px-5 py-4 gap-7 justify-end border rounded-md ${className}`}>
       <div className='flex flex-row justify-between items-center text-sm'>
-        <span className='font-semibold'>{item.nama}</span>
+        <div className='flex flex-col gap-1'>
+          <span className='font-semibold'>{item.nama}</span>
+          {item.image ? (
+            <img src={item.image} alt={item.nama} className="w-16 h-16 object-cover" />
+          ) : (
+            <span>Image not available</span>
+          )}
+        </div>
         <span className='font-semibold'>Rp {item.harga ? item.harga.toLocaleString() : 'N/A'}</span>
       </div>
       

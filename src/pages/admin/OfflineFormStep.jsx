@@ -32,9 +32,16 @@ const OfflineFormStep = ({
     setSubGroundData(subGrounds);
   };
 
-  const handleSubGroundChange = (e) => {
+  const handleSubGroundChange = async(e) => {
     const selectedSubGroundId = e.target.value;
     setFormData({ ...formData, subGroundId: selectedSubGroundId });
+    if (formData.arrivalDate && formData.departureDate) {
+      // Fetch kavlings only if both arrival and departure dates are selected
+      const kavlings = await fetchKavlings(formData.groundId, selectedSubGroundId);
+      setSelectedKavlings(kavlings);
+    } else {
+      console.error("Please select both arrival and departure dates");
+    }
   };
 
   const handleFormChange = (e) => {
@@ -53,8 +60,8 @@ const OfflineFormStep = ({
           className="block appearance-none px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
         >
           <option value="">Pilih</option>
-          <option value="individu">Individu</option>
-          <option value="kelompok">Kelompok</option>
+          <option value="individu">Pribadi</option>
+          <option value="kelompok">Instansi</option>
         </select>
       </div>
 

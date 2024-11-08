@@ -8,7 +8,7 @@ import OfflineItemStep from './OfflineItemStep';
 import OfflinePaymentStep from './OfflinePaymentStep';
 import { getAllGround } from '../../services/groundService';
 import { getAllSubGrounds } from '../../services/subGroundService';
-import { getAllKavling } from '../../services/kavlingService';
+import { getAllKavling, getKavlingByTgl } from '../../services/kavlingService';
 import { createInvoiceReservasi } from '../../services/invoiceService'; // Import API service
 
 const AddReservasiOffline = () => {
@@ -106,7 +106,8 @@ const AddReservasiOffline = () => {
   };
 
   const fetchKavlings = async (groundId, subGroundId) => {
-    const response = await getAllKavling(token);
+    const { arrivalDate, departureDate } = formData;
+    const response = await getKavlingByTgl(token, arrivalDate, departureDate);
     console.log('Kavling API response:', response.data);
 
     const groundKey = Object.keys(response.data).find((key) =>
@@ -153,7 +154,7 @@ const AddReservasiOffline = () => {
                   selectedKavlings={selectedKavlings}
                   setSelectedKavlings={setSelectedKavlings}
                   onCancel={handleCancel}
-                  goToNextStep={goToNextStep} // Use goToNextStep here
+                  goToNextStep={goToNextStep} 
                   fetchGrounds={fetchGrounds}
                   fetchSubGrounds={fetchSubGrounds}
                   fetchKavlings={fetchKavlings}
@@ -164,16 +165,16 @@ const AddReservasiOffline = () => {
                   selectedItems={selectedItems}
                   setSelectedItems={setSelectedItems}
                   onCancel={handleCancel}
-                  goToNextStep={goToNextStep} // Use goToNextStep here
+                  goToNextStep={goToNextStep}
                 />
               )}
               {currentStep === 3 && (
                 <OfflinePaymentStep
                   items={selectedItems}
-                  kavlings={selectedKavlings} // Pass selected kavlings here
-                  formData={formData} // Pass formData here
+                  kavlings={selectedKavlings}
+                  formData={formData}
                   onCancel={handleCancel}
-                  onSave={handleSave} // Pass handleSave to trigger API call
+                  onSave={handleSave}
                   updatePaymentMethod={(method) => setFormData({ ...formData, metodePembayaran: method })}
                 />
               )}

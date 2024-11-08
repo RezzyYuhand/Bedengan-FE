@@ -4,7 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { getAllGround } from '../../services/groundService';
 import { getAllSubGrounds } from '../../services/subGroundService';
-import { getAllKavling } from '../../services/kavlingService';
+import { getAllKavling, getKavlingByTgl } from '../../services/kavlingService';
 
 const Kavling = () => {
   const navigate = useNavigate();
@@ -40,7 +40,11 @@ const Kavling = () => {
   };
 
   const fetchKavlings = async (groundId, subGroundId) => {
-    const response = await getAllKavling(token);
+    const lastFormData = JSON.parse(localStorage.getItem('tmp_add_reservasi'));
+    const { tanggal_kedatangan, tanggal_kepulangan } = lastFormData;
+
+    // const response = await getKavlingByTgl(token, tanggal_kedatangan, tanggal_kepulangan);
+    const response = await getKavlingByTgl(token, tanggal_kedatangan, tanggal_kepulangan);
     const groundKey = Object.keys(response.data).find((key) =>
       Object.values(response.data[key]).flat(2).some((kavling) => kavling.groud_id === groundId)
     );
@@ -196,16 +200,19 @@ const Kavling = () => {
         </div>
 
         {/* Detail Harga */}
-        <h3 className='text-xl font-semibold'>Detail Harga</h3>
-        <div className='flex flex-col gap-1'>
-          <div className='flex flex-row'>
-            <p className='w-28 max-w-28'>Kavling</p>
-            <p>: {getSelectedKavlingNames() || '-'}</p>
+        <div className='flex flex-col gap-3'>
+          <h3 className='text-xl font-semibold'>Detail Harga Kavling</h3>
+          <div className='flex flex-col gap-1'>
+            <div className='flex flex-row'>
+              <p className='w-28 max-w-28'>Kavling</p>
+              <p>: {getSelectedKavlingNames() || '-'}</p>
+            </div>
+            <div className='flex flex-row'>
+              <p className='w-28 max-w-28'>Harga</p> 
+              <p>: Rp {getTotalPrice().toLocaleString()}</p>
+            </div>
           </div>
-          <div className='flex flex-row'>
-            <p className='w-28 max-w-28'>Harga</p> 
-            <p>: Rp {getTotalPrice().toLocaleString()}</p>
-          </div>
+          <span className='text-gray-500 text-sm max-w-[41rem]'>Perhatian: Harga yang tertera hanya harga untuk reservasi kavling, pembayaran tiket masuk wilayah Bedengan dapat dilakukan secara offline di lokasi saat check-in.</span>
         </div>
 
         {/* Next Button */}

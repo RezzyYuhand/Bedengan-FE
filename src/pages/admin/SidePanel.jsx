@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { VscTools } from "react-icons/vsc";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoHomeOutline } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
-import { logoutUser } from '../../services/userService'; // Import the logout API function
+import { logoutUser, getMyUserInfo } from '../../services/userService'; // Import the logout API function
 import { toast } from 'react-toastify';
 
 const SidePanel = () => {
   const [isReservasiOpen, setReservasiOpen] = useState(false);
   const [isPerlengkapanOpen, setPerlengkapanOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate(); // Use navigate for redirection
 
   const toggleReservasi = () => setReservasiOpen(!isReservasiOpen);
   const togglePerlengkapan = () => setPerlengkapanOpen(!isPerlengkapanOpen);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      getMyUserInfo(token)
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userData');
+          toast.error('Session expired. Please log in again.');
+          navigate('/masuk');
+          window.location.reload(); // Refresh the page
+        });
+    }
+  }, [navigate]);
 
   const handleLogout = async () => {
     const token = localStorage.getItem('token');

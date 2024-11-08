@@ -9,6 +9,8 @@ const ContentProfil = () => {
     name: '',
     email: '',
     phone: '',
+    nik: '',
+    alamat: '',
   });
   const [originalUserInfo, setOriginalUserInfo] = useState(null); // Store the original data
   const [loading, setLoading] = useState(true); // For showing a loading state
@@ -26,6 +28,8 @@ const ContentProfil = () => {
           name: data.name || '',
           email: data.email || '',
           phone: data.phone || '',
+          nik: data.nik || '', // Include nik
+          alamat: data.alamat || '', // Include alamat
         };
 
         setUserInfo(userData);
@@ -57,11 +61,13 @@ const ContentProfil = () => {
     e.preventDefault();
     const updatedData = {
       name: userInfo.name,
-      phone: userInfo.phone
+      phone: userInfo.phone,
+      nik: userInfo.nik, // Add nik
+      alamat: userInfo.alamat, // Add alamat
     };
 
     try {
-      await updateUser(updatedData, token); // Only send `name` and `phone`
+      await updateUser(updatedData, token); // Send `name`, `phone`, `nik`, and `alamat`
       toast.success('Profil berhasil diperbarui');
     } catch (err) {
       console.error('Error updating profile:', err.response ? err.response.data : err);
@@ -79,7 +85,7 @@ const ContentProfil = () => {
     }
 
     try {
-      await logoutUser(token)
+      await logoutUser(token);
       localStorage.removeItem('token');
       localStorage.removeItem('userData');
 
@@ -95,7 +101,9 @@ const ContentProfil = () => {
     return (
       userInfo.name !== originalUserInfo?.name ||
       userInfo.email !== originalUserInfo?.email ||
-      userInfo.phone !== originalUserInfo?.phone
+      userInfo.phone !== originalUserInfo?.phone ||
+      userInfo.nik !== originalUserInfo?.nik || // Check nik
+      userInfo.alamat !== originalUserInfo?.alamat // Check alamat
     );
   };
 
@@ -113,13 +121,37 @@ const ContentProfil = () => {
       <form onSubmit={handleSubmit} className='flex flex-col gap-6 w-full'>
         <div className='flex flex-col gap-5 border-[1.5px] border-inactive-gray-2 px-5 py-3 rounded-md'>
           <div className='flex flex-col gap-3'>
-            <label className='font-medium'>Nama</label>
+            <label className='font-medium'>Nama (Sesuai KTP)</label>
             <input
               type="text"
               name="name"
               value={userInfo.name}
               onChange={handleChange}
               placeholder='Nama sesuai KTP'
+              className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 text-sm"
+              required
+            />
+          </div>
+          <div className='flex flex-col gap-3'>
+            <label className='font-medium'>NIK</label>
+            <input
+              type="text"
+              name="nik"
+              value={userInfo.nik} // Bind nik input
+              onChange={handleChange}
+              placeholder='Nomor Induk Kependudukan'
+              className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 text-sm"
+              required
+            />
+          </div>
+          <div className='flex flex-col gap-3'>
+            <label className='font-medium'>Alamat (Sesuai KTP)</label>
+            <input
+              type="text"
+              name="alamat"
+              value={userInfo.alamat} // Bind alamat input
+              onChange={handleChange}
+              placeholder='Alamat sesuai KTP'
               className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 text-sm"
               required
             />

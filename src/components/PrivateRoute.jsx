@@ -7,6 +7,11 @@ const PrivateRoute = ({
 }) => {
     const authToken = localStorage.getItem('token');
     const registrationData = JSON.parse(localStorage.getItem('registrationData'));
+    const userData = JSON.parse(localStorage.getItem('userData'));
+
+    if (userData && userData.role === 'admin') {
+        return <Navigate to='/dashboard' />;
+    }
 
     if (requireAuth && !authToken) {
         return <Navigate to='/masuk' />

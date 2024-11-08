@@ -37,7 +37,7 @@ const Daftar = () => {
 
           <form onSubmit={handleRegister} className='flex flex-col gap-5 px-4 lg:px-0'>
             <div className='flex flex-col gap-1'>
-              <label className='font-semibold'>Nama</label>
+              <label className='font-semibold'>Nama Lengkap</label>
               <input 
                 type="text"
                 placeholder='Nama'
@@ -59,7 +59,7 @@ const Daftar = () => {
               />
             </div>
             <div className='flex flex-col gap-1'>
-              <label className='font-semibold'>Kata Sandi</label>
+              <label className='font-semibold'>Buat Kata Sandi</label>
               <input 
                 type="password"
                 placeholder='Password'

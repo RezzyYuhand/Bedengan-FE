@@ -9,20 +9,32 @@ import { toast } from 'react-toastify';
 const OnlineDetail = () => {
   const { state } = useLocation();
   const { reservation } = state || {};
+  const [isNikAlamatModalOpen, setIsNikAlamatModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({ nik: '', alamat: '' });
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const openImageModal = (imageUrl, title) => {
-    setSelectedImage(imageUrl);
-    setModalTitle(title);
-    setIsModalOpen(true);
+  const openNikAlamatModal = (nik, alamat) => {
+    setModalData({ nik, alamat });
+    setIsNikAlamatModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeNikAlamatModal = () => {
+    setModalData({ nik: '', alamat: '' });
+    setIsNikAlamatModalOpen(false);
+  };
+
+  const openDetailModal = (imageUrl, title) => {
+    setSelectedImage(imageUrl);
+    setModalTitle(title);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
     setSelectedImage(null);
-    setIsModalOpen(false);
+    setIsDetailModalOpen(false);
   };
 
   const handleRejectPayment = async (id) => {
@@ -98,8 +110,8 @@ const OnlineDetail = () => {
                     value={reservation?.jenisPengunjung || ''}
                   >
                     <option>Pilih</option>
-                    <option value="individu">Individu</option>
-                    <option value="kelompok">Kelompok</option>
+                    <option value="individu">Pribadi</option>
+                    <option value="kelompok">Instansi</option>
                   </select>
                 </div>
 
@@ -201,7 +213,7 @@ const OnlineDetail = () => {
                     <button
                       className="block px-3 py-2 w-fit text-primary bg-accent hover:bg-hover-green rounded-md"
                       type="button"
-                      onClick={() => openImageModal(reservation?.ktpImage, 'KTP')}
+                      onClick={() => openNikAlamatModal(reservation?.nik, reservation?.alamat)}
                     >
                       Lihat KTP
                     </button>
@@ -211,12 +223,12 @@ const OnlineDetail = () => {
                     <button
                       className="block px-3 py-2 w-fit text-primary bg-accent hover:bg-hover-green rounded-md"
                       type="button"
-                      onClick={() => openImageModal(reservation?.buktiImage, 'Bukti Pembayaran')}
+                      onClick={() => openDetailModal(reservation?.buktiImage, 'Bukti Pembayaran')}
                     >
                       Lihat Bukti Pembayaran
                     </button>
                   </div>
-                  <div className='flex flex-col gap-2 w-full'>
+                  {/* <div className='flex flex-col gap-2 w-full'>
                     <label className="font-semibold">Detail Pembayaran</label>
                     <button
                       className="block px-3 py-2 w-fit text-primary bg-accent hover:bg-hover-green rounded-md"
@@ -225,7 +237,7 @@ const OnlineDetail = () => {
                     >
                       Lihat Detail Pembayaran
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className='flex flex-row gap-5 justify-end w-full'>
                   <button
@@ -248,12 +260,37 @@ const OnlineDetail = () => {
           </div>
         </div>
       </div>
-      {/* Detail Modal for KTP, Bukti Pembayaran, and Detail Pembayaran */}
+      
+      {isNikAlamatModalOpen && (
+        <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+          <div className='flex flex-col bg-white p-5 rounded gap-4 w-96'>
+            <h2 className='text-lg font-semibold mb-4'>Detail NIK dan Alamat</h2>
+            <div className='flex flex-col gap-2'>
+              <p>
+                <strong>NIK:</strong> {modalData.nik || 'N/A'}
+              </p>
+              <p>
+                <strong>Alamat:</strong> {modalData.alamat || 'N/A'}
+              </p>
+            </div>
+            <div className='flex justify-end'>
+              <button
+                className='mt-4 px-4 py-2 bg-accent hover:bg-hover-green text-white rounded shadow-md'
+                onClick={closeNikAlamatModal}
+              >
+                Kembali
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detail Modal for Bukti Pembayaran */}
       <DetailModal
-        isOpen={isModalOpen}
+        isOpen={isDetailModalOpen}
         imageUrl={selectedImage}
         title={modalTitle}
-        onClose={closeModal}
+        onClose={closeDetailModal}
       />
     </div>
   )

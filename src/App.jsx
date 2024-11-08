@@ -39,11 +39,13 @@ function App() {
     <div>
       <ScrollToTop/>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/syarat-dan-ketentuan" element={<SyaratDanKetentuan />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/syarat-dan-ketentuan" element={<SyaratDanKetentuan />} />
+          <Route path="/masuk" element={<Masuk />} />
+          <Route path="/daftar" element={<Daftar />} />
+        </Route>
         
-        <Route path="/masuk" element={<Masuk />} />
-        <Route path="/daftar" element={<Daftar />} />
         <Route element={<PrivateRoute requireDaftar={true} />}>
           <Route path="/daftar-data-diri" element={<DaftarDataDiri />} />
         </Route>

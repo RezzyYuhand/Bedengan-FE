@@ -16,18 +16,18 @@ const ReservasiOnline = () => {
           console.error('Token not found.');
           return;
         }
-  
+    
         const response = await getAllInvoiceReservasiAdmin(token);
         console.log("API Response:", response);
-  
+    
         if (response?.data?.invoices) {
           // Filter for online reservations and map the fields correctly
           const onlineReservations = response.data.invoices
             .filter(invoice => invoice.tipe === 'online')
             .map(invoice => {
-              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, link_pembayaran, link_perizinan, jumlah, created_at } = invoice;
+              const { nomor_invoice, keterangan, tanggal_kedatangan, tanggal_kepulangan, status, nik, alamat, link_pembayaran, link_perizinan, jumlah, created_at } = invoice;
               const parsedKeterangan = JSON.parse(keterangan);
-  
+    
               return {
                 id: invoice.id,
                 kode: nomor_invoice,
@@ -38,9 +38,11 @@ const ReservasiOnline = () => {
                 total: invoice.jumlah,
                 tglMasuk: new Date(tanggal_kedatangan).toLocaleDateString(),
                 tglKeluar: new Date(tanggal_kepulangan).toLocaleDateString(),
+                nik: nik,
+                alamat: alamat,
                 ktpImage: parsedKeterangan.link_ktp,
-                buktiImage: invoice.link_pembayaran,
-                perizinanImage: invoice.link_perizinan,
+                buktiImage: link_pembayaran,
+                perizinanImage: link_perizinan,
                 totalPrice: `Rp ${invoice.total}`,
                 totalHarga: invoice.total,
                 status: status,
@@ -48,7 +50,7 @@ const ReservasiOnline = () => {
               };
             })
             .sort((a, b) => b.createdAt - a.createdAt);
-  
+    
           setReservations(onlineReservations);
           console.log("Parsed Reservations:", onlineReservations); // Check the parsed data
         }
@@ -58,6 +60,7 @@ const ReservasiOnline = () => {
         setLoading(false);
       }
     };
+    
   
     fetchReservations();
   }, []);
