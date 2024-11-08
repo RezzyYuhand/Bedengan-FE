@@ -8,13 +8,27 @@ import { rejectInvoiceReservasi, verifyInvoiceReservasi } from '../../services/i
 
 const ReservasionActionList = ({ reservations }) => {
   const [selectedReservation, setSelectedReservation] = useState(null); // Store selected reservation details
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [modalTitle, setModalTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const openModal = (reservation) => {
     setSelectedReservation(reservation);
     setIsModalOpen(true);
+  };
+
+  const openImageModal = (imageUrl, title) => {
+    setSelectedImage(imageUrl);
+    setModalTitle(title);
+    setIsImageModalOpen(true);
+  };
+  
+  const closeImageModal = () => {
+    setSelectedImage(null);
+    setIsImageModalOpen(false);
   };
 
   const closeModal = () => {
@@ -101,7 +115,7 @@ const ReservasionActionList = ({ reservations }) => {
           <span className='flex items-center justify-center w-10 max-w-10 text-center'>
             <button
               className='flex items-center justify-center w-6 h-6 bg-berlangsung text-white rounded'
-              onClick={() => console.log('Open payment proof modal logic here')}
+              onClick={() => openImageModal(reservation.buktiImage, 'Bukti Pembayaran')}
             >
               <MdOutlineRemoveRedEye />
             </button>
@@ -147,6 +161,13 @@ const ReservasionActionList = ({ reservations }) => {
         </div>
       ))}
 
+      {/* Image Modal */}
+      <DetailModal
+        isOpen={isImageModalOpen}
+        imageUrl={selectedImage}
+        title={modalTitle}
+        onClose={closeImageModal}
+      />
       {/* Modal for NIK & Alamat */}
       {isModalOpen && selectedReservation && (
         <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
