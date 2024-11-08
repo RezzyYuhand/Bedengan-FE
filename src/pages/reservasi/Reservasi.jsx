@@ -35,7 +35,8 @@ const Reservasi = () => {
         keterangan: JSON.stringify({
           jumlah_pengunjung: formData.numberOfVisitor,
           nama: userInfo?.name,
-          link_ktp: userInfo?.link_ktp,
+          nik: userInfo?.nik,
+          alamat: userInfo?.alamat,
           telepon: userInfo?.phone,
         }),
         reservasi: selectedItems, // Add selected items here
