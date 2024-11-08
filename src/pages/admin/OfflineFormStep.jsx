@@ -14,6 +14,17 @@ const OfflineFormStep = ({
 }) => {
   const [groundData, setGroundData] = useState([]);
   const [subGroundData, setSubGroundData] = useState([]);
+  const [minArrivalDate, setMinArrivalDate] = useState('');
+  const [minDepartureDate, setMinDepartureDate] = useState('');
+
+  useEffect(() => {
+    const today = new Date();
+    const oneDaysFromToday = new Date();
+    oneDaysFromToday.setDate(today.getDate() + 1);
+
+    setMinArrivalDate(today.toISOString().split('T')[0]); // Format YYYY-MM-DD
+    setMinDepartureDate(oneDaysFromToday.toISOString().split('T')[0]);
+  }, []);
 
   // Fetch Grounds on component mount
   useEffect(() => {
@@ -111,6 +122,7 @@ const OfflineFormStep = ({
             name="arrivalDate"
             onChange={handleFormChange}
             value={formData.arrivalDate}
+            min={minArrivalDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>
@@ -121,6 +133,7 @@ const OfflineFormStep = ({
             name="departureDate"
             onChange={handleFormChange}
             value={formData.departureDate}
+            min={minDepartureDate}
             className="block px-3 py-2 w-full rounded-md ring-1 ring-inactive-gray-2 sm:text-sm"
           />
         </div>

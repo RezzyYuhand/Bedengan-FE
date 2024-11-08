@@ -113,11 +113,12 @@ const AddReservasiOffline = () => {
     const groundKey = Object.keys(response.data).find((key) =>
       Object.values(response.data[key])
         .flat(2)
-        .some((kavling) => kavling.groud_id === groundId)
+        .some((kavling) => kavling.ground_id === groundId)
     );
 
     if (!groundKey) {
       console.error(`Ground with ID "${groundId}" not found in response.`);
+      console.log('Available Ground Keys:', Object.keys(response.data));
       return [];
     }
 
